@@ -68,7 +68,7 @@ functions:
     handler: handlers/testHandlerCRUD.get
     events:
       - http:
-          path: Test/{ID}
+          path: Test/{id}
           method: get
   putTest:
     handler: handlers/testHandlerCRUD.put
