@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="04a2efac-41b8-4989-aad6-83a08ce47e98" name="Default Changelist" comment="" />
+    <list default="true" id="04a2efac-41b8-4989-aad6-83a08ce47e98" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/front/js/register.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/js/indexJS.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,15 +34,25 @@
   </component>
   <component name="ProjectId" id="1TZArvvSIiDVYwlHjFDtFNeCvcO" />
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="D:/Android" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="javascript.nodejs.core.library.configured.version" value="10.16.3" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/front/js" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\V SEMESTR\Chmura\Wylosowana\Wylosowana\front\js" />
+      <recent name="E:\V SEMESTR\Chmura\Wylosowana\Wylosowana\front" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -60,6 +79,9 @@
       <workItem from="1573657446754" duration="159000" />
       <workItem from="1573657608336" duration="58000" />
       <workItem from="1573657705312" duration="541000" />
+      <workItem from="1573764823148" duration="129000" />
+      <workItem from="1573765037812" duration="700000" />
+      <workItem from="1573851105831" duration="2868000" />
     </task>
     <servers />
   </component>
