@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04a2efac-41b8-4989-aad6-83a08ce47e98" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/front/js/register.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front/js/indexJS.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +75,7 @@
       <workItem from="1573657705312" duration="541000" />
       <workItem from="1573764823148" duration="129000" />
       <workItem from="1573765037812" duration="700000" />
-      <workItem from="1573851105831" duration="2868000" />
+      <workItem from="1573851105831" duration="3722000" />
     </task>
     <servers />
   </component>
