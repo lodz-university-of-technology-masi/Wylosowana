@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import Register from "../auth/Register";
+import React, {Component} from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
 
-class CreateTest extends Component{
+class CreateTest extends Component {
     constructor(props) {
         super(props)
 
@@ -18,18 +19,18 @@ class CreateTest extends Component{
         })
     };
 
-    handleLanguageChange(e){
+    handleLanguageChange(e) {
         this.setState({
             lang: e.target.value
         })
     };
 
-    handleOpenQuestionQuestionChange = idx => evt =>{
-     const newQuestions = this.state.questions.map((que,qidx) => {
-         if(idx!==qidx) return que;
-         return { ...que, question: evt.target.value};
+    handleOpenQuestionQuestionChange = idx => evt => {
+        const newQuestions = this.state.questions.map((que, qidx) => {
+            if (idx !== qidx) return que;
+            return {...que, question: evt.target.value};
         });
-         this.setState({ questions: newQuestions });
+        this.setState({questions: newQuestions});
     };
 
     handleAddOpenQuestion = () => {
@@ -43,6 +44,7 @@ class CreateTest extends Component{
             questions: this.state.questions.filter((s, sidx) => idx !== sidx)
         });
     };
+<<<<<<< HEAD
 
     createJson(){
 
@@ -76,55 +78,51 @@ class CreateTest extends Component{
             questions: this.state.questions.concat([{no: 0, guestion: "",answers:[],correct:[]}])
         });
     };
+=======
+>>>>>>> Unnecessary files deleted and changed some view
 
-    handleQuestionAnswersChange = idx => evt =>{
-        const newQuestions = this.state.questions((que,qidx) => {
-            if(idx!==qidx) return que;
-            return { que, answers(evt.target.value)};
-        });
-        this.setState({ questions: newQuestions });
-    };*/
+    /*
+        handleAddCloseQuestion = () => {
+            this.setState({
+                questions: this.state.questions.concat([{no: 0, guestion: "",answers:[],correct:[]}])
+            });
+        };
+
+        handleQuestionAnswersChange = idx => evt =>{
+            const newQuestions = this.state.questions((que,qidx) => {
+                if(idx!==qidx) return que;
+                return { que, answers(evt.target.value)};
+            });
+            this.setState({ questions: newQuestions });
+        };*/
 
     render() {
         return (
-            <form>
-                <div>
-                    <label>Name</label>
-                    <input type='text' value={this.state.name} onChange={this.handleNameChange}/>
-                </div>
-                <div>
-                    <select id="lang" value={this.state.language} onChange={this.handleLanguageChange} >
-                        <option value="select">Select a language</option>
+            <section className="section auth">
+            <Form>
+                <h1>Test</h1>
+                <Form.Group controlId="controlInputName">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="name" placeholder="Name" />
+                </Form.Group>
+                <Form.Group controlId="controlSelectLang">
+                    <Form.Label>Select a language</Form.Label>
+                    <Form.Control as="select" onChange={this.handleLanguageChange} value={this.state.language}>
                         <option value="EN">English</option>
                         <option value="PL">Polish</option>
-                    </select>
-                </div>
+                    </Form.Control>
+                </Form.Group>
                 <h4>Questions</h4>
                 {this.state.questions.map((que, idx) => (
-                    <div>
-                        <input
-                            type="text"
-                            placeholder={'Write question'}
-                            value={que.question}
-                            onChange={this.handleOpenQuestionQuestionChange(idx)}
-                        />
-                        <button
-                            type="button"
-                            onClick={this.handleRemoveOpenQuestion(idx)}
-                            className="small"
-                        >
-                            -
-                        </button>
-                    </div>
+                        <Form.Group controlId="controlQuestion">
+                            <Form.Label>Question</Form.Label>
+                            <Form.Control as="textarea" rows="3" />
+                            <Button id="deleteButton" onClick={this.handleRemoveOpenQuestion(idx)} variant="danger" size="sm">Delete</Button>
+                        </Form.Group>
                 ))}
-                <button
-                    type="button"
-                    onClick={this.handleAddOpenQuestion}
-                    className="small"
-                >
-                    Add Open Question
-                </button>
-            </form>
+                <Button id="addOpenQuestionButton" variant="info" onClick={this.handleAddOpenQuestion}>Add Open Question</Button>
+            </Form>
+            </section>
         )
     }
 }

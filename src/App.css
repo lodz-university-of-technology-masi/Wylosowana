@@ -14,6 +14,13 @@ body {
   visibility: visible !important;
 }
 
+#deleteButton {
+  float: right;
+}
+
+#addOpenQuestionButton{
+  margin-top: 1em;
+}
 
 .auth form {
   margin-top: 1em;

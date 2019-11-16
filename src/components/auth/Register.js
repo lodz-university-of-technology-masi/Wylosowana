@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
+import Form from 'react-bootstrap/Form';
 import { Auth } from 'aws-amplify';
 
 class Register extends Component {
@@ -147,23 +148,13 @@ class Register extends Component {
                 </span>
               </p>
             </div>
-            <div>
-            <select id="lang" onChange={this.handleChange.bind(this)} value={this.state.profile}>
-            <option value="select">Select a profile</option>
-            <option value="Candidate">Candidate</option>
-            <option value="Recruiter">Recruiter</option>
-            </select>
-            </div>
-            <div className="field">
-              <p className="control">
-                <a href="/forgotpassword">Forgot password?</a>
-              </p>
-            </div>
-            <div className="field">
-              <p className="control">
-                <a href="/changepassword">Change password</a>
-              </p>
-            </div>
+            <Form.Group controlId="controlSelectProfile">
+              <Form.Label>Select a profile</Form.Label>
+              <Form.Control as="select" onChange={this.handleChange.bind(this)} value={this.state.profile}>
+                <option value="Candidate">Candidate</option>
+                <option value="Recruiter">Recruiter</option>
+              </Form.Control>
+            </Form.Group>
             <div className="field">
               <p className="control">
                 <button className="button is-success">
