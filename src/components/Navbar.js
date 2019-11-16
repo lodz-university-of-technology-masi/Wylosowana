@@ -19,7 +19,7 @@ export default class Navbars extends Component {
     render() {
         return (
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="/">Wylosowana</Navbar.Brand>
+                <Navbar.Brand href="#/">Wylosowana</Navbar.Brand>
                 <Navbar.Toggle/>
                 <Navbar.Collapse className="justify-content-end">
                     {this.props.auth.isAuthenticated && this.props.auth.user && (
@@ -27,19 +27,19 @@ export default class Navbars extends Component {
                     )}
                     {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
                         <ButtonToolbar>
-                            <Button variant="outline-info" href="/createtest">Add Test</Button>
+                            <Button variant="outline-info" href="#/createtest">Add Test</Button>
                             <div className="navbar-buttons-space"></div>
                         </ButtonToolbar>
                     )}
                     {!this.props.auth.isAuthenticated && (
                         <ButtonToolbar>
-                            <Button variant="outline-info" href="/register">Register</Button>
+                            <Button variant="outline-info" href="#/register">Register</Button>
                             <div className="navbar-buttons-space"></div>
-                            <Button variant="outline-info" href="/login">Log in</Button>
+                            <Button variant="outline-info" href="#/login">Log in</Button>
                         </ButtonToolbar>
                     )}
                     {this.props.auth.isAuthenticated && (
-                        <Button onClick={this.handleLogOut} variant="outline-info" href="/">Log out</Button>
+                        <Button onClick={this.handleLogOut} variant="outline-info" href="#/">Log out</Button>
                     )}
                 </Navbar.Collapse>
             </Navbar>
