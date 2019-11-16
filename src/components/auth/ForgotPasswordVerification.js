@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
+import { Auth } from 'aws-amplify';
 
 class ForgotPasswordVerification extends Component {
   state = {
@@ -35,6 +36,12 @@ class ForgotPasswordVerification extends Component {
     }
 
     // AWS Cognito integration here
+    try {
+      await Auth.forgotPasswordSubmit(this.state.email, this.state.verificationcode, this.state.newpassword);
+      this.props.history.push('/changepasswordconfirmation');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   onInputChange = event => {
@@ -71,8 +78,8 @@ class ForgotPasswordVerification extends Component {
             </div>
             <div className="field">
               <p className="control has-icons-left">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="email"
                   id="email"
                   aria-describedby="emailHelp"
@@ -103,7 +110,7 @@ class ForgotPasswordVerification extends Component {
             <div className="field">
               <p className="control">
                 <button className="button is-success">
-                  Login
+                  Submit
                 </button>
               </p>
             </div>

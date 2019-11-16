@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
+import { Auth } from 'aws-amplify';
 
 class LogIn extends Component {
   state = {
@@ -34,6 +35,24 @@ class LogIn extends Component {
     }
 
     // AWS Cognito integration here
+    const { username, email, password } = this.state;
+    try {
+      const user = await Auth.signIn(this.state.username, this.state.password);
+      console.log(user);
+      this.props.auth.setAuthStatus(true);
+      this.props.auth.setUser(user);
+      this.props.history.push("/");
+    } catch (error) {
+      let err = null;
+      !error.message ? err = { "message": error } : err = error;
+      this.setState({
+        errors:
+        {
+          ...this.state.errors,
+          cognito: error
+        }
+      })
+    }
   };
 
   onInputChange = event => {
@@ -53,8 +72,8 @@ class LogIn extends Component {
           <form onSubmit={this.handleSubmit}>
             <div className="field">
               <p className="control">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="text"
                   id="username"
                   aria-describedby="usernameHelp"
@@ -66,8 +85,8 @@ class LogIn extends Component {
             </div>
             <div className="field">
               <p className="control has-icons-left">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="password"
                   id="password"
                   placeholder="Password"
@@ -82,6 +101,11 @@ class LogIn extends Component {
             <div className="field">
               <p className="control">
                 <a href="/forgotpassword">Forgot password?</a>
+              </p>
+            </div>
+            <div className="field">
+              <p className="control">
+                <a href="/changepassword">Change password</a>
               </p>
             </div>
             <div className="field">

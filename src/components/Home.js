@@ -1,17 +1,21 @@
-import React, { Fragment } from 'react';
-import Hero from './Hero';
-import HomeContent from './HomeContent';
+import React from 'react';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Button from 'react-bootstrap/Button'
+import Navbar from "react-bootstrap/Navbar";
 
 export default function Home() {
   return (
-    <Fragment>
-      <Hero />
-      <div className="box cta">
-        <p className="has-text-centered">
-          <span className="tag is-primary">New</span> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
-      <HomeContent />
-    </Fragment>
+    <Jumbotron>
+      <h1>Hello, world!</h1>
+      <p>
+        This is a simple react-bootstrap example.
+  </p>
+      <p>
+        <Button variant="primary" href="https://react-bootstrap.github.io/getting-started/introduction/">Learn more</Button>
+      </p>
+        <div>
+                <p className="hello-username">Hello</p>
+        </div>
+    </Jumbotron>
   )
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
+import { Auth } from 'aws-amplify';
 
 class Register extends Component {
   state = {
@@ -8,6 +9,7 @@ class Register extends Component {
     email: "",
     password: "",
     confirmpassword: "",
+    profile: "",
     errors: {
       cognito: null,
       blankfield: false,
@@ -38,6 +40,29 @@ class Register extends Component {
     }
 
     // AWS Cognito integration here
+    const { username, email, password, profile } = this.state;
+    try {
+      const signUpResponse = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          email: email,
+          profile: profile
+        }
+      });
+      console.log(signUpResponse);
+      this.props.history.push("/welcome");
+    } catch (error) {
+      let err = null;
+      !error.message ? err = { "message": error } : err = error;
+      this.setState({
+        errors:
+        {
+          ...this.state.errors,
+          cognito: error
+        }
+      })
+    }
   };
 
   onInputChange = event => {
@@ -45,7 +70,15 @@ class Register extends Component {
       [event.target.id]: event.target.value
     });
     document.getElementById(event.target.id).classList.remove("is-danger");
+  };
+
+
+  handleChange(e){
+    this.setState({
+      profile: e.target.value
+    })
   }
+
 
   render() {
     return (
@@ -57,8 +90,8 @@ class Register extends Component {
           <form onSubmit={this.handleSubmit}>
             <div className="field">
               <p className="control">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="text"
                   id="username"
                   aria-describedby="userNameHelp"
@@ -70,8 +103,8 @@ class Register extends Component {
             </div>
             <div className="field">
               <p className="control has-icons-left has-icons-right">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="email"
                   id="email"
                   aria-describedby="emailHelp"
@@ -86,8 +119,8 @@ class Register extends Component {
             </div>
             <div className="field">
               <p className="control has-icons-left">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="password"
                   id="password"
                   placeholder="Password"
@@ -101,8 +134,8 @@ class Register extends Component {
             </div>
             <div className="field">
               <p className="control has-icons-left">
-                <input 
-                  className="input" 
+                <input
+                  className="input"
                   type="password"
                   id="confirmpassword"
                   placeholder="Confirm password"
@@ -114,9 +147,21 @@ class Register extends Component {
                 </span>
               </p>
             </div>
+            <div>
+            <select id="lang" onChange={this.handleChange.bind(this)} value={this.state.profile}>
+            <option value="select">Select a profile</option>
+            <option value="Candidate">Candidate</option>
+            <option value="Recruiter">Recruiter</option>
+            </select>
+            </div>
             <div className="field">
               <p className="control">
                 <a href="/forgotpassword">Forgot password?</a>
+              </p>
+            </div>
+            <div className="field">
+              <p className="control">
+                <a href="/changepassword">Change password</a>
               </p>
             </div>
             <div className="field">
