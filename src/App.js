@@ -11,6 +11,7 @@ import ChangePassword from './components/auth/ChangePassword';
 import ChangePasswordConfirm from './components/auth/ChangePasswordConfirm';
 import Welcome from './components/auth/Welcome';
 import CreateTest from './components/recruiter/CreateTest'
+import ShowTest from './components/candidate/ShowTest'
 import { Auth } from 'aws-amplify';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -69,6 +70,7 @@ class App extends Component {
               <Route exact path="/changepasswordconfirmation" render={(props) => <ChangePasswordConfirm {...props} auth={authProps} />} />
               <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps} />} />
               <Route exact path="/createtest" render={(props) => <CreateTest {...props} auth={authProps} />} />
+              <Route exact path="/showtest" render={(props) => <ShowTest {...props} auth={authProps} />} />
             </Switch>
           </div>
         </Router>

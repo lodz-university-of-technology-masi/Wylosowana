@@ -9,7 +9,6 @@ class CreateTest extends Component{
             name: '',
             lang: '',
             questions: [],
-            questionIterator: 0
         }
     }
 
@@ -44,6 +43,33 @@ class CreateTest extends Component{
             questions: this.state.questions.filter((s, sidx) => idx !== sidx)
         });
     };
+
+    createJson(){
+
+    }
+
+    // eslint-disable-next-line no-undef
+/*    @action
+    async add(data) {
+        const headers = new Headers();
+        headers.append('content-type', 'application/json');
+
+        const options = {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(data)
+        };
+
+        const request = new Request('url', options);
+        const response = await fetch(request);
+        const status = response.status;
+
+        if (status === 201) {
+            alert("Stworzono test");
+        } else {
+            alert("Nie udalo sie stworzyc testu");
+        }
+    }*/
 /*
     handleAddCloseQuestion = () => {
         this.setState({

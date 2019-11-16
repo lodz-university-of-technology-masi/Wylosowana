@@ -24,6 +24,9 @@ export default class Navbars extends Component {
             {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile=='Recruiter' &&(
                 <Button variant="outline-info" href="/createtest">Add Test</Button>
             )}
+            {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile=='Candidate' &&(
+                <Button variant="outline-info" href="/showtest">Show Test</Button>
+            )}
           {this.props.auth.isAuthenticated && this.props.auth.user && (
             <p className="hello-username">Hello {this.props.auth.user.username}</p>
           )}
