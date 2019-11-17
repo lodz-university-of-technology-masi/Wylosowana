@@ -7,7 +7,7 @@ class ShowTests extends Component{
     constructor(props) {
         super(props)
 
-
+        var comp = this;
 
         var fetchedTests = [];
         $.ajax({
@@ -21,6 +21,9 @@ class ShowTests extends Component{
                 console.log(data);
 
                 fetchedTests = data;
+                comp.setState({
+                    tests: fetchedTests
+                });
             }
         });
 
@@ -28,7 +31,7 @@ class ShowTests extends Component{
 
         console.log(fetchedTests);
         this.state = {
-            tests: fetchedTests
+            tests: []
         }
     }
 
@@ -36,22 +39,26 @@ class ShowTests extends Component{
 
         let table = []
 
-        for (let t=0; t<this.state.tests.Items.length; t++) {
-            let row = this.state.tests.Items[t];
-            let rowData = "<div>";
-            if(row.langs) {
-                for (let l = 0; l < row.langs.length; l++) {
-                    let questions = "";
-                    if(row.langs[l].questions) {
-                        for (let q = 0; q < row.langs[l].questions.length; q++) {
-                            questions += '<li>'+row.langs[l].questions[q].question+'</li>';
+        if(this.state.tests.Items) {
+            for (let t = 0; t < this.state.tests.Items.length; t++) {
+                let row = this.state.tests.Items[t];
+                let rowData = "<div>";
+                if (row.langs) {
+                    for (let l = 0; l < row.langs.length; l++) {
+                        let questions = "";
+                        if (row.langs[l].questions) {
+                            for (let q = 0; q < row.langs[l].questions.length; q++) {
+                                questions += '<li>' + row.langs[l].questions[q].question + '</li>';
+                            }
                         }
+                        rowData += '<ul>' + questions + '</ul>';
                     }
-                    rowData += '<ul>'+questions+'</ul>';
                 }
+                rowData += "</div><br/><br/>";
+                table.push(<li><strong>{row.testName}:</strong><br/>
+                    <ul dangerouslySetInnerHTML={{__html: rowData}}></ul>
+                </li>)
             }
-            rowData += "</div><br/><br/>";
-            table.push(<li><strong>{row.testName}:</strong><br/><ul dangerouslySetInnerHTML={{__html: rowData}}></ul></li>)
         }
         return table
     }
