@@ -20,6 +20,7 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 import {faEdit} from '@fortawesome/free-solid-svg-icons';
 >>>>>>> Unnecessary files deleted and changed some view
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ShowTests from "./components/recruiter/ShowTests";
 
 library.add(faEdit);
 
@@ -73,7 +74,8 @@ class App extends Component {
               <Route exact path="/forgotpasswordverification" render={(props) => <ForgotPasswordVerification {...props} auth={authProps} />} />
               <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps} />} />
               <Route exact path="/createtest" render={(props) => <CreateTest {...props} auth={authProps} />} />
-              <Route exact path="/showtest" render={(props) => <ShowTest {...props} auth={authProps} />} />
+              <Route exact path="/showtests" render={(props) => <ShowTests {...props} auth={authProps} />}></Route>
+              <Route exact path="/showtest" render={(props) => <ShowTest {...props} auth={authProps} />}></Route>
             </Switch>
           </div>
         </Router>
