@@ -1,0 +1,50 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "TestsInputModel",
+    "type": "object",
+    "properties": {
+        "testName": {
+            "type": "string"
+        },
+        "langs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "lang": {
+                        "type": "string"
+                    },
+                    "questions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "no": {
+                                    "type": "number"
+                                },
+                                "question": {
+                                    "type": "string"
+                                },
+                                "answers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "correct": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "candidate_ids": {
+            "type": "array",
+            "items": {
+                "type": "number"
+            }
+        }
+    }
+}
