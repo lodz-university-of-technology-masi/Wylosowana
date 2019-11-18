@@ -61,8 +61,6 @@ class CreateTest extends Component {
     createJson(){
 =======
     handleSubmit(event) {
-		this.handleAddOpenQuestion();
-		
         console.log(this.state.name);
         const questions = this.state.questions
             .filter(v => v != '')
@@ -94,8 +92,8 @@ class CreateTest extends Component {
                 console.log(data);
             }
         });
-		
-		this.props.history.push('/');
+
+        this.props.history.push('/');
     }
 
 <<<<<<< HEAD
@@ -139,6 +137,7 @@ class CreateTest extends Component {
             });
         };
 
+<<<<<<< HEAD
         handleQuestionAnswersChange = idx => evt =>{
             const newQuestions = this.state.questions((que,qidx) => {
                 if(idx!==qidx) return que;
@@ -146,6 +145,26 @@ class CreateTest extends Component {
             });
             this.setState({ questions: newQuestions });
         };*/
+=======
+        handleSaveTest = () => { 
+            this.handleAddOpenQuestion();
+        }
+
+        /*
+            handleAddCloseQuestion = () => {
+                this.setState({
+                    questions: this.state.questions.concat([{no: 0, guestion: "",answers:[],correct:[]}])
+                });
+            };
+
+            handleQuestionAnswersChange = idx => evt =>{
+                const newQuestions = this.state.questions((que,qidx) => {
+                    if(idx!==qidx) return que;
+                    return { que, answers(evt.target.value)};
+                });
+                this.setState({ questions: newQuestions });
+            };*/
+>>>>>>> redirect to home page
 
     render() {
         return (
