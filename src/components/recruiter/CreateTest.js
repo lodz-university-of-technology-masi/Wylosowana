@@ -61,6 +61,8 @@ class CreateTest extends Component {
     createJson(){
 =======
     handleSubmit(event) {
+		this.handleAddOpenQuestion();
+		
         console.log(this.state.name);
         const questions = this.state.questions
             .filter(v => v != '')
@@ -92,6 +94,8 @@ class CreateTest extends Component {
                 console.log(data);
             }
         });
+		
+		this.props.history.push('/');
     }
 
 <<<<<<< HEAD
@@ -196,8 +200,7 @@ class CreateTest extends Component {
                     <Button id="addOpenQuestionButton"  variant="info" onClick={this.handleAddOpenQuestion} >Add Open
                         Question</Button>
                     <div>
-                     <Button id="addOpenQuestionButton" type="submit" variant="info"
-                             className="mt-3" onClick={this.handleAddOpenQuestion}> Save Test </Button>
+                     <Button id="saveTestButton" type="submit" variant="info" className="mt-3" onClick={this.handleSaveTest}> Save Test </Button>
                     </div>
                 </Form>
 >>>>>>> created test is sent to api and saved in db now
