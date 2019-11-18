@@ -149,8 +149,8 @@ class Register extends Component {
               </p>
             </div>
             <Form.Group controlId="controlSelectProfile">
-              <Form.Label>Select a profile</Form.Label>
               <Form.Control as="select" onChange={this.handleChange.bind(this)} value={this.state.profile}>
+                <option value="default" hidden>Select a profile</option>
                 <option value="Candidate">Candidate</option>
                 <option value="Recruiter">Recruiter</option>
               </Form.Control>

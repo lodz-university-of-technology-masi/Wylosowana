@@ -201,8 +201,8 @@ class CreateTest extends Component {
                         <Form.Control type="name" placeholder="Name" onChange={this.handleNameChange}/>
                     </Form.Group>
                     <Form.Group controlId="controlSelectLang">
-                        <Form.Label>Select a language</Form.Label>
                         <Form.Control as="select" onChange={this.handleLanguageChange.bind(this)} value={this.state.language}>
+                            <option value="default" hidden>Select a language</option>
                             <option value="EN">English</option>
                             <option value="PL">Polish</option>
                         </Form.Control>
@@ -219,7 +219,7 @@ class CreateTest extends Component {
                     <Button id="addOpenQuestionButton"  variant="info" onClick={this.handleAddOpenQuestion} >Add Open
                         Question</Button>
                     <div>
-                     <Button id="saveTestButton" type="submit" variant="info" className="mt-3" onClick={this.handleSaveTest}> Save Test </Button>
+                     <Button id="saveTestButton" type="submit" variant="success" className="mt-3" onClick={this.handleSaveTest}> Save Test </Button>
                     </div>
                 </Form>
 >>>>>>> created test is sent to api and saved in db now
