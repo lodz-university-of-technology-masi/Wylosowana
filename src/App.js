@@ -8,17 +8,11 @@ import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ForgotPasswordVerification from './components/auth/ForgotPasswordVerification';
 import Welcome from './components/auth/Welcome';
-import CreateTest from './components/recruiter/CreateTest'
-<<<<<<< HEAD
-import ShowTest from './components/candidate/ShowTest'
-import { Auth } from 'aws-amplify';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-=======
+import CreateTest from './components/recruiter/CreateTest';
+import ShowTest from './components/candidate/ShowTest';
 import {Auth} from 'aws-amplify';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faEdit} from '@fortawesome/free-solid-svg-icons';
->>>>>>> Unnecessary files deleted and changed some view
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ShowTests from "./components/recruiter/ShowTests";
 

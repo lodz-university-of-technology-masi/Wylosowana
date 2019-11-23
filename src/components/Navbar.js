@@ -31,8 +31,6 @@ export default class Navbars extends Component {
                             <div className="navbar-buttons-space"></div>
                         </ButtonToolbar>
                     )}
-<<<<<<< HEAD
-=======
                     {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/showtests">Show Tests</Button>
@@ -45,7 +43,6 @@ export default class Navbars extends Component {
                             <div className="navbar-buttons-space"></div>
                         </ButtonToolbar>
                     )}
->>>>>>> Do poprzedniego commita
                     {!this.props.auth.isAuthenticated && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/register">Register</Button>
@@ -60,37 +57,4 @@ export default class Navbars extends Component {
             </Navbar>
         )
     }
-<<<<<<< HEAD
-  }
-  render() {
-    return (
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="/">Wylosowana</Navbar.Brand>
-        <Navbar.Toggle />
-        <Navbar.Collapse className="justify-content-end">
-            {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile=='Recruiter' &&(
-                <Button variant="outline-info" href="/createtest">Add Test</Button>
-            )}
-            {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile=='Candidate' &&(
-                <Button variant="outline-info" href="/showtest">Show Test</Button>
-            )}
-          {this.props.auth.isAuthenticated && this.props.auth.user && (
-            <p className="hello-username">Hello {this.props.auth.user.username}</p>
-          )}
-          {!this.props.auth.isAuthenticated && (
-            <ButtonToolbar>
-              <Button variant="outline-info" href="/register">Register</Button>
-              <div className="navbar-buttons-space"></div>
-              <Button variant="outline-info" href="/login">Log in</Button>
-            </ButtonToolbar>
-          )}
-          {this.props.auth.isAuthenticated && (
-            <Button onClick={this.handleLogOut} variant="outline-info" href="/">Log out</Button>
-          )}
-        </Navbar.Collapse>
-      </Navbar >
-    )
-  }
-=======
->>>>>>> Unnecessary files deleted and changed some view
 }

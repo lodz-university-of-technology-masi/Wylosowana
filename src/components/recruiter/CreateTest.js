@@ -55,11 +55,7 @@ class CreateTest extends Component {
             questions: this.state.questions.filter((s, sidx) => idx !== sidx)
         });
     };
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-    createJson(){
-=======
     handleSubmit(event) {
         console.log(this.state.name);
         const questions = this.state.questions
@@ -79,7 +75,6 @@ class CreateTest extends Component {
             ],
             "candidate_ids": []
         }
->>>>>>> created test is sent to api and saved in db now
 
         $.ajax({
             type: "POST",
@@ -96,40 +91,7 @@ class CreateTest extends Component {
         this.props.history.push('/');
     }
 
-<<<<<<< HEAD
-    // eslint-disable-next-line no-undef
-/*    @action
-    async add(data) {
-        const headers = new Headers();
-        headers.append('content-type', 'application/json');
 
-        const options = {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(data)
-        };
-
-        const request = new Request('url', options);
-        const response = await fetch(request);
-        const status = response.status;
-
-        if (status === 201) {
-            alert("Stworzono test");
-        } else {
-            alert("Nie udalo sie stworzyc testu");
-        }
-    }*/
-/*
-    handleAddCloseQuestion = () => {
-        this.setState({
-            questions: this.state.questions.concat([{no: 0, guestion: "",answers:[],correct:[]}])
-        });
-    };
-=======
->>>>>>> Unnecessary files deleted and changed some view
-=======
-
->>>>>>> created test is sent to api and saved in db now
 
         handleAddCloseQuestion = () => {
             this.setState({
@@ -137,15 +99,6 @@ class CreateTest extends Component {
             });
         };
 
-<<<<<<< HEAD
-        handleQuestionAnswersChange = idx => evt =>{
-            const newQuestions = this.state.questions((que,qidx) => {
-                if(idx!==qidx) return que;
-                return { que, answers(evt.target.value)};
-            });
-            this.setState({ questions: newQuestions });
-        };*/
-=======
         handleSaveTest = () => { 
             this.handleAddOpenQuestion();
         }
@@ -164,36 +117,10 @@ class CreateTest extends Component {
                 });
                 this.setState({ questions: newQuestions });
             };*/
->>>>>>> redirect to home page
 
     render() {
         return (
             <section className="section auth">
-<<<<<<< HEAD
-            <Form>
-                <h1>Test</h1>
-                <Form.Group controlId="controlInputName">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="name" placeholder="Name" />
-                </Form.Group>
-                <Form.Group controlId="controlSelectLang">
-                    <Form.Label>Select a language</Form.Label>
-                    <Form.Control as="select" onChange={this.handleLanguageChange} value={this.state.language}>
-                        <option value="EN">English</option>
-                        <option value="PL">Polish</option>
-                    </Form.Control>
-                </Form.Group>
-                <h4>Questions</h4>
-                {this.state.questions.map((que, idx) => (
-                        <Form.Group controlId="controlQuestion">
-                            <Form.Label>Question</Form.Label>
-                            <Form.Control as="textarea" rows="3" />
-                            <Button id="deleteButton" onClick={this.handleRemoveOpenQuestion(idx)} variant="danger" size="sm">Delete</Button>
-                        </Form.Group>
-                ))}
-                <Button id="addOpenQuestionButton" variant="info" onClick={this.handleAddOpenQuestion}>Add Open Question</Button>
-            </Form>
-=======
                 <Form onSubmit={this.handleSubmit}>
                     <h1>Test</h1>
                     <Form.Group controlId="controlInputName">
@@ -222,7 +149,6 @@ class CreateTest extends Component {
                      <Button id="saveTestButton" type="submit" variant="success" className="mt-3" onClick={this.handleSaveTest}> Save Test </Button>
                     </div>
                 </Form>
->>>>>>> created test is sent to api and saved in db now
             </section>
         )
     }

@@ -1,14 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "AwsProject",
-  "version": "1.0.0",
-  "dependencies": {
-    "aws-sdk": "^2.569.0",
-    "bootstrap": "^4.3.1",
-    "jquery": "^3.4.1",
-    "popper.js": "^1.16.0"
-  }
-=======
   "name": "hexal-serverless-starter",
   "version": "0.1.0",
   "private": true,
@@ -43,5 +33,4 @@
     "not ie <= 11",
     "not op_mini all"
   ]
->>>>>>> Add initial files
 }
