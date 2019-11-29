@@ -40,10 +40,10 @@
                 }
             }
         },
-        "candidate_ids": {
+        "candidate_logins": {
             "type": "array",
             "items": {
-                "type": "number"
+                "type": "string"
             }
         }
     }
