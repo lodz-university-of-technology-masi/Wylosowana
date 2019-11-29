@@ -1,0 +1,35 @@
+h1 {
+  font-size: 2em;
+}
+
+.navbar-buttons-space {
+  width: 10px;
+}
+
+.features {
+  padding-bottom: 3em;
+}
+
+body {
+  visibility: visible !important;
+}
+
+#deleteButton {
+  float: right;
+}
+
+#addOpenQuestionButton{
+  margin-top: 1em;
+}
+
+.auth form {
+  margin-top: 1em;
+  max-width: 50%;
+}
+
+.hello-username{
+  color: white;
+  margin-right: 1em;
+  margin-top: 14px;
+  text-align: center;
+}
