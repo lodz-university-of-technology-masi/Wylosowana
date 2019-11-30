@@ -48,7 +48,8 @@ class Register extends Component {
         password,
         attributes: {
           email: email,
-          profile: profile
+          profile: profile,
+          name: profile
         }
       });
       console.log(signUpResponse);
