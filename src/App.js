@@ -15,6 +15,7 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 import {faEdit} from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ShowTests from "./components/recruiter/ShowTests";
+import CompleteTest from "./components/candidate/CompleteTest";
 
 library.add(faEdit);
 
@@ -70,6 +71,7 @@ class App extends Component {
               <Route exact path="/createtest" render={(props) => <CreateTest {...props} auth={authProps} />} />
               <Route exact path="/showtests" render={(props) => <ShowTests {...props} auth={authProps} />}></Route>
               <Route exact path="/showcandidatetests" render={(props) => <ShowCandidateTests {...props} auth={authProps} />}></Route>
+              <Route exact path="/completetest/:id" render={(props) => <CompleteTest {...props} auth={authProps} />}></Route>
             </Switch>
           </div>
         </Router>

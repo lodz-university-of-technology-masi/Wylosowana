@@ -29,7 +29,7 @@ class ShowCandidateTests extends Component {
         if (this.state.response.Items) {
             const tests = this.state.response.Items;
             return tests.map(item => (
-                <ListGroup.Item action key={item.id}>{item.testName}</ListGroup.Item>
+                <ListGroup.Item action key={item.id} href={`#completetest/${item.id}`} state={item.id}>{item.testName}</ListGroup.Item>
             ));
         }
     };

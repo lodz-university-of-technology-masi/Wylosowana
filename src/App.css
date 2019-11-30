@@ -2,7 +2,7 @@ h1 {
   font-size: 2em;
 }
 
-.navbar-buttons-space {
+.buttons-space {
   width: 10px;
 }
 
@@ -38,4 +38,8 @@ body {
   margin-right: 1em;
   margin-top: 14px;
   text-align: center;
+}
+
+.formQuestions{
+  margin-top: 1em;
 }
