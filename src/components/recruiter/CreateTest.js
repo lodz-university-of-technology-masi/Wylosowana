@@ -3,7 +3,8 @@ import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import $ from 'jquery';
 import {ButtonGroup} from "react-bootstrap";
-import getCandidatesFromCogntio from "../auth/CognitoUsers";
+import {cognitoidentityserviceprovider} from "../auth/CognitoUsers";
+import {params} from "../auth/CognitoUsers";
 
 let globalAnswers = []
 let globalQuestions = []
@@ -36,11 +37,17 @@ class CreateTest extends Component {
     }
 
     componentDidMount = () => {
-        // console.log(getCandidatesFromCogntio())  pobrac klientow z cognito !
-        this.setState({
-            candidateList: ["jarek", "marek", "tomek", "stefan"]
+        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
+            if (err)
+                console.log(err, err.stack);
+            else {
+                this.setState({
+                    candidateList: data.Users.map(cand => cand.Username)
+                });
+            }
         });
-    }
+
+    };
 
     handleNameChange = (event) => {
         this.setState({
@@ -59,6 +66,7 @@ class CreateTest extends Component {
             candidate: e.target.value
         })
     };
+
     handleCorrectChange(e) {
         this.setState({
             correct: e.target.value
@@ -122,7 +130,12 @@ class CreateTest extends Component {
             .map((val, ind) => {
                 let sizeCloseQuest = globalClosedQuestions.length;
                 if (ind < sizeCloseQuest) {
-                    return {"no": ind, "question": val, "answers": [globalAnswers[ind]], "correct": globalTrueSelect[ind]}
+                    return {
+                        "no": ind,
+                        "question": val,
+                        "answers": [globalAnswers[ind]],
+                        "correct": globalTrueSelect[ind]
+                    }
                 } else
                     return {"no": ind, "question": val}
             })
@@ -139,19 +152,19 @@ class CreateTest extends Component {
             "candidate_logins": globalCandidates
         }
 
-       console.log(validateTest)
+        console.log(validateTest)
 
         $.ajax({
-             type: "POST",
-             dataType: "json",
-             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
-             data: JSON.stringify(validateTest),
-             success: function (data, err) {
-                 if (err)
-                     console.log(err);
-                 console.log(data);
-             }
-         });
+            type: "POST",
+            dataType: "json",
+            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            data: JSON.stringify(validateTest),
+            success: function (data, err) {
+                if (err)
+                    console.log(err);
+                console.log(data);
+            }
+        });
 
         // this.props.history.push('/');
     }
@@ -197,7 +210,8 @@ class CreateTest extends Component {
                     <Form.Group controlId="controlClQuestion">
                         <Form.Label> Closed Question</Form.Label>
                         <Form.Control as="textarea" rows="3" value={this.state.tempClosedQuestion}
-                                      onChange={this.handleQuestionClosedTextChange} placeholder="Type question here..."/>
+                                      onChange={this.handleQuestionClosedTextChange}
+                                      placeholder="Type question here..."/>
                         <div className="float-right">
                             <ButtonGroup>
                                 <Button id="saveButton"
@@ -208,10 +222,14 @@ class CreateTest extends Component {
                         </div>
                         <div>
                             <Form.Group>
-                                <Form.Control as="textarea" name="answ1" placeholder="answer" value={this.state.answ1} onChange={this.handleAnswers} rows="1"/>
-                                <Form.Control as="textarea" name="answ2" placeholder="answer" value={this.state.answ2} onChange={this.handleAnswers} rows="1"/>
-                                <Form.Control as="textarea" name="answ3" placeholder="answer" value={this.state.answ3} onChange={this.handleAnswers} rows="1"/>
-                                <Form.Control as="textarea" name="answ4" placeholder="answer" value={this.state.answ4} onChange={this.handleAnswers} rows="1"/>
+                                <Form.Control as="textarea" name="answ1" placeholder="answer" value={this.state.answ1}
+                                              onChange={this.handleAnswers} rows="1"/>
+                                <Form.Control as="textarea" name="answ2" placeholder="answer" value={this.state.answ2}
+                                              onChange={this.handleAnswers} rows="1"/>
+                                <Form.Control as="textarea" name="answ3" placeholder="answer" value={this.state.answ3}
+                                              onChange={this.handleAnswers} rows="1"/>
+                                <Form.Control as="textarea" name="answ4" placeholder="answer" value={this.state.answ4}
+                                              onChange={this.handleAnswers} rows="1"/>
                             </Form.Group>
                         </div>
                         <Form.Group controlId="controlSelectTrue">
@@ -228,9 +246,9 @@ class CreateTest extends Component {
                         <Form.Group controlId="controlSelectUsers">
                             <Form.Label>Candidates</Form.Label>
                             <Form.Control as="select" onChange={this.handleCandidateChange.bind(this)}
-                                          value={this.state.candidate} >
+                                          value={this.state.candidate}>
                                 <option value="default" hidden>Select a candidate</option>
-                                {this.state.candidateList.map((candidate,ind) =>
+                                {this.state.candidateList.map((candidate, ind) =>
                                     <option key={ind} value={candidate}>{candidate}</option>
                                 )};
                             </Form.Control>
