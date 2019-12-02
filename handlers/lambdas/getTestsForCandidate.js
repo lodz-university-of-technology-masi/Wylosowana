@@ -11,7 +11,7 @@ exports.handler = async(event, context) => {
 
   const params = {
     TableName: "Tests",
-    ProjectionExpression: "id, testName, langs",
+    ProjectionExpression: "id, testName",
     FilterExpression: "contains (candidate_logins, :candidate_login)",
     ExpressionAttributeValues: {
       ":candidate_login": candidate_login
