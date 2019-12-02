@@ -9,12 +9,13 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ForgotPasswordVerification from './components/auth/ForgotPasswordVerification';
 import Welcome from './components/auth/Welcome';
 import CreateTest from './components/recruiter/CreateTest';
-import ShowTest from './components/candidate/ShowTest';
+import ShowCandidateTests from './components/candidate/ShowCandidateTests';
 import {Auth} from 'aws-amplify';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faEdit} from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ShowTests from "./components/recruiter/ShowTests";
+import CompleteTest from "./components/candidate/CompleteTest";
 import AssignUsersToTest from "./components/recruiter/assignUsersToTest/AssignUsersToTest";
 
 library.add(faEdit);
@@ -70,6 +71,8 @@ class App extends Component {
               <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps} />} />
               <Route exact path="/createtest" render={(props) => <CreateTest {...props} auth={authProps} />} />
               <Route exact path="/showtests" render={(props) => <ShowTests {...props} auth={authProps} />}></Route>
+              <Route exact path="/showcandidatetests" render={(props) => <ShowCandidateTests {...props} auth={authProps} />}></Route>
+              <Route exact path="/completetest/:id" render={(props) => <CompleteTest {...props} auth={authProps} />}></Route>
               <Route exact path="/showtest" render={(props) => <ShowTest {...props} auth={authProps} />}></Route>
               <Route exact path="/assigncandidatetotest" render={(props) => <AssignUsersToTest {...props} auth={authProps}/>}/>
             </Switch>
