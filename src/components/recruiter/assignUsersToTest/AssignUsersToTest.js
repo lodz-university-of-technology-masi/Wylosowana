@@ -157,8 +157,8 @@ const params = {
 const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: config.cognito.REGION,
-    credentials: new AWS.Credentials('ASIAZ2J3YGNP4C4OC7KY', 'lVNUCch3SYLd5kagT4j49qiS0Nmftp4xhSxUSoJq',
-        'FwoGZXIvYXdzENz//////////wEaDBaA3p75O3QWO0KjYiLDAWIMR2uBOsA7Na9aGkSNuF3BHPGQ2TKljvPetJzTXMxZUTfK3H8+/O9PAco67vDwVSdrSpt6dxIdtYvK4k9Lx1HAvrl5TNU22F4qrMzcFb+l19WaOaN9IXKeVO78cYnyHHjUfGWLmKco5LuIf/0t/LSNlgutENoxwUPOUOfikavYbH9gEpVdDlFbITrPq7WGzISxya+R1PugRB6i/4GFcipL3mh265jw1y5/Sz4elgPKee2eOtZZc6uw8vqqjXB1r41k5yj9ypPvBTItat2Jby/50pijEK7po3dpn7wrlaGs/tDP75ou6dNVGxcP2Nzgvt6EzdfWnSEd')
+    credentials: new AWS.Credentials('', '',
+        '')
 });
 
 export default AssignUsersToTest;
