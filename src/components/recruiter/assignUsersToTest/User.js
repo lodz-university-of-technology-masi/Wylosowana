@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types'
+import Button from "react-bootstrap/Button";
 
 class User extends Component {
     getUserStyle = () => {
@@ -7,34 +8,29 @@ class User extends Component {
             padding: '10px',
             borderBottom: '1px #ccc dotted',
             background: this.props.user.selected ?
-            '#00ff00' : 'none'
+                '#00ff00' : 'none'
         }
     };
 
     getButtonStyle = () => {
-        return {
-            background: this.props.user.selected ?
-                '#ff0000' : '#0000ff',
-            color: '#fff',
-            border: 'none',
-            padding: '5px 10px',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            float: 'right'
-        }
+        return this.props.user.selected ?
+            'danger' : 'success'
     }
 
     render() {
         return (
-            <div style={this.getUserStyle()}>
-                <p>
+            <React.Fragment>
+                <th>
                     {this.props.user.userName}
-                    <button onClick={this.props.selectUsers.bind(this,this.props.user.id)} style={this.getButtonStyle()}>
-                        {this.props.user.selected ?
-                            'Unselect User' : 'Select User'}
-                    </button>
-                </p>
-            </div>
+                </th>
+                <th>
+                    <Button className={"float-right"} id="selectButton"
+                            name="selectTest" onClick={this.props.selectUsers.bind(this, this.props.user.id)}
+                            variant={this.getButtonStyle()}
+                            size="sm">{this.props.user.selected ?
+                        'Unselect User' : 'Select User'}</Button>
+                </th>
+            </React.Fragment>
         );
     }
 }

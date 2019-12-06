@@ -7,6 +7,8 @@ import config from "../../../config";
 import $ from "jquery";
 
 
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
 class AssignUsersToTest extends Component {
 
     state = {
@@ -20,7 +22,7 @@ class AssignUsersToTest extends Component {
 
     componentDidMount() {
         axios
-            .get('https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests')
+            .get(proxyurl+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests')
             .then((res) =>{
                 this.setState({
                     tests: res.data.Items.map(item => ({
@@ -67,9 +69,13 @@ class AssignUsersToTest extends Component {
                 });
         console.log(this.state.modifiedTest);
         this.setState({visibility: false});
-        this.setState({users: this.state.users.filter( ( el ) => {
-            return toRemove.indexOf( el.userName ) < 0;
-        } )} )
+        if(toRemove!==undefined) {
+            this.setState({
+                users: this.state.users.filter((el) => {
+                    return toRemove.indexOf(el.userName) < 0;
+                })
+            })
+        }
     };
 
     modifyTest = () => {
@@ -112,9 +118,9 @@ class AssignUsersToTest extends Component {
         };
 
         $.ajax({
-            type: "POST",
+            type: "PUT",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            url: proxyurl+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
             data: JSON.stringify(validateTest),
             success: function(data,err){
                 if(err)
@@ -128,7 +134,7 @@ class AssignUsersToTest extends Component {
 
     render() {
         return (
-            <div>
+            <section className="section assignUsersToTests">
                 {this.state.visibility ?
                     <ChoiceTest tests={this.state.tests} selectTest={this.selectTest}/>
                     :
@@ -144,7 +150,7 @@ class AssignUsersToTest extends Component {
                 <button onClick={this.handleSubmit} >
                     Send
                 </button>
-            </div>
+            </section>
         )
     }
 }
@@ -157,8 +163,8 @@ const params = {
 const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: config.cognito.REGION,
-    credentials: new AWS.Credentials('', '',
-        '')
+    credentials: new AWS.Credentials('ASIAZ2J3YGNPU34CGBIO', 'VFrnZmMqLdP+byLI7hfgDWbcwZ0LQfNbbkuiLF8s',
+        'FwoGZXIvYXdzEEEaDGp2cnmxnV3udAZiwyLDAe+C5OLys5kwInj2fpSiptU9X/cVtT611+/BFqRo7yW0iLQVn1nLbUQdzKxwV1wYaIX70plKU9EQYBBOC2HSCuyrZ6YuaYuHJBVRAoC0NzFUG1iM4pqkupT55CoquECMlwZfuaCu8GZt8OCB1YZ9NwAjv2LEEN7ohUj0lgbsj7ACdeEcI03enzVmwEuvrib9stbIEys3opdJ0T7AGmX9cL0AcjKk8u/KSea0vg60Y21ginm2mfVf2E59L298Nj7yLuEAhSjM5qnvBTIt5fRKF2F4laxw0NrwKW1H/jKTTDHPhrxm8l/oQ1TcuDhJgbdCIyEVSygamm8X')
 });
 
 export default AssignUsersToTest;

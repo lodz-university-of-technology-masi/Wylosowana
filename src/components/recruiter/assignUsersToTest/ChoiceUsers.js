@@ -8,16 +8,20 @@ import PropTypes from "prop-types";
 import ChoiceTest from "./ChoiceTest";
 
 
-class ChoiceUsers extends Component{
+class ChoiceUsers extends Component {
 
     render() {
-        return(
+        return (
             <div>
                 <Container>
                     <Row>
-                        <SelectUsers  selectUsers={this.props.selectUser} users={this.props.users} />
-                        <Col xs lg="2"/>
-                        <SelectedUsers  selectUsers={this.props.selectUser} users={this.props.users} />
+                        <Col xs={5}>
+                            <SelectUsers selectUsers={this.props.selectUser} users={this.props.users}/>
+                        </Col>
+                        <Col xs={2}/>
+                        <Col xs={5}>
+                            <SelectedUsers selectUsers={this.props.selectUser} users={this.props.users}/>
+                        </Col>
                     </Row>
                 </Container>
             </div>

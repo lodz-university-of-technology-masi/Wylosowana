@@ -3,6 +3,9 @@ import $ from "jquery";
 import axios from 'axios';
 import App from "../../../App";
 import PropTypes from 'prop-types'
+import Button from "react-bootstrap/Button";
+import {ButtonGroup} from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 
 class TestToAssign extends Component {
 
@@ -18,14 +21,20 @@ class TestToAssign extends Component {
 
 
     render() {
-        const { id } = this.props.test;
+        const {id} = this.props.test;
         return (
-            <div style={this.getStyle()}>
-                <p>
-                    {this.props.test.testName}
-                    <button onClick={this.props.selectTest.bind(this,id)} style={btnStyle}>Add Users</button>
-                </p>
-            </div>
+            <React.Fragment>
+                <th>
+                    {this.props.test.testName} </th>
+                <th>
+                    <div className="float-right">
+                    <Button id="selectButton"
+                            name="selectTest" onClick={this.props.selectTest.bind(this, id)}
+                            variant="success"
+                            size="sm">Add Users</Button>
+                    </div>
+                </th>
+            </React.Fragment>
         );
     }
 }
@@ -38,7 +47,7 @@ const btnStyle = {
     borderRadius: '50%',
     cursor: 'pointer',
     float: 'right'
-}
+};
 
 TestToAssign.propTypes = {
     test: PropTypes.object.isRequired,
