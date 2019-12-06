@@ -73,7 +73,6 @@ class App extends Component {
               <Route exact path="/showtests" render={(props) => <ShowTests {...props} auth={authProps} />}></Route>
               <Route exact path="/showcandidatetests" render={(props) => <ShowCandidateTests {...props} auth={authProps} />}></Route>
               <Route exact path="/completetest/:id" render={(props) => <CompleteTest {...props} auth={authProps} />}></Route>
-              <Route exact path="/showtest" render={(props) => <ShowTest {...props} auth={authProps} />}></Route>
               <Route exact path="/assigncandidatetotest" render={(props) => <AssignUsersToTest {...props} auth={authProps}/>}/>
             </Switch>
           </div>
