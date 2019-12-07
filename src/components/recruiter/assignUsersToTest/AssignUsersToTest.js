@@ -6,6 +6,7 @@ import ChoiceUsers from "./ChoiceUsers";
 import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
+import {Auth} from "aws-amplify";
 
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -109,22 +110,26 @@ class AssignUsersToTest extends Component {
         this.createListSelectedUsers();
     };
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
 
         const validateTest = {
-            "testName": this.state.modifiedTest.testName,
-            "langs": this.state.modifiedTest.langs,
+            //    "testName": this.state.modifiedTest.testName,
+            //    "langs": this.state.modifiedTest.langs,
             "candidate_logins": this.state.modifiedTest.candidate_logins,
-            "id": this.state.modifiedTest.id,
+            //      "id": this.state.modifiedTest.id,
         };
 
         $.ajax({
-            type: "POST",
+            type: "PUT",
             dataType: "json",
-            url: proxyurl+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            url: proxyurl + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
             data: JSON.stringify(validateTest),
-            success: function(data,err){
-                if(err)
+            success: function (data, err) {
+                if (err)
                     console.log(err);
                 console.log(data);
             }
