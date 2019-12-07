@@ -3,15 +3,6 @@ import PropTypes from 'prop-types'
 import Button from "react-bootstrap/Button";
 
 class User extends Component {
-    getUserStyle = () => {
-        return {
-            padding: '10px',
-            borderBottom: '1px #ccc dotted',
-            background: this.props.user.selected ?
-                '#00ff00' : 'none'
-        }
-    };
-
     getButtonStyle = () => {
         return this.props.user.selected ?
             'danger' : 'success'

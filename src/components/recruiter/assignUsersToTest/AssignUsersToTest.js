@@ -5,6 +5,7 @@ import uuid from 'uuid'
 import ChoiceUsers from "./ChoiceUsers";
 import config from "../../../config";
 import $ from "jquery";
+import Button from "react-bootstrap/Button";
 
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -86,8 +87,8 @@ class AssignUsersToTest extends Component {
                 id: this.state.modifiedTest.id,
                 langs: this.state.modifiedTest.langs,
                 testName: this.state.modifiedTest.testName
-            }
-        });
+            }}, () => {this.handleSubmit()}
+        );
     };
 
     createListSelectedUsers = () => {
@@ -118,7 +119,7 @@ class AssignUsersToTest extends Component {
         };
 
         $.ajax({
-            type: "PUT",
+            type: "POST",
             dataType: "json",
             url: proxyurl+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
             data: JSON.stringify(validateTest),
@@ -143,13 +144,11 @@ class AssignUsersToTest extends Component {
 {/*                        <ChoiceTest tests={this.state.tests}
                                     selectTest={this.selectTest}/>*/}
                         <ChoiceUsers users={this.state.users} selectUser={this.selectUser}/>
+                        <Button id="selectButton"
+                                name="selectTest" onClick={this.modifyTest}
+                                variant="success"
+                                size="lg">Submit</Button>
                     </div>}
-                <button onClick={this.modifyTest} >
-                    Submit
-                </button>
-                <button onClick={this.handleSubmit} >
-                    Send
-                </button>
             </section>
         )
     }
@@ -163,8 +162,8 @@ const params = {
 const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: config.cognito.REGION,
-    credentials: new AWS.Credentials('ASIAZ2J3YGNPU34CGBIO', 'VFrnZmMqLdP+byLI7hfgDWbcwZ0LQfNbbkuiLF8s',
-        'FwoGZXIvYXdzEEEaDGp2cnmxnV3udAZiwyLDAe+C5OLys5kwInj2fpSiptU9X/cVtT611+/BFqRo7yW0iLQVn1nLbUQdzKxwV1wYaIX70plKU9EQYBBOC2HSCuyrZ6YuaYuHJBVRAoC0NzFUG1iM4pqkupT55CoquECMlwZfuaCu8GZt8OCB1YZ9NwAjv2LEEN7ohUj0lgbsj7ACdeEcI03enzVmwEuvrib9stbIEys3opdJ0T7AGmX9cL0AcjKk8u/KSea0vg60Y21ginm2mfVf2E59L298Nj7yLuEAhSjM5qnvBTIt5fRKF2F4laxw0NrwKW1H/jKTTDHPhrxm8l/oQ1TcuDhJgbdCIyEVSygamm8X')
+    credentials: new AWS.Credentials('ASIAZ2J3YGNPVBAEGQE3', 'bpybXt95N6zZ5VmM3BixzexePzhCt+UWAx413o39',
+        'FwoGZXIvYXdzEFUaDEmJqRLfh8UDUgD65yLDAdKCNluO29ois+LiWQEGzy/xMxpCUZuzeR3ms7QgT8XaAH6LQ42O3rZMKdhi6N7jRAF5pngVxr2Pc80EyleH+lZK0eV5a954hIRDCwnhH2xoQZ9XKLLvDQogpWtr5QWg+JITHavZrRosKKvgBYEN8NMUsbtP4Evu54HENGbaVAaB3jH9MW51IZS+H9o7BWuAxtCMTewvedG7CtqLgdVoraCM9NkrkdKaPnkte4Wf24dp/B/7RlUzIAoo53krxwYWanc7HCixpK7vBTItKeLsvcNSlekvwi+sAI7ZxwGkTZ6WefuFvsQZCOsCs/BATdAmbdUTyY34EgRm')
 });
 
 export default AssignUsersToTest;
