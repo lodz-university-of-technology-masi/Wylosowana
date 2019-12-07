@@ -113,10 +113,7 @@ class AssignUsersToTest extends Component {
     handleSubmit = async () => {
 
         const validateTest = {
-            //    "testName": this.state.modifiedTest.testName,
-            //    "langs": this.state.modifiedTest.langs,
             "candidate_logins": this.state.modifiedTest.candidate_logins,
-            //      "id": this.state.modifiedTest.id,
         };
 
         $.ajax({
@@ -146,8 +143,6 @@ class AssignUsersToTest extends Component {
                     :
                     <div>
                         <h1>Add user to test {this.state.modifiedTest.testName}</h1>
-{/*                        <ChoiceTest tests={this.state.tests}
-                                    selectTest={this.selectTest}/>*/}
                         <ChoiceUsers users={this.state.users} selectUser={this.selectUser}/>
                         <Button id="selectButton"
                                 name="selectTest" onClick={this.modifyTest}
@@ -167,8 +162,8 @@ const params = {
 const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: config.cognito.REGION,
-    credentials: new AWS.Credentials('ASIAZ2J3YGNPVBAEGQE3', 'bpybXt95N6zZ5VmM3BixzexePzhCt+UWAx413o39',
-        'FwoGZXIvYXdzEFUaDEmJqRLfh8UDUgD65yLDAdKCNluO29ois+LiWQEGzy/xMxpCUZuzeR3ms7QgT8XaAH6LQ42O3rZMKdhi6N7jRAF5pngVxr2Pc80EyleH+lZK0eV5a954hIRDCwnhH2xoQZ9XKLLvDQogpWtr5QWg+JITHavZrRosKKvgBYEN8NMUsbtP4Evu54HENGbaVAaB3jH9MW51IZS+H9o7BWuAxtCMTewvedG7CtqLgdVoraCM9NkrkdKaPnkte4Wf24dp/B/7RlUzIAoo53krxwYWanc7HCixpK7vBTItKeLsvcNSlekvwi+sAI7ZxwGkTZ6WefuFvsQZCOsCs/BATdAmbdUTyY34EgRm')
+    credentials: new AWS.Credentials('ASIAZ2J3YGNPQSCPHTIW', 'Qw/PCoEPSB+Udu1UFOjEPatCGBg34Zq+G+H5NQEC',
+        'FwoGZXIvYXdzEFgaDGElz8K9DgCcXTy2nCLDAQKrmkC7gaMIFftfozzLROIQiBhVNUOlqbJNg5ES8FHvf0zMSNDkN/cUilSzkHo6wUEgvRQtB61sE0og71YKbez55ZWvLW/7S+1Ulr5hnOkV+uvOaMpuDOl4Uia7ncZNt1XB/+Vt447q+W387jOzmlkUVtZXnBJ0YlkYfah1HI8CGcI/QKfrXn5sWXuhMZI2udr+zcgqV5hCGi9eWDcWDChGBsPOBIgCUmJpKYL4gzlhS4nUfTIfSATQB0HZS6DyJeX2Sijn+q7vBTItYVxlLlBeMbpkmLVsOzKlmI067h2/QQ+77AyaM9tyErM1na8/Y3vKQgOx3RIp')
 });
 
 export default AssignUsersToTest;
