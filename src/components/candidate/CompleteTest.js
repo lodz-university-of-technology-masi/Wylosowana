@@ -56,7 +56,8 @@ class CompleteTest extends Component {
                 this.setState({
                     response: jsonData.Items[0],
                     userAnswers: theAnswers,
-                    testId: jsonData.Items[0].id
+                    testId: jsonData.Items[0].id,
+                    language: jsonData.Items[0].langs[0].lang
                 });
 
                 console.log(this.state);
@@ -71,7 +72,7 @@ class CompleteTest extends Component {
 
     handleOptionChange = (e) => {
         let no = e.target.getAttribute('data-no');
-        let answerIndex = e.target.getAttribute('data-index');
+        let answerIndex = parseInt(e.target.getAttribute('data-index'),10);
 
         var userAnswers = this.state.userAnswers;
         userAnswers.map(function(a){
@@ -87,9 +88,19 @@ class CompleteTest extends Component {
 
         this.setState({
             userAnswers: userAnswers
-        });
+        }) ;
         console.log(this.state);
     };
+
+    /*handleLanguage = (e) => {
+        var language = e.target.getAttribute('data-lang');
+        return language;
+
+    };*/
+
+
+
+
 
     handleOpenChange = (e) => {
         var no = e.target.id;
@@ -99,7 +110,7 @@ class CompleteTest extends Component {
         userAnswers.map(function(a){
             if(a.no == no){
                 a.answer = answer;
-                a.lang = e.target.getAttribute('data-lang');
+     //           a.lang = e.target.getAttribute('data-lang');
             }
         });
 
@@ -178,6 +189,7 @@ class CompleteTest extends Component {
         let formInstance = {
             'testId': this.state.testId,
             'login': this.props.auth.user.username,
+            'lang': this.state.language,
             'answers': this.state.userAnswers
             /*[
                 {
