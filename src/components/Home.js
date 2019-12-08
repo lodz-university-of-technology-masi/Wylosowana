@@ -7,7 +7,7 @@ export default function Home() {
         <Jumbotron>
             <h1>Hello, world!</h1>
             <p>
-                This is a simple react-bootstrap example.
+                This is our recruiting react-bootstrap app.
             </p>
             <p>
                 <Button variant="primary" href="https://react-bootstrap.github.io/getting-started/introduction/">Learn
