@@ -18,6 +18,7 @@ import ShowTests from "./components/recruiter/ShowTests";
 import CompleteTest from "./components/candidate/CompleteTest";
 import AssignUsersToTest from "./components/recruiter/assignUsersToTest/AssignUsersToTest";
 import {PrivateRoute} from "./components/PrivateRoute";
+import ShowSolvedTest from './components/recruiter/ShowSolvedTest';
 
 library.add(faEdit);
 
@@ -69,6 +70,7 @@ class App extends Component {
                         <Navbar auth={authProps}/>
                         <Switch>
                             <Route exact path="/" render={(props) => <Home {...props} auth={authProps}/>}/>
+                            <Route exact path="/showsolvedtest/:id" render={(props) => <ShowSolvedTest {...props} auth={authProps}/>}/>
                             <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps}/>}/>
                             <Route exact path="/register" render={(props) => <Register {...props} auth={authProps}/>}/>
                             <Route exact path="/forgotpassword"
