@@ -70,7 +70,9 @@ class App extends Component {
                         <Navbar auth={authProps}/>
                         <Switch>
                             <Route exact path="/" render={(props) => <Home {...props} auth={authProps}/>}/>
-                            <Route exact path="/showsolvedtest/:id" render={(props) => <ShowSolvedTest {...props} auth={authProps}/>}/>
+                            <PrivateRoute exact path="/showsolvedtest/:id" component={ShowSolvedTest}
+                                          profile={recruiter}
+                                          auth={authProps}/>
                             <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps}/>}/>
                             <Route exact path="/register" render={(props) => <Register {...props} auth={authProps}/>}/>
                             <Route exact path="/forgotpassword"
