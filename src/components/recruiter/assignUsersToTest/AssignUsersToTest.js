@@ -7,9 +7,9 @@ import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
+import Constants from "../../Constants";
+import {cognitoidentityserviceprovider} from "../../auth/CognitoUsers";
 
-
-const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 class AssignUsersToTest extends Component {
 
@@ -24,7 +24,7 @@ class AssignUsersToTest extends Component {
 
     componentDidMount() {
         axios
-            .get(proxyurl+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests')
+            .get(Constants.PROXYURL+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests')
             .then((res) =>{
                 this.setState({
                     tests: res.data.Items.map(item => ({
@@ -119,7 +119,7 @@ class AssignUsersToTest extends Component {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: proxyurl + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
+            url: Constants.PROXYURL + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -154,16 +154,10 @@ class AssignUsersToTest extends Component {
     }
 }
 
-const AWS = require('aws-sdk');
 const params = {
     UserPoolId: config.cognito.USER_POOL_ID,
     AttributesToGet: [],
+    Filter: 'name ^= \"Candidate\"',
 };
-const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
-    apiVersion: '2016-04-18',
-    region: config.cognito.REGION,
-    credentials: new AWS.Credentials('ASIAZ2J3YGNPQSCPHTIW', 'Qw/PCoEPSB+Udu1UFOjEPatCGBg34Zq+G+H5NQEC',
-        'FwoGZXIvYXdzEFgaDGElz8K9DgCcXTy2nCLDAQKrmkC7gaMIFftfozzLROIQiBhVNUOlqbJNg5ES8FHvf0zMSNDkN/cUilSzkHo6wUEgvRQtB61sE0og71YKbez55ZWvLW/7S+1Ulr5hnOkV+uvOaMpuDOl4Uia7ncZNt1XB/+Vt447q+W387jOzmlkUVtZXnBJ0YlkYfah1HI8CGcI/QKfrXn5sWXuhMZI2udr+zcgqV5hCGi9eWDcWDChGBsPOBIgCUmJpKYL4gzlhS4nUfTIfSATQB0HZS6DyJeX2Sijn+q7vBTItYVxlLlBeMbpkmLVsOzKlmI067h2/QQ+77AyaM9tyErM1na8/Y3vKQgOx3RIp')
-});
 
 export default AssignUsersToTest;
