@@ -11,13 +11,15 @@ exports.handler = async(event, context) => {
 
     const params = {
         TableName: "Tests",
-        Key: {
-            "id": parseInt(id)
-        }
+        KeyConditionExpression: "id = :id",
+        ExpressionAttributeValues: {
+        ":id": parseInt(id)
+    }
     };
 
     try {
-        const data = await documentClient.scan(params).promise();
+        const data = await documentClient.query(params).promise();
+        
         responseBody = JSON.stringify(data);
         statusCode = 200;
 

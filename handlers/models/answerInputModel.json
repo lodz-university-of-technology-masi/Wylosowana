@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "AnswerInputModel",
+  "type": "object",
+  "properties": {
+    "testId": {
+      "type": "number"
+    },
+    "login": {
+      "type": "string"
+    },
+    "lang": {
+      "type": "string"
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "no": {
+            "type": "number"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "answer": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

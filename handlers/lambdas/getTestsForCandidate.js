@@ -7,22 +7,24 @@ exports.handler = async(event, context) => {
     let responseBody = "";
     let statusCode = 0;
 
-    const { id } = event.pathParameters
-
+    const candidate_login = event.pathParameters.login;
+   
     const params = {
         TableName: "Tests",
-        Key: {
-            "id": parseInt(id)
+        ProjectionExpression:"id, testName, langs",
+        FilterExpression: "contains (candidate_logins, :candidate_login)",
+        ExpressionAttributeValues : {   
+            ":candidate_login": candidate_login
         }
     };
 
     try {
-        const data = await documentClient.delete(params).promise();
+        const data = await documentClient.scan(params).promise();
         responseBody = JSON.stringify(data);
-        statusCode = 204;
+        statusCode = 200;
 
     } catch (err) {
-        responseBody = `Unable to delete test: ${err}`;
+        responseBody = `Unable to get tests for candidate [${event.pathParameters}]: ${err}`;
         statusCode = 403;
     }
 
