@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "AnswerInputModel",
+    "type": "object",
+    "properties": {
+      "candidate_logins": {
+          "type": "array",
+          "items": {
+              "type": "string"
+          }
+      }
+    }
+  }

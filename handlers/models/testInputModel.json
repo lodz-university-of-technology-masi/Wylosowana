@@ -32,7 +32,10 @@
                                     }
                                 },
                                 "correct": {
-                                    "type": "string"
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
                                 }
                             }
                         }

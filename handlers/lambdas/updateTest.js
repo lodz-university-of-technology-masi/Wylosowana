@@ -6,18 +6,20 @@ exports.handler = async(event, context) => {
 
     let responseBody = "";
     let statusCode = 0;
-
+    
+    const id  = event.id;
+    const candidate_logins = event.candidate_logins;
     const params = {
         TableName: "Tests",
         Key: {
-            id: 1,
+            'id': parseInt(id),
         },
-        UpdateExpression: "set name = :n",
+        UpdateExpression: "set candidate_logins = :logins",
         ExpressionAttributeValues: {
-            ":n": "Nowa nazwa"
+            ":logins": candidate_logins
         },
-        ReturnValues: "TEST_UPDATED"
-    }
+        ReturnValues: "UPDATED_NEW"
+    };
 
     try {
         const data = await documentClient.update(params).promise();
@@ -25,7 +27,7 @@ exports.handler = async(event, context) => {
         statusCode = 204;
 
     } catch (err) {
-        responseBody = `Unable to ipdate test: ${err}`;
+        responseBody = `Unable to update test: ${err}`;
         statusCode = 403;
     }
 

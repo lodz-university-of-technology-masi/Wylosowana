@@ -8,13 +8,13 @@ exports.handler = async(event, context, callback) => {
   let statusCode = 0;
 
   const json = JSON.parse(event.body);
-
+  
   const params = {
     TableName: "Answers",
     Item: {
       id: getUniqueId(),
       testId: json.testId,
-      candidate_login: json.candidate_login,
+      login: json.login,
       answers: json.answers
     }
   }
@@ -53,25 +53,24 @@ let getUniqueId = () => {
 
 let validateAnswers = (answers) => {
   let error;
-  answers.forEach((answer) => {
+  answers.forEach( (answer) => {
     if (answer.hasOwnProperty("answers")) {
-      if (answer.hasOwnProperty("answer") || answer.hasOwnProperty("lang")) {
+      if (answer.hasOwnProperty("answer")) {
         throwError();
       }
     }
 
-    if (answer.hasOwnProperty("answer") || answer.hasOwnProperty("lang")) {
+    if (answer.hasOwnProperty("answer")) {
       if (answer.hasOwnProperty("answers")) {
         throwError();
       }
     }
   });
-
-  console.log(`WEWNTARZ WALDIACJI ${error}\n`)
+  
   return error;
 }
 
-let throwError = () => {
+let throwError = () => { 
   const errorMsg = 'Body can NOT contains answers array AND answer with specified language';
   throw new Error(errorMsg)
 }

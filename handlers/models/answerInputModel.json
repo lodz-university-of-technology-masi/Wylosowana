@@ -9,6 +9,9 @@
     "login": {
       "type": "string"
     },
+    "lang": {
+      "type": "string"
+    },
     "answers": {
       "type": "array",
       "items": {
@@ -24,9 +27,6 @@
             }
           },
           "answer": {
-            "type": "string"
-          },
-          "lang": {
             "type": "string"
           }
         }

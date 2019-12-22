@@ -15,7 +15,7 @@ exports.handler = async(event, context) => {
             id: getUniqueId(),
             testName: json.testName,
             langs: json.langs,
-            candidate_ids: json.candidate_ids
+            candidate_logins: json.candidate_logins
         }
     }
 
