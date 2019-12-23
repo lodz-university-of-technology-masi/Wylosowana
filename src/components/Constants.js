@@ -1,4 +1,4 @@
 const Constants = {
-    PROXYURL: "https://cors-anywhere.herokuapp.com/",
+    PROXYURL: "",
 }
 export default Constants
