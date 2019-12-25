@@ -1,5 +1,4 @@
 import config from "../../config";
-import { Auth } from 'aws-amplify';
 
 const  AWS = require('aws-sdk');
 
@@ -14,4 +13,3 @@ export const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProv
     region: config.cognito.REGION,
     credentials: new AWS.Credentials('') /// !!! klucze od Seby
 });
-

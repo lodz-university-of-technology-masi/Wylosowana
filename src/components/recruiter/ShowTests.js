@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Constants from "../Constants";
 import {Auth} from "aws-amplify";
 import axios from "axios";
+import Form from "react-bootstrap/Form";
 
 class ShowTests extends Component{
 
@@ -52,7 +53,7 @@ class ShowTests extends Component{
                     }
 
                 }
-                rowData += '<a href="/?#/showsolvedtest/'+row.id+'" >zobacz odpowiedzi</a> </div><br/><br/>';
+                rowData += '<a href="/?#/showsolvedtest/'+row.id+'" >See answers</a> </div><br/><br/>';
                 table.push(<li><strong>{row.testName}:</strong><br/>
                     <ul dangerouslySetInnerHTML={{__html: rowData}}></ul>
                 </li>)
@@ -63,10 +64,13 @@ class ShowTests extends Component{
 
     render() {
         return (
-            <section class="section">
+            <section class="section auth">
+                <Form>
+                <h1>Show tests</h1>
                 <ul>
                     {this.createTable()}
                 </ul>
+                </Form>
             </section>
         )
     }

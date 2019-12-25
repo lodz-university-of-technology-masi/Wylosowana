@@ -220,15 +220,16 @@ class CreateTest extends Component {
                                         size="sm">Add</Button>
                             </ButtonGroup>
                         </div>
+                        <div className="space-in-forms"></div>
                         <div>
                             <Form.Group>
-                                <Form.Control as="textarea" name="answ1" placeholder="answer" value={this.state.answ1}
+                                <Form.Control as="textarea" name="answ1" placeholder="First answer" value={this.state.answ1}
                                               onChange={this.handleAnswers} rows="1"/>
-                                <Form.Control as="textarea" name="answ2" placeholder="answer" value={this.state.answ2}
+                                <Form.Control as="textarea" name="answ2" placeholder="Second answer" value={this.state.answ2}
                                               onChange={this.handleAnswers} rows="1"/>
-                                <Form.Control as="textarea" name="answ3" placeholder="answer" value={this.state.answ3}
+                                <Form.Control as="textarea" name="answ3" placeholder="Third answer" value={this.state.answ3}
                                               onChange={this.handleAnswers} rows="1"/>
-                                <Form.Control as="textarea" name="answ4" placeholder="answer" value={this.state.answ4}
+                                <Form.Control as="textarea" name="answ4" placeholder="Fourth answer" value={this.state.answ4}
                                               onChange={this.handleAnswers} rows="1"/>
                             </Form.Group>
                         </div>
@@ -236,10 +237,10 @@ class CreateTest extends Component {
                             <Form.Control as="select" onChange={this.handleCorrectChange.bind(this)}
                                           value={this.state.correct}>
                                 <option value="default" hidden>Select a correct</option>
-                                <option value="1">first</option>
-                                <option value="2">second</option>
-                                <option value="3">third</option>
-                                <option value="4">fourth</option>
+                                <option value="1">First</option>
+                                <option value="2">Second</option>
+                                <option value="3">Third</option>
+                                <option value="4">Fourth</option>
                             </Form.Control>
                         </Form.Group>
 

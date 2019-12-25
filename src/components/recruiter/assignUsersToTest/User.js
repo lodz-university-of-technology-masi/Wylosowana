@@ -6,7 +6,7 @@ class User extends Component {
     getButtonStyle = () => {
         return this.props.user.selected ?
             'danger' : 'success'
-    }
+    };
 
     render() {
         return (
@@ -19,7 +19,7 @@ class User extends Component {
                             name="selectTest" onClick={this.props.selectUsers.bind(this, this.props.user.id)}
                             variant={this.getButtonStyle()}
                             size="sm">{this.props.user.selected ?
-                        'Unselect User' : 'Select User'}</Button>
+                        'Unselect user' : 'Select user'}</Button>
                 </th>
             </React.Fragment>
         );

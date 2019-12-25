@@ -9,6 +9,8 @@ import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
 import Constants from "../../Constants";
 import {cognitoidentityserviceprovider} from "../../auth/CognitoUsers";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 
 class AssignUsersToTest extends Component {
@@ -133,7 +135,7 @@ class AssignUsersToTest extends Component {
         });
 
         this.props.history.push('/');
-    }
+    };
 
     render() {
         return (
@@ -142,12 +144,17 @@ class AssignUsersToTest extends Component {
                     <ChoiceTest tests={this.state.tests} selectTest={this.selectTest}/>
                     :
                     <div>
-                        <h1>Add user to test {this.state.modifiedTest.testName}</h1>
+                        <h1>Choose user for test {this.state.modifiedTest.testName}</h1>
                         <ChoiceUsers users={this.state.users} selectUser={this.selectUser}/>
-                        <Button id="selectButton"
-                                name="selectTest" onClick={this.modifyTest}
-                                variant="success"
-                                size="lg">Submit</Button>
+                        <OverlayTrigger placement="bottom"
+                                        overlay={<Tooltip id="tooltip">Click to confirm your choice. Chosen users will
+                                            now see this test.</Tooltip>}>
+                            <span className="d-inline-block">
+                                <Button id="selectButton"
+                                        name="selectTest" onClick={this.modifyTest}
+                                        variant="success">Submit</Button>
+                            </span>
+                        </OverlayTrigger>
                     </div>}
             </section>
         )
