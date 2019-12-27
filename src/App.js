@@ -14,7 +14,7 @@ import {Auth} from 'aws-amplify';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faEdit} from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ShowTests from "./components/recruiter/ShowTests";
+import ShowTests from "./components/recruiter/ShowAndTranslateTests/ShowTests";
 import CompleteTest from "./components/candidate/CompleteTest";
 import AssignUsersToTest from "./components/recruiter/assignUsersToTest/AssignUsersToTest";
 import {PrivateRoute} from "./components/PrivateRoute";
