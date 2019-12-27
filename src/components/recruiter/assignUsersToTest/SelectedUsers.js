@@ -14,7 +14,9 @@ class SelectedUsers extends Component {
                     {this.props.users.filter(function (x) {
                         return x.selected;
                     }).map((user) => (
-                        <ListGroup.Item> <User selectUsers={this.props.selectUsers} key={user.id} user={user}/> </ListGroup.Item>
+                        <ListGroup.Item>
+                            <div className="selected-user-display"><User selectUsers={this.props.selectUsers} key={user.id} user={user}/></div>
+                        </ListGroup.Item>
                     ))}
                 </ListGroup>
             </Card>

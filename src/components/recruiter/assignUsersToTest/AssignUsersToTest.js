@@ -144,7 +144,7 @@ class AssignUsersToTest extends Component {
                     <ChoiceTest tests={this.state.tests} selectTest={this.selectTest}/>
                     :
                     <div>
-                        <h1>Choose user for test {this.state.modifiedTest.testName}</h1>
+                        <h1>Choose users for test {this.state.modifiedTest.testName}</h1>
                         <ChoiceUsers users={this.state.users} selectUser={this.selectUser}/>
                         <OverlayTrigger placement="bottom"
                                         overlay={<Tooltip id="tooltip">Click to confirm your choice. Chosen users will

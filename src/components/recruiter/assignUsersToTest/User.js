@@ -13,8 +13,6 @@ class User extends Component {
             <React.Fragment>
                 <th>
                     {this.props.user.userName}
-                </th>
-                <th>
                     <Button className={"float-right"} id="selectButton"
                             name="selectTest" onClick={this.props.selectUsers.bind(this, this.props.user.id)}
                             variant={this.getButtonStyle()}

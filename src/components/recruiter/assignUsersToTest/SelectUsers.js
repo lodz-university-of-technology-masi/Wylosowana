@@ -26,7 +26,7 @@ class SelectUsers extends Component {
                 <h3>Select users</h3>
                 <Form.Group controlId="controlInputName">
                     <Form.Label column={2}>Search user</Form.Label>
-                    <Form.Control id="search-user-to-assign" type="text" placeholder="Put text to search" onChange={this.searchHandler}/>
+                    <Form.Control type="text" placeholder="Put text to search" onChange={this.searchHandler}/>
                 </Form.Group>
                 <Table size="sm">
                     <tbody>
