@@ -143,7 +143,7 @@ class CreateTest extends Component {
                     return {
                         "no": ind,
                         "question": val,
-                        "answers": [globalAnswers[ind]],
+                        "answers": globalAnswers[ind],
                         "correct": globalTrueSelect[ind]
                     }
                 } else
