@@ -23,12 +23,12 @@ class SelectUsers extends Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Select users</h1>
+                <h3>Select users</h3>
                 <Form.Group controlId="controlInputName">
-                    <Form.Label column={2}>Search</Form.Label>
+                    <Form.Label column={2}>Search user</Form.Label>
                     <Form.Control type="text" placeholder="Put text to search" onChange={this.searchHandler}/>
                 </Form.Group>
-                <Table striped bordered size="sm">
+                <Table size="sm">
                     <tbody>
                     {this.props.users.filter(searchingFor(this.state.textToSearch)).filter((x) => {return !x.selected}) .map((user) => (
                         <tr>    <User selectUsers={this.props.selectUsers} key={user.id} user={user}/> </tr>

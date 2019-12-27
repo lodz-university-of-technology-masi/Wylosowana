@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Constants from "../Constants";
 import {Auth} from "aws-amplify";
 import axios from "axios";
+import Form from "react-bootstrap/Form";
 
 class ShowSolvedTest extends Component{
 
@@ -72,11 +73,13 @@ class ShowSolvedTest extends Component{
 
     render() {
         return (
-            <section class="section">
-                <h2>Wypelnienia dla testu #{this.state.testId}:</h2><br/><br/>
+            <section class="section auth">
+                <Form>
+                <h2>Answers for test #{this.state.testId}:</h2><br/><br/>
                 <ul>
                     {this.createTable()}
                 </ul>
+                </Form>
             </section>
         )
     }

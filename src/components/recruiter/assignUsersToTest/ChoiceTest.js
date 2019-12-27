@@ -18,13 +18,13 @@ class ChoiceTest extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Assign new users to test</h1>
+            <div className="choose-test">
+                <h1>Choose test to assign users</h1>
                 <Form.Group controlId="controlInputName">
-                    <Form.Label>Search</Form.Label>
+                    <Form.Label>Search test</Form.Label>
                     <Form.Control type="text" placeholder="Put text to search" onChange={this.searchHandler}/>
                 </Form.Group>
-                <Table striped bordered size="sm">
+                <Table size="sm">
                     <tbody>
                     {this.props.tests.filter(searchingFor(this.state.textToSearch)).map((test) => (
                         <tr>

@@ -18,11 +18,11 @@ body {
   float: right;
 }
 
-#addOpenQuestionButton{
+#addOpenQuestionButton {
   margin-top: 1em;
 }
 
-#showCandidateTests{
+#showCandidateTests {
   margin-top: 1em;
   margin-left: 1em;
   max-width: 50%;
@@ -30,6 +30,7 @@ body {
 
 .auth form {
   margin-top: 1em;
+  margin-left: 1em;
   max-width: 50%;
 }
 
@@ -42,4 +43,18 @@ body {
 
 .formQuestions{
   margin-top: 1em;
+}
+
+.space-in-forms {
+  margin-bottom: 3em;
+}
+
+.choose-test {
+  margin-top: 1em;
+  margin-left: 1em;
+  max-width: 50%;
+}
+
+.selected-user-display {
+    display: grid;
 }
