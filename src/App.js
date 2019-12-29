@@ -9,6 +9,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ForgotPasswordVerification from './components/auth/ForgotPasswordVerification';
 import Welcome from './components/auth/Welcome';
 import CreateTest from './components/recruiter/CreateTest';
+import CsvImportExport from './components/recruiter/csvImportExportTest/CsvImportExport';
 import ShowCandidateTests from './components/candidate/ShowCandidateTests';
 import {Auth} from 'aws-amplify';
 import {library} from '@fortawesome/fontawesome-svg-core';
@@ -82,6 +83,10 @@ class App extends Component {
                             <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps}/>}/>
                             <PrivateRoute exact path="/createtest"
                                           component={CreateTest}
+                                          profile={recruiter}
+                                          auth={authProps}/>
+                            <PrivateRoute exact path="/csvImportExport"
+                                          component={CsvImportExport}
                                           profile={recruiter}
                                           auth={authProps}/>
                             <PrivateRoute exact path="/showtests"
