@@ -33,8 +33,19 @@ class Export extends Component {
             const fields = ['langs.lang', 'langs.questions.no', 'langs.questions.question', 'langs.questions.answers', 'langs.questions.correct', 'testName', 'id', 'candidate_logins'];
             const json2csvParser = new Parser({
                 fields,
-                unwind: ['langs', 'langs.questions', 'langs.questions.answers', 'langs.questions.correct', 'candidate_logins']
+                unwind: ['langs', 'langs.questions', 'langs.questions.answers', 'langs.questions.correct', 'candidate_logins'],
+                header: false
             });
+            const headers23 = [
+                "lang",
+                'on',
+                'question',
+                'answers',
+                'correct',
+                'testName',
+                'id',
+                 'candidate_logins'
+        ]
             return tests.map(item => (
                 <tr>
                     <th>
@@ -44,6 +55,7 @@ class Export extends Component {
                         <CSVLink data={json2csvParser.parse(item)}
                                  filename={`${item.testName}.csv`}
                                  className="btn btn-warning"
+                                 headers={headers23}
                                  enclosingCharacter={`'`}>Export</CSVLink>
                     </th>
                 </tr>
