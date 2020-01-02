@@ -43,7 +43,7 @@ class Import extends Component {
         let listNewQuestion = [];
         for (let e of this.state.data) {
             if (newQuestion.on === e.on) {
-                if (e.answers !== undefined) {
+                if (e.answers !== "") {
                     if (newQuestion.answers === undefined) {
                         newQuestion.answers = []
                     }
@@ -51,7 +51,7 @@ class Import extends Component {
                         newQuestion.answers.push(e.answers)
                     }
                 }
-                if (e.correct !== undefined) {
+                if (e.correct !== "") {
                     if (newQuestion.correct === undefined) {
                         newQuestion.correct = []
                     }
@@ -72,7 +72,7 @@ class Import extends Component {
         newQuestion.question = this.state.data[this.state.data.length - 1].question;
         listNewQuestion.push(newQuestion);
         let candidate_logins = [];
-        for (let e in this.state.data) {
+        for (let e of this.state.data) {
             if (candidate_logins.indexOf(e.candidate_logins) === -1) {
                 candidate_logins.push(e.candidate_logins)
             }
@@ -83,9 +83,9 @@ class Import extends Component {
                         questions: listNewQuestion
                     }
                 ],
-                testName:  this.state.data[0].id.testName,
+                testName:  this.state.data[0].testName,
                 id: this.state.data[0].id,
-                candidate_logins: candidate_logins
+                "candidate_logins": candidate_logins
             };
 
             this.setState({newTest: newArray})
