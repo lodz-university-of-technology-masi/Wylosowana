@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Button from "react-bootstrap/Button";
 import Papa from 'papaparse';
 import $ from "jquery";
+import Modal from "react-bootstrap/Modal";
 
 
 class Import extends Component {
@@ -11,27 +12,26 @@ class Import extends Component {
         this.state = {
             file: null,
             data: [],
-            newTest: null
+            newTest: null,
+            showSuccess: false
         };
 
         this.getData = this.getData.bind(this);
     }
 
     getData(result) {
-        this.setState({data: result.data});
+        this.setState({data: result.data}, () => {this.groupCsv()});
     }
 
     getCsvData = () => {
-        let json = Papa.parse(this.state.file, {
+        Papa.parse(this.state.file, {
             header: true,
             complete: this.getData
         });
-
-        console.log(json);
     };
 
     fileSelectedHandler = event => {
-        this.setState({file: event.target.files[0]});
+        this.setState({file: event.target.files[0]},() => {this.getCsvData()});
     };
 
 
@@ -88,22 +88,27 @@ class Import extends Component {
                 candidate_logins: candidate_logins
             };
 
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
-                data: JSON.stringify(newArray),
-                success: function (data, err) {
-                    if (err)
-                        console.log(err);
-                    console.log(data);
-                }
-            });
+            this.setState({newTest: newArray})
         }
     };
 
+    sendTest = () => {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            data: JSON.stringify(this.state.newTest),
+            success: this.setState({
+                file: null,
+                data: [],
+                newTest: null,
+                showSuccess: true
+            }),
 
+        });
+    };
 
+     handleCloseSuccess = () => this.setState({showSuccess: false});
 
         render()
         {
@@ -117,13 +122,29 @@ class Import extends Component {
                     <Button onClick={() => this.fileInput.click()} variant="primary" size="lg">
                         Select File
                     </Button>
-                    <Button onClick={this.getCsvData} variant="primary" size="lg">
+                    {this.state.file ?
+                        <label>{this.state.file.name}</label> : null}
+                    {this.state.newTest ?
+                        <Button  onClick={this.sendTest} variant="success" size="lg">
                         Import
-                    </Button> <Button onClick={this.groupCsv} variant="primary" size="lg">
-                        creteJson
-                    </Button>
+                        </Button>
+                        : null
+                    }
+
+                    <Modal show={this.state.showSuccess} onHide={this.handleCloseSuccess} animation={false}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Impoert test successfully</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Your test was import and add to pool of tests</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={this.handleCloseSuccess}>
+                                ok
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
                 </React.Fragment>
-            )
+            );
         }
     }
 
