@@ -72,6 +72,7 @@ class ShowSolvedTest extends Component{
     }
 
     render() {
+        console.log(this.state);
         return (
             <section class="section auth">
                 <Form>
