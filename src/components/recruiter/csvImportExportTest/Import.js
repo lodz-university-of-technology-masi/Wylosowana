@@ -4,7 +4,6 @@ import Papa from 'papaparse';
 import $ from "jquery";
 import Modal from "react-bootstrap/Modal";
 
-
 class Import extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +19,9 @@ class Import extends Component {
     }
 
     getData(result) {
-        this.setState({data: result.data}, () => {this.groupCsv()});
+        this.setState({data: result.data}, () => {
+            this.groupCsv()
+        });
     }
 
     getCsvData = () => {
@@ -31,7 +32,9 @@ class Import extends Component {
     };
 
     fileSelectedHandler = event => {
-        this.setState({file: event.target.files[0]},() => {this.getCsvData()});
+        this.setState({file: event.target.files[0]}, () => {
+            this.getCsvData()
+        });
     };
 
 
@@ -75,7 +78,7 @@ class Import extends Component {
         listNewQuestion.push(newQuestion);
         let candidate_logins = [];
         for (let e of this.state.data) {
-            if (candidate_logins.indexOf(e.candidate_logins) === -1 && e.candidate_logins!=="") {
+            if (candidate_logins.indexOf(e.candidate_logins) === -1 && e.candidate_logins !== "") {
                 candidate_logins.push(e.candidate_logins)
             }
             let newArray = {
@@ -85,7 +88,7 @@ class Import extends Component {
                         questions: listNewQuestion
                     }
                 ],
-                testName:  this.state.data[0].testName,
+                testName: this.state.data[0].testName,
                 candidate_logins: candidate_logins
             };
 
@@ -99,56 +102,55 @@ class Import extends Component {
             dataType: "json",
             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
             data: JSON.stringify(this.state.newTest),
-            success: this.setState({
+            success:  this.setState({
                 file: null,
                 data: [],
                 newTest: null,
                 showSuccess: true
             }),
-
         });
     };
 
-     handleCloseSuccess = () => this.setState({showSuccess: false});
+    handleCloseSuccess = () => this.setState({showSuccess: false});
 
-        render()
-        {
-            return (
-                <React.Fragment>
-                    <h1>Import test</h1>
-                    <input style={{display: 'none'}}
-                           type="file"
-                           onChange={this.fileSelectedHandler}
-                           ref={fileInput => this.fileInput = fileInput}/>
+    render() {
+        return (
+            <React.Fragment>
+                <h1>Import test</h1>
+                <input style={{display: 'none'}}
+                       type="file"
+                       onChange={this.fileSelectedHandler}
+                       ref={fileInput => this.fileInput = fileInput}/>
+                <div>
                     <Button onClick={() => this.fileInput.click()} variant="primary" size="lg">
                         Select File
                     </Button>
-                    {this.state.file ?
-                        <label>{this.state.file.name}</label> : null}
-                    {this.state.newTest ?
-                        <Button  onClick={this.sendTest} variant="success" size="lg">
+                </div>
+
+                {this.state.file ?
+                    <div className="formQuestions"><label>Chosen File: {this.state.file.name}</label></div> : null}
+                {this.state.newTest ?
+                    <div><Button onClick={this.sendTest} variant="success" size="lg">
                         Import
+                    </Button></div>
+                    : null
+                }
+
+                <Modal show={this.state.showSuccess} onHide={this.handleCloseSuccess} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Test imported successfully</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Your test is now added to the pool of tests</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={this.handleCloseSuccess}>
+                            Ok
                         </Button>
-                        : null
-                    }
+                    </Modal.Footer>
+                </Modal>
 
-                    <Modal show={this.state.showSuccess} onHide={this.handleCloseSuccess} animation={false}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Impoert test successfully</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>Your test was import and add to pool of tests</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="primary" onClick={this.handleCloseSuccess}>
-                                ok
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                </React.Fragment>
-            );
-        }
+            </React.Fragment>
+        );
     }
+}
 
-    export
-    default
-    Import;
+export default Import;
