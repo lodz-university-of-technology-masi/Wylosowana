@@ -12,7 +12,8 @@ class Import extends Component {
             file: null,
             data: [],
             newTest: null,
-            showSuccess: false
+            showSuccess: false,
+            showError: false,
         };
 
         this.getData = this.getData.bind(this);
@@ -102,16 +103,30 @@ class Import extends Component {
             dataType: "json",
             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
             data: JSON.stringify(this.state.newTest),
-            success:  this.setState({
-                file: null,
-                data: [],
-                newTest: null,
-                showSuccess: true
-            }),
+            success: function () {
+                this.setState({
+                    file: null,
+                    data: [],
+                    newTest: null,
+                    showSuccess: true,
+                    showError: false,
+                });
+            }.bind(this),
+            error: function () {
+                this.setState({
+                    file: null,
+                    data: [],
+                    newTest: null,
+                    showSuccess: false,
+                    showError: true,
+                });
+            }.bind(this),
         });
     };
 
     handleCloseSuccess = () => this.setState({showSuccess: false});
+
+    handleCloseError = () => this.setState({showError: false});
 
     render() {
         return (
@@ -140,9 +155,21 @@ class Import extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Test imported successfully</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Your test is now added to the pool of tests</Modal.Body>
+                    <Modal.Body>Your test is now added to the pool of tests.</Modal.Body>
                     <Modal.Footer>
                         <Button variant="success" onClick={this.handleCloseSuccess}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.showError} onHide={this.handleCloseError} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Import failed!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Check if your test has correct scheme to it.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={this.handleCloseError}>
                             Ok
                         </Button>
                     </Modal.Footer>
