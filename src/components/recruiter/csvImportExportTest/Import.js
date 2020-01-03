@@ -36,13 +36,14 @@ class Import extends Component {
 
 
     groupCsv = () => {
+        let no = parseInt(this.state.data[0].no, 10);
         let newQuestion = {
-            on: this.state.data[0].on,
+            no: no,
             question: ""
         };
         let listNewQuestion = [];
         for (let e of this.state.data) {
-            if (newQuestion.on === e.on) {
+            if (newQuestion.no === parseInt(e.no, 10)) {
                 if (e.answers !== "") {
                     if (newQuestion.answers === undefined) {
                         newQuestion.answers = []
@@ -60,10 +61,11 @@ class Import extends Component {
                     }
                 }
             } else {
+                let no = parseInt(e.no, 10);
                 newQuestion.question = e.question;
                 listNewQuestion.push(newQuestion);
                 newQuestion = {
-                    on: e.on,
+                    no: no,
                     question: ""
                 };
             }
@@ -73,7 +75,7 @@ class Import extends Component {
         listNewQuestion.push(newQuestion);
         let candidate_logins = [];
         for (let e of this.state.data) {
-            if (candidate_logins.indexOf(e.candidate_logins) === -1) {
+            if (candidate_logins.indexOf(e.candidate_logins) === -1 && e.candidate_logins!=="") {
                 candidate_logins.push(e.candidate_logins)
             }
             let newArray = {
@@ -84,8 +86,7 @@ class Import extends Component {
                     }
                 ],
                 testName:  this.state.data[0].testName,
-                id: this.state.data[0].id,
-                "candidate_logins": candidate_logins
+                candidate_logins: candidate_logins
             };
 
             this.setState({newTest: newArray})
