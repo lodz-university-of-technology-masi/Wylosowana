@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ListGroup from "react-bootstrap/ListGroup";
+import {Auth} from "aws-amplify";
 
 class ShowCandidateTests extends Component {
     constructor(props) {
@@ -9,8 +10,15 @@ class ShowCandidateTests extends Component {
         };
     }
 
-    componentDidMount() {
-        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/candidates/${this.props.auth.user.username}`)
+    async componentDidMount() {
+        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/candidates/${this.props.auth.user.username}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+                }
+            }
+        )
             .then(response => response.json())
             .then((jsonData) => {
                 // jsonData is parsed json object received from url

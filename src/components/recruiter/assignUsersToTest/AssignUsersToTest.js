@@ -12,7 +12,6 @@ import {cognitoidentityserviceprovider} from "../../auth/CognitoUsers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-
 class AssignUsersToTest extends Component {
 
     state = {
@@ -24,10 +23,16 @@ class AssignUsersToTest extends Component {
         selectedUsers: [],
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         axios
-            .get(Constants.PROXYURL+'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests')
-            .then((res) =>{
+            .get( 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+                    }
+                }
+            )
+            .then((res) => {
                 this.setState({
                     tests: res.data.Items.map(item => ({
                         candidate_logins: item.candidate_logins,
@@ -121,7 +126,7 @@ class AssignUsersToTest extends Component {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: Constants.PROXYURL + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
+            url: `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

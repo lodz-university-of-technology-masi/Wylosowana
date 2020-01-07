@@ -17,7 +17,7 @@ class ShowSolvedTest extends Component{
 
         const {id} = this.props.match.params;
         axios
-            .get(Constants.PROXYURL + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/answers/${id}`, {
+            .get( `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/answers/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
