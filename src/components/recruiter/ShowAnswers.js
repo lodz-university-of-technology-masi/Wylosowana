@@ -18,7 +18,7 @@ class ShowAnswers extends Component{
         //console.log(this.props.match.params.testId);
         const {id} = this.props.match.params;
         axios
-            .get(Constants.PROXYURL + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/instances/${id}`, {
+            .get(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/instances/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

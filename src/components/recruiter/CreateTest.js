@@ -6,6 +6,7 @@ import {ButtonGroup} from "react-bootstrap";
 import {cognitoidentityserviceprovider} from "../auth/CognitoUsers";
 import {params} from "../auth/CognitoUsers";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import {Auth} from "aws-amplify";
 
 let globalAnswers = []
 let globalQuestionAnswers = []
@@ -135,7 +136,7 @@ class CreateTest extends Component {
     }
 
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         const questions = globalClosedQuestions.concat(globalQuestions)
             .map((val, ind) => {
                 let sizeCloseQuest = globalClosedQuestions.length;
@@ -168,6 +169,10 @@ class CreateTest extends Component {
             type: "POST",
             dataType: "json",
             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
             data: JSON.stringify(validateTest),
             success: function (data, err) {
                 if (err)
