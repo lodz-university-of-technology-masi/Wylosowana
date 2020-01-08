@@ -4,27 +4,23 @@ import Button from "react-bootstrap/Button";
 
 class Test extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     toggleTestPL = () => {
-        const test = { ... this.props.test, choosen: 'PL'}
+        const test = { ...this.props.test, choosen: 'PL'}
         this.props.isOpen(test)
     }
 
     toggleTestEN = () => {
-        const test = { ... this.props.test, choosen: 'EN'}
+        const test = { ...this.props.test, choosen: 'EN'}
         this.props.isOpen(test)
     }
 
     toggleNewTestPL = () => {
-        const test = { ... this.props.test, choosen: 'EN'}
+        const test = { ...this.props.test, choosen: 'EN'}
         this.props.isOpenNewTest(test)
     }
 
     toggleNewTestEN = () => {
-        const test = { ... this.props.test, choosen: 'PL'}
+        const test = { ...this.props.test, choosen: 'PL'}
         this.props.isOpenNewTest(test)
     }
 

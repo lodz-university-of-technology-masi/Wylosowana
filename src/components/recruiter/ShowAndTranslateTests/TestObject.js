@@ -1,35 +1,90 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {backdropStyle, modalStyle} from "./ModalSetting";
+import Constants from "../../Constants";
 
-const renederQuestion = []
+const renederQuestion = [];
 
 class TestObject extends React.Component {
 
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            synom: '',
+            synomed: ''
+        };
+
+    }
+
     getQuestions = () => {
-            return  this.props.choosenTest.langs.filter((x) =>
-                x.lang === this.props.choosenTest.choosen)[0].
-            questions.
-            map((x) => x)
+        return this.props.choosenTest.langs.filter((x) =>
+            x.lang === this.props.choosenTest.choosen)[0]
+            .questions
+            .map((x) => x)
     };
 
     renderAnswerIfPresent = () => {
-        this.getQuestions().map((x) => {
-            for( let prop in x) {
-                if (prop === "answers") {
-                    renederQuestion.push({question: x.question, answers: x.answers});
-                    break;
+        if (!renederQuestion.length)
+            this.getQuestions().forEach((x) => {
+                for (let prop in x) {
+                    if (prop === "answers") {
+                        renederQuestion.push({question: x.question, answers: x.answers});
+                        break;
+                    } else {
+                        renederQuestion.push({question: x.question, answers: []})
+                        break;
+                    }
                 }
-                else {
-                    renederQuestion.push({question: x.question, answers: []})
-                    break;
-                }
-            }
+            })
+    };
+
+
+    handleSynom = (textToSynome, textAfterSynome) => {
+        this.setState({
+            synom: textAfterSynome,
+            synomed: textToSynome
         })
     };
 
+    claerSynom = () => {
+        this.setState({
+            synom: '',
+            synomed: ''
+        })
+    };
+
+
+    getSynonim = () => {
+
+        const self = this;
+        let textToSynome = '';
+        let textAfterSynome = '';
+        const highlight = window.getSelection();
+        if (highlight.toString() !== "") {
+            textToSynome = window.getSelection().toString();
+            if (this.props.choosenTest.choosen === 'EN') {
+                Constants.DICTIONARY.lookup(textToSynome, 'en-en', function (err, res) {
+                    textAfterSynome = !res.def.length ? textToSynome : res.def[0].tr[0].text;
+                    self.handleSynom(textToSynome, textAfterSynome);
+                })
+            } else {
+                Constants.DICTIONARY.lookup(textToSynome, 'pl-ru', function (err, res) {
+                    textAfterSynome = !res.def.length ? textToSynome : res.def[0].tr[0].text;
+                    Constants.TRANSLATE.translate(textAfterSynome, {to: 'pl'}, (err, res) => {
+                        textAfterSynome = err ? textToSynome : res.text;
+                        self.handleSynom(textToSynome, textAfterSynome);
+                    })
+                })
+            }
+        }
+
+    };
+
+
     clearTables = () => {
         renederQuestion.length = 0
+        this.claerSynom();
     }
 
     render() {
@@ -48,21 +103,30 @@ class TestObject extends React.Component {
                         <h4> Questions: </h4>
                         <div>
 
-                            { renederQuestion.map((x) =>
-                                <p key={x.question}>
+                            {renederQuestion.map((x, ind1) =>
+                                <p key={ind1}>
                                     {x.question} <br/>
-                                    {x.answers.map((y) => <a key={y}> {y + ' '} </a>)}
-                                </p> )}
+                                    {x.answers.map((y, ind) => <b key={ind}> {y + ' '} </b>)}
+                                </p>)}
 
                         </div>
-                            <button onClick={() => {this.props.onClose(); this.clearTables();}}>
-                                Close
-                            </button>
+                        <button onClick={() => {
+                            this.props.onClose();
+                            this.clearTables();
+                        }}>
+                            Close
+                        </button>
+                        <button onMouseOver={this.getSynonim} onMouseOut={this.claerSynom} >
+                            Check synonim
+                        </button>
+                        {this.state.synom !== '' ?
+                            <p> {'synom ' + this.state.synomed + ' - ' + this.state.synom }</p>: ''}
                     </div>
                 </div>
             </React.Fragment>
         );
     }
+
 }
 
 TestObject.propTypes = {
