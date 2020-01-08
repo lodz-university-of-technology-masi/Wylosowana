@@ -64,7 +64,7 @@ class ShowSolvedTest extends Component{
                 }
                 rowData += "</div><br/><br/>";
                 table.push(<li><strong>{row.candidate_login}:</strong><br/>
-                    <ul dangerouslySetInnerHTML={{__html: rowData}}></ul>
+                    <ul dangerouslySetInnerHTML={{__html: rowData}}/>
                 </li>)
             }
         }

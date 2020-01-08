@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Constants from "../../Constants";
 import {Auth} from "aws-amplify";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
