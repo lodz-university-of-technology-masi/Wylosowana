@@ -33,6 +33,12 @@ export default class Navbars extends Component {
                     )}
                     {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
                         <ButtonToolbar>
+                            <Button variant="outline-info" href="#/csvImportExport">Import/Export Test</Button>
+                            <div className="buttons-space"></div>
+                        </ButtonToolbar>
+                    )}
+                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
+                        <ButtonToolbar>
                             <Button variant="outline-info" href="#/showtests">Show Tests</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
