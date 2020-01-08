@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Papa from 'papaparse';
 import $ from "jquery";
 import Modal from "react-bootstrap/Modal";
+import {Auth} from "aws-amplify";
 
 class Import extends Component {
     constructor(props) {
@@ -99,11 +100,15 @@ class Import extends Component {
         }
     };
 
-    sendTest = () => {
+    sendTest = async () => {
         $.ajax({
             type: "POST",
             dataType: "json",
             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
             data: JSON.stringify(this.state.newTest),
             success: function () {
                 this.setState({
