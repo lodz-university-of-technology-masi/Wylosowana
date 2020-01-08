@@ -64,7 +64,8 @@ class Import extends Component {
                         newQuestion.correct = []
                     }
                     if (newQuestion.correct.indexOf(e.correct) === -1) {
-                        newQuestion.correct.push(e.correct)
+                        let correct = parseInt(e.correct, 10)
+                        newQuestion.correct.push(correct)
                     }
                 }
             } else {
