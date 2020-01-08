@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {CSVLink} from "react-csv";
 import Table from "react-bootstrap/Table";
+import {Auth} from "aws-amplify";
 
 class Export extends Component {
     constructor(props) {
@@ -10,8 +11,13 @@ class Export extends Component {
         };
     }
 
-    componentDidMount() {
-        fetch('https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests')
+    async componentDidMount() {
+        fetch('https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            }
+        })
             .then(response => response.json())
             .then((jsonData) => {
                 // jsonData is parsed json object received from url

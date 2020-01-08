@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Papa from 'papaparse';
 import $ from "jquery";
 import Modal from "react-bootstrap/Modal";
+import {Auth} from "aws-amplify";
 
 class Import extends Component {
     constructor(props) {
@@ -63,7 +64,8 @@ class Import extends Component {
                         newQuestion.correct = []
                     }
                     if (newQuestion.correct.indexOf(e.correct) === -1) {
-                        newQuestion.correct.push(e.correct)
+                        let correct = parseInt(e.correct, 10)
+                        newQuestion.correct.push(correct)
                     }
                 }
             } else {
@@ -99,11 +101,15 @@ class Import extends Component {
         }
     };
 
-    sendTest = () => {
+    sendTest = async () => {
         $.ajax({
             type: "POST",
             dataType: "json",
             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
             data: JSON.stringify(this.state.newTest),
             success: function () {
                 this.setState({
