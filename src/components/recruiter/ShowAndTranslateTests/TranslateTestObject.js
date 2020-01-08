@@ -30,8 +30,8 @@ class TranslateTestObject extends React.Component {
             x.lang === this.props.choosenTest.choosen)[0].questions.map((x) => x)
     };
 
-    renderAnswerIfPresent = () => {
-        this.getQuestions().map((x) => {
+    renderAnswerIfPresent() {
+        this.getQuestions().forEach((x) => {
             for (let prop in x) {
                 if (prop === "answers") {
                     renederQuestion.push({question: x.question, answers: x.answers});
@@ -42,6 +42,7 @@ class TranslateTestObject extends React.Component {
                 }
             }
         })
+        return;
     };
 
     translateData = async () => {
@@ -104,7 +105,7 @@ class TranslateTestObject extends React.Component {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: Constants.PROXYURL + `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/translate/${this.props.choosenTest.id}`,
+            url: `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/translate/${this.props.choosenTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -134,7 +135,7 @@ class TranslateTestObject extends React.Component {
                         <div>
                             {this.state.data.map((x, i) =>
                                 <p key={i}> {x.question} <br/>
-                                    {x.answers.map((y, i) => <a key={i}> {y + ' | '} </a>)}
+                                    {x.answers.map((y, i) => <b key={i}> {y + '  '} </b>)}
                                 </p>
                             )}
                         </div>

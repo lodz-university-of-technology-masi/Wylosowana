@@ -17,7 +17,7 @@ class CompleteTest extends Component {
 
     async componentDidMount() {
         const {id} = this.props.match.params;
-        fetch(`${Constants.PROXYURL}https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${id}`,{
+        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${id}`,{
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -184,7 +184,7 @@ class CompleteTest extends Component {
         alert('Test zostal wyslany 2');
     };
 
-    handleSubmit2 = () => {
+    handleSubmit2 = async () => {
 
         let formInstance = {
             'testId': this.state.testId,
@@ -213,9 +213,13 @@ class CompleteTest extends Component {
             type: "POST",
             dataType: "json",
             url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/answers/',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
             data: JSON.stringify(formInstance),
-            success: function(data,err){
-                if(err)
+            success: function (data, err) {
+                if (err)
                     console.log(err);
                 console.log(data);
                 alert('Test zostal wyslany');

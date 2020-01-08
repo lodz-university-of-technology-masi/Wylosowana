@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Constants from "../../Constants";
 import {Auth} from "aws-amplify";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
@@ -53,7 +52,7 @@ class ShowTests extends Component{
 
     async componentDidMount() {
         axios
-            .get(Constants.PROXYURL + 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+            .get( 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
