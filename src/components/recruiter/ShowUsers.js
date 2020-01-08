@@ -38,6 +38,7 @@ class ShowUsers extends Component{
                         candidate_logins: item.candidate_logins,
                         id: item.id,
                         langs: item.langs,
+                        instances: item.answers,
                         testName: item.testName
                     }))
                 });
@@ -99,14 +100,25 @@ class ShowUsers extends Component{
 
                     for (let t = 0; t < this.state.tests.length; t++) {
                         let test = this.state.tests[t];
-
-                        /*if(test.candidate_logins){
+                        console.log(test.instances)
+                       /*if(test.candidate_logins){
                             for(let c=0; c<test.candidate_logins.length; c++){
                                 if(test.candidate_logins[c] == row.userName){
-                                    rowData += '<li><a href=\"/?#/showsolvedtest/'+test.id+'\" >' + test.testName + '</a></li>';
+                                   rowData += '<li><a href=\"/?#/showsolvedtest/'+test.id+'\" >' + test.testName + '</a></li>';
+                                    //rowData+= '<li><a href=\"/?#/showsolvedtest/'+test.instances+'\" >' + test.testName + '</a></li>';
                                 }
                             }
                         }*/
+
+                        for(let y = 0; y < test.instances.length; y++)
+                        {
+                            if(test.instances[y].login == row.userName)
+                            {
+                               rowData+= '<li><a href=\"/?#/showAnswers/'+test.instances[y].answerId +'\" >' + test.testName + '</a></li>';
+                            }
+
+                        }
+
                     }
 
 
