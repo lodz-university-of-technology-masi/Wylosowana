@@ -45,7 +45,7 @@ export default class Navbars extends Component {
                     )}
                     {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
                         <ButtonToolbar>
-                            <Button variant="outline-info" href="#/adduser">Add User</Button>
+                            <Button variant="outline-info" href="#/adddeleteuser">Add/Delete User</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
                     )}

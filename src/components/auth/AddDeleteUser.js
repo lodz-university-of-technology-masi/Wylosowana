@@ -29,17 +29,21 @@ class AddDeleteUser extends Component {
     }
 
     async componentDidMount() {
+        this.getUsers();
+    }
+
+    getUsers = () => {
         cognitoidentityserviceprovider.listUsers(params, (err, data) => {
             if (err) {
-                console.log(err);
+                console.log(err, err.stack);
             } else {
+                console.log(data);
                 this.setState({
                     users: data.Users
                 });
             }
-            return data;
         });
-    }
+    };
 
     clearErrorState = () => {
         this.setState({
@@ -75,7 +79,12 @@ class AddDeleteUser extends Component {
                 }
             });
             console.log(signUpResponse);
-            this.props.history.push("/");
+            this.setState({
+                username: "",
+                email: "",
+                password: "",
+            });
+            this.getUsers();
         } catch (error) {
             let err = null;
             !error.message ? err = {"message": error} : err = error;
@@ -97,14 +106,16 @@ class AddDeleteUser extends Component {
     };
 
     deleteUser = (username) => {
-        // const param = {
-        //     UserPoolId: config.cognito.USER_POOL_ID,
-        //     Username: username
-        // };
-        // cognitoidentityserviceprovider.adminDeleteUser(param, (err, data) => {
-        //     if (err) console.log(err, err.stack);
-        //     else console.log(data);
-        // });
+        const param = {
+            UserPoolId: config.cognito.USER_POOL_ID,
+            Username: username
+        };
+        cognitoidentityserviceprovider.adminDeleteUser(param, (err, data) => {
+            if (err) console.log(err, err.stack);
+            else {
+                this.getUsers();
+            }
+        });
     };
 
     usersList = () => {
@@ -113,8 +124,10 @@ class AddDeleteUser extends Component {
             return users.map(item => (
                 <ListGroup.Item action key={uuid.v4()}>
                     {item.Username}
-                    <Button className={"float-right"} id="deleteButton"
-                            onClick={this.deleteUser(item.Username)}
+                    <Button className={"float-right"} id={uuid.v4()}
+                            onClick={() => {
+                                this.deleteUser(item.Username)
+                            }}
                             name="deleteUser"
                             variant={"danger"}
                             size="sm">Delete</Button>
@@ -126,68 +139,66 @@ class AddDeleteUser extends Component {
 
     render() {
         return (
-            <section className="section auth">
+            <section className="section user">
                 <Container>
                     <Row>
                         <Col xs={5}>
-                            <div className="container">
-                                <h1>Add User</h1>
-                                <FormErrors formerrors={this.state.errors}/>
+                            <h1>Add User</h1>
+                            <FormErrors formerrors={this.state.errors}/>
 
-                                <form onSubmit={this.handleSubmit}>
-                                    <div className="field">
-                                        <p className="control">
-                                            <input
-                                                className="input"
-                                                type="text"
-                                                id="username"
-                                                aria-describedby="userNameHelp"
-                                                placeholder="Enter username"
-                                                value={this.state.username}
-                                                onChange={this.onInputChange}
-                                            />
-                                        </p>
-                                    </div>
-                                    <div className="field">
-                                        <p className="control has-icons-left has-icons-right">
-                                            <input
-                                                className="input"
-                                                type="email"
-                                                id="email"
-                                                aria-describedby="emailHelp"
-                                                placeholder="Enter email"
-                                                value={this.state.email}
-                                                onChange={this.onInputChange}
-                                            />
-                                            <span className="icon is-small is-left">
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="field">
+                                    <p className="control">
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            id="username"
+                                            aria-describedby="userNameHelp"
+                                            placeholder="Enter username"
+                                            value={this.state.username}
+                                            onChange={this.onInputChange}
+                                        />
+                                    </p>
+                                </div>
+                                <div className="field">
+                                    <p className="control has-icons-left has-icons-right">
+                                        <input
+                                            className="input"
+                                            type="email"
+                                            id="email"
+                                            aria-describedby="emailHelp"
+                                            placeholder="Enter email"
+                                            value={this.state.email}
+                                            onChange={this.onInputChange}
+                                        />
+                                        <span className="icon is-small is-left">
                   <i className="fas fa-envelope"></i>
                 </span>
-                                        </p>
-                                    </div>
-                                    <div className="field">
-                                        <p className="control has-icons-left">
-                                            <input
-                                                className="input"
-                                                type="password"
-                                                id="password"
-                                                placeholder="Password"
-                                                value={this.state.password}
-                                                onChange={this.onInputChange}
-                                            />
-                                            <span className="icon is-small is-left">
+                                    </p>
+                                </div>
+                                <div className="field">
+                                    <p className="control has-icons-left">
+                                        <input
+                                            className="input"
+                                            type="password"
+                                            id="password"
+                                            placeholder="Password"
+                                            value={this.state.password}
+                                            onChange={this.onInputChange}
+                                        />
+                                        <span className="icon is-small is-left">
                   <i className="fas fa-lock"></i>
                 </span>
-                                        </p>
-                                    </div>
-                                    <div className="field">
-                                        <p className="control">
-                                            <button className="button is-success">
-                                                Add User
-                                            </button>
-                                        </p>
-                                    </div>
-                                </form>
-                            </div>
+                                    </p>
+                                </div>
+                                <div className="field">
+                                    <p className="control">
+                                        <button className="button is-success">
+                                            Add User
+                                        </button>
+                                    </p>
+                                </div>
+                            </form>
                         </Col>
                         <Col xs={2}/>
                         <Col xs={5}>

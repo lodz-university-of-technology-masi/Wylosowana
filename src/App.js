@@ -99,7 +99,7 @@ class App extends Component {
                                           component={ShowTests}
                                           profile={recruiter}
                                           auth={authProps}/>
-                            <PrivateRoute exact path="/adduser"
+                            <PrivateRoute exact path="/adddeleteuser"
                                           component={AddDeleteUser}
                                           profile={recruiter}
                                           auth={authProps}/>
