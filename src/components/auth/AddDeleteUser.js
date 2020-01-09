@@ -10,6 +10,7 @@ import {cognitoidentityserviceprovider} from "./CognitoUsers";
 import config from "../../config";
 import uuid from 'uuid';
 import Button from "react-bootstrap/Button";
+import {params} from "../auth/CognitoUsers";
 
 class AddDeleteUser extends Component {
     constructor(props) {
@@ -106,13 +107,14 @@ class AddDeleteUser extends Component {
     };
 
     deleteUser = (username) => {
-        const param = {
+        const params = {
             UserPoolId: config.cognito.USER_POOL_ID,
             Username: username
         };
-        cognitoidentityserviceprovider.adminDeleteUser(param, (err, data) => {
+        cognitoidentityserviceprovider.adminDeleteUser(params, (err, data) => {
             if (err) console.log(err, err.stack);
             else {
+                console.log(data);
                 this.getUsers();
             }
         });
@@ -135,7 +137,6 @@ class AddDeleteUser extends Component {
             ));
         }
     };
-
 
     render() {
         return (
@@ -213,11 +214,5 @@ class AddDeleteUser extends Component {
         );
     }
 }
-
-const params = {
-    UserPoolId: config.cognito.USER_POOL_ID,
-    AttributesToGet: [],
-    Filter: 'name ^= \"Candidate\"',
-};
 
 export default AddDeleteUser;

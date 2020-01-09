@@ -14,7 +14,7 @@ export default class Navbars extends Component {
         } catch (error) {
             console.log(error.message);
         }
-    }
+    };
 
     render() {
         return (
