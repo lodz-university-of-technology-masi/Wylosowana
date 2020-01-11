@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidationAddUser";
-import {Auth} from 'aws-amplify';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -55,6 +54,34 @@ class AddDeleteUser extends Component {
         });
     };
 
+    async createUser() {
+        const {username, email, password, profile} = this.state;
+        const params = {
+            UserPoolId: config.cognito.USER_POOL_ID,
+            Username: username,
+            DesiredDeliveryMediums: [
+                'EMAIL'
+            ],
+            ForceAliasCreation: false,
+            TemporaryPassword: password,
+            UserAttributes: [
+                {
+                    Name: 'email',
+                    Value: email
+                },
+                {
+                    Name: 'profile',
+                    Value: profile
+                },
+                {
+                    Name: 'name',
+                    Value: profile
+                }
+            ]
+        };
+        await cognitoidentityserviceprovider.adminCreateUser(params).promise();
+    };
+
     handleSubmit = async event => {
         event.preventDefault();
 
@@ -68,35 +95,13 @@ class AddDeleteUser extends Component {
         }
 
         // AWS Cognito integration here
-        const {username, email, password, profile} = this.state;
-        try {
-            const signUpResponse = await Auth.signUp({
-                username,
-                password,
-                attributes: {
-                    email: email,
-                    profile: profile,
-                    name: profile
-                }
-            });
-            console.log(signUpResponse);
-            this.setState({
-                username: "",
-                email: "",
-                password: "",
-            });
-            this.getUsers();
-        } catch (error) {
-            let err = null;
-            !error.message ? err = {"message": error} : err = error;
-            this.setState({
-                errors:
-                    {
-                        ...this.state.errors,
-                        cognito: error
-                    }
-            })
-        }
+        await this.createUser();
+        this.setState({
+            username: "",
+            email: "",
+            password: "",
+        });
+        this.getUsers();
     };
 
     onInputChange = event => {

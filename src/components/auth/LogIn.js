@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
-import { Auth } from 'aws-amplify';
+import {Auth} from 'aws-amplify';
+import config from "../../config";
+import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import Form from "react-bootstrap/Form";
 
 class LogIn extends Component {
   state = {
     username: "",
     password: "",
+    newPassword: "",
     errors: {
       cognito: null,
       blankfield: false
@@ -35,8 +39,42 @@ class LogIn extends Component {
     }
 
     // AWS Cognito integration here
-    const { username, email, password } = this.state;
+    const { username, newPassword, password } = this.state;
     try {
+      const authenticationData = {
+        Username : username,
+        Password : password,
+      };
+      const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+      const poolData = {
+        UserPoolId : config.cognito.USER_POOL_ID,
+        ClientId : config.cognito.APP_CLIENT_ID
+      };
+      const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+      const userData = {
+        Username : username,
+        Pool : userPool
+      };
+      const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function (result) {
+          console.log('authenticateUser: ' + JSON.stringify(result));
+        },
+        onFailure: function(err) {
+          console.log('onFailure: ' + JSON.stringify(err));
+        },
+        mfaRequired: function(codeDeliveryDetails) {
+          console.log('mfaRequired: ' + codeDeliveryDetails);
+        },
+        newPasswordRequired: function(userAttributes, requiredAttributes) {
+          console.log('newPasswordRequired: ' + userAttributes + ' ' + requiredAttributes);
+          cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+        }
+      });
+
       const user = await Auth.signIn(this.state.username, this.state.password);
       console.log(user);
       this.props.auth.setAuthStatus(true);
@@ -97,6 +135,24 @@ class LogIn extends Component {
                   <i className="fas fa-lock"></i>
                 </span>
               </p>
+            </div>
+            <div className="field">
+              <p className="control has-icons-left">
+                <input
+                    className="input"
+                    type="password"
+                    id="password"
+                    placeholder="New password"
+                    value={this.state.newPassword}
+                    onChange={this.onInputChange}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-lock"></i>
+                </span>
+              </p>
+              <Form.Text className="text-muted">
+                Required with first candidate login otherwise leave empty.
+              </Form.Text>
             </div>
             <div className="field">
               <p className="control">
