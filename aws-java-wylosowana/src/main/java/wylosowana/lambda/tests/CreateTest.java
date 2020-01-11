@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import wylosowana.creators.TestCreator;
 import wylosowana.mappers.TablesMapperTest;
-import wylosowana.model.Test;
+import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
 
 import java.io.IOException;
@@ -20,12 +20,11 @@ public class CreateTest implements RequestHandler<Map<String, Object>, ApiGatewa
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         TablesMapperTest tablesMapperTest = new TablesMapperTest();
-        Test test = new Test();
         try {
             JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
-
-            // wlasna implementacja
-            test = TestCreator.createTestJSON(body, mapper.convertValue(body.get("questions"), ArrayList.class));
+            Test test = TestCreator.createTestJSON(body,
+                    mapper.convertValue(body.get("langs"), ArrayList.class),
+                    mapper.convertValue(body.get("candidate_logins"), ArrayList.class));
             tablesMapperTest.saveTest(test);
             return ApiResponseHandler.createResponse("sucess.", 200);
         } catch (IOException e) {

@@ -3,10 +3,8 @@ package wylosowana.lambda.tests;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.serverless.ApiGatewayResponse;
-import wylosowana.mappers.TablesMapperPaarticipant;
 import wylosowana.mappers.TablesMapperTest;
-import wylosowana.model.Participant;
-import wylosowana.model.Test;
+import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
 
 import java.io.IOException;

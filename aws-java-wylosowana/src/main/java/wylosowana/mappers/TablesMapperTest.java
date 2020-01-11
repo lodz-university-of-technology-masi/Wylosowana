@@ -7,7 +7,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.DynamoDBAdapter;
-import wylosowana.model.Test;
+import wylosowana.model.Test.Test;
 import wylosowana.model.TestAnswer;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class TablesMapperTest {
 
     public TablesMapperTest() {
         DynamoDBMapperConfig mapperConfig = DynamoDBMapperConfig.builder()
-                .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride("tests_table"))
+                .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride("Tests"))
                 .build();
         this.db_adapter = DynamoDBAdapter.getInstance();
         this.client = this.db_adapter.getDbClient();

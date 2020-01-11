@@ -3,14 +3,14 @@ package wylosowana.lambda.tests;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.serverless.ApiGatewayResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import wylosowana.mappers.TablesMapperTest;
-import wylosowana.model.Test;
+import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
 
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ReadTests implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
     private final Logger logger = LogManager.getLogger(this.getClass());

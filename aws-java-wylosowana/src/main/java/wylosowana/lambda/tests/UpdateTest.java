@@ -7,15 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import wylosowana.creators.TestCreator;
 import wylosowana.mappers.TablesMapperTest;
-import wylosowana.model.Language;
-import wylosowana.model.Question;
-import wylosowana.model.Test;
+import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
-import wylosowana.validator.TestValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class UpdateTest implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
@@ -28,7 +24,9 @@ public class UpdateTest implements RequestHandler<Map<String, Object>, ApiGatewa
         Test test = new Test();
         try {
             JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
-            test = TestCreator.createUpdateTestJSON(body, mapper.convertValue(body.get("questions"), ArrayList.class));
+            test = TestCreator.createUpdateTestJSON(body,
+                    mapper.convertValue(body.get("langs"), ArrayList.class),
+                    mapper.convertValue(body.get("candidate_logins"), ArrayList.class));
             this.tablesMapperTest.updateTest(test);
             return ApiResponseHandler.createResponse("sucess.", 200);
         } catch (IOException e) {

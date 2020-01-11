@@ -2,15 +2,11 @@ package wylosowana.lambda.tests;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import wylosowana.mappers.TablesMapperTest;
-import wylosowana.model.Test;
+import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class ReadTest implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
