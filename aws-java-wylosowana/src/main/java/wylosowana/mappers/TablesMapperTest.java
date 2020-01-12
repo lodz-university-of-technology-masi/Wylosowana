@@ -8,7 +8,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.DynamoDBAdapter;
 import wylosowana.model.Test.Test;
-import wylosowana.model.TestAnswer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,12 +63,9 @@ public class TablesMapperTest {
 
 
     public List<Test> getUserTest(String userId) throws IOException {
-        List<TestAnswer> ans = new TablesMapperAnswers().getUserTests(userId);
+        List<Test> ans = new TablesMapperAnswers().getUserTests(userId);
         List<Test> answer = new ArrayList<>();
-        for (TestAnswer an : ans) {
-            if (an.getAnswers() == null)
-                answer.add(this.getTest(an.getTestId()));
-        }
-        return answer;
+        // TODO sprawdzanie czy dany test nie jest juz napisany!
+        return ans;
     }
 }

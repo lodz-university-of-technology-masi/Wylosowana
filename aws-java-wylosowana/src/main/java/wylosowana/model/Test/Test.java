@@ -9,7 +9,6 @@ import java.util.List;
 public class Test {
     private String id;
     private String title;
-    private String language;
     private List<LangObject> langs;
     private List<String> candidateLogins;
 
@@ -32,15 +31,6 @@ public class Test {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    @DynamoDBAttribute(attributeName = "language")
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     @DynamoDBAttribute(attributeName = "candidate_logins")

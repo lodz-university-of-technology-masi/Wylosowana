@@ -17,7 +17,7 @@ public class ReadMyTests implements RequestHandler<Map<String, Object>, ApiGatew
         Map<String,String> pathParameters =  (Map<String,String>)input.get("pathParameters");
 
         try {
-            List<Test> tests = new TablesMapperTest().getUserTest(pathParameters.get("userId"));
+            List<Test> tests = new TablesMapperTest().getUserTest(pathParameters.get("login"));
             return ApiResponseHandler.createResponse(tests, 200);
         } catch (IOException e) {
             return ApiResponseHandler.createResponse("cannot connect to database.", 401);

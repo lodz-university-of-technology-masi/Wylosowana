@@ -130,15 +130,15 @@ functions:
           cors: true
 
 
-#  readMyTests:
-#    handler: wylosowana.lambda.tests.ReadMyTests
-#    Policies: AmazonDynamoDBFullAccess
-#    events:
-#      - http:
-#          path: /tests/user/{userId}
-#          method: get
-#          cors: true
-#
+  readMyTests:
+    handler: wylosowana.lambda.tests.ReadMyTests
+    Policies: AmazonDynamoDBFullAccess
+    events:
+      - http:
+          path: /tests/user/{userId}
+          method: get
+          cors: true
+
 #  deleteTest:
 #    handler: wylosowana.lambda.tests.DeleteTest
 #    Policies: AmazonDynamoDBFullAccess

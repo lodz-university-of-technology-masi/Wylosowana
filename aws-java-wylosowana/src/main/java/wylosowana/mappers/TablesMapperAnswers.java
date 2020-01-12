@@ -1,15 +1,15 @@
 package wylosowana.mappers;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.serverless.DynamoDBAdapter;
 import wylosowana.creators.TestAnswerCreator;
 import wylosowana.model.Participant;
+import wylosowana.model.Test.Test;
 import wylosowana.model.TestAnswer;
 import wylosowana.model.TestResult;
 
@@ -82,7 +82,7 @@ public class TablesMapperAnswers {
     }
 
     public List<TestResult> getResultUser(String userId) throws IOException{
-        List<TestAnswer> all = this.getUserTests(userId);
+        List<TestAnswer> all = this.getUserTestsUSLS(userId);
         List<TestResult> answer = new ArrayList<TestResult>();
         for(TestAnswer ans : all){
             if(ans.getResult() != null)
@@ -123,7 +123,17 @@ public class TablesMapperAnswers {
     }
 
 
-    public List<TestAnswer> getUserTests(String userId) throws IOException {
+    public List<Test> getUserTests(String userId) throws IOException {
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        eav.put(":candidate_login", new AttributeValue().withS(userId));
+        DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
+                .withProjectionExpression("id, testName, langs")
+                .withFilterExpression("contains (candidate_logins, :candidate_login)")
+                .withExpressionAttributeValues(eav);
+        return this.mapper.scan(Test.class, scanRequest);
+    }
+
+    public List<TestAnswer> getUserTestsUSLS(String userId) throws IOException {
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
         eav.put(":val1", new AttributeValue().withS(userId));
         DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
@@ -131,6 +141,7 @@ public class TablesMapperAnswers {
                 .withExpressionAttributeValues(eav);
         return this.mapper.scan(TestAnswer.class, scanRequest);
     }
+
 
     public void deleteAllTestsOnList(String testId) throws IOException{
         List<TestAnswer> tests =  this.getObjectsWithTestId(testId);
