@@ -25,7 +25,7 @@ class ShowAnswers extends Component{
                 },
             })
             .then((res) => {
-               // console.log(res.data);
+                console.log(res.data);
                 this.setState({
                     testId: id,
                     testName: res.data.testName,
@@ -52,20 +52,28 @@ class ShowAnswers extends Component{
         let rowData = "<div>";
         if (row.answers) {
             let answers = "";
+            let questions = "";
             for (let l = 0; l < row.answers.length; l++) {
                 let answer = row.answers[l];
-                answers += "<li>Pytanie #" + answer.no + ": ";//
+                //console.log(answer)
+                let question = row.questionss[0].questions[l];
+              //  console.log(question)
+               // answers += "<li>Pytanie #" + answer.no + ": ";//
                 if(answer.answer){
-                    answers += answer.answer;
-                }else if(answer.answers){
+                    questions += "Pytanie:     " + question.question + " " ;
+                   // console.log(question)
+                    answers += "\n Odpowiedź:  " + answer.answer;
+                }/*else if(answer.answers){
                     for(let a=0; a < answer.answers.length; a++){
+                        questions += question.question;
                         answers += answer.answers[a] + ", ";
                     }
-                }
+                }*/
+                questions += "</li>";
                 answers += "</li>";
                 // </li>";
             }
-            rowData += '<ul>' + answers + '</ul>';
+            rowData += '<ul>'+ questions + "\n" + answers + '</ul>';
         }
         rowData += "</div><br/><br/>";
         table.push(<div dangerouslySetInnerHTML={{__html: rowData}}></div>)
@@ -75,7 +83,9 @@ class ShowAnswers extends Component{
 
     render() {
         //console.log(this.state);
-        console.log(this.state.questionss)
+        //alert(this.state)
+       console.log(this.state.questionss)
+        console.log(this.state.answers)
         return (
             <section class="section auth">
                 <Form>
