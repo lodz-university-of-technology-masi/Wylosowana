@@ -13,3 +13,4 @@ export const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProv
     region: config.cognito.REGION,
     credentials: new AWS.Credentials('','','') /// !!! klucze od Seby
 });
+

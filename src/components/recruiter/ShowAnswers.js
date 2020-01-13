@@ -25,12 +25,14 @@ class ShowAnswers extends Component{
                 },
             })
             .then((res) => {
-                console.log(res.data);
+               // console.log(res.data);
                 this.setState({
                     testId: id,
                     testName: res.data.testName,
                     userName: res.data.login,
-                    answers: res.data.answers,/*,
+                    answers: res.data.answers,
+                    questionss: res.data.langs
+                    /*,
                     instances: res.data.Items.map(item => ({
                         candidate_login: item.login,
                         id: item.id,
@@ -39,6 +41,7 @@ class ShowAnswers extends Component{
                     }))*/
                 });
             });
+
     }
 
     createTable = () => {
@@ -71,7 +74,8 @@ class ShowAnswers extends Component{
     }
 
     render() {
-        console.log(this.state);
+        //console.log(this.state);
+        console.log(this.state.questionss)
         return (
             <section class="section auth">
                 <Form>
