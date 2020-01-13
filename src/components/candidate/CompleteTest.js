@@ -25,8 +25,7 @@ class CompleteTest extends Component {
         })
             .then(response => response.json())
             .then((jsonData) => {
-                // jsonData is parsed json object received from url
-                console.log(jsonData.Items[0]);
+
 
                 var langs = jsonData.Items[0].langs;
                 //console.log(this.state.response);
@@ -39,13 +38,11 @@ class CompleteTest extends Component {
                                     "no": question.no,
                                     "answers": []
                                 });
-                                console.log(question);
                             }else{
                                 theAnswers.push({
                                     "no": question.no,
                                     "answer": null
                                 });
-                                console.log(question);
                             }
                         });
                     });
@@ -124,33 +121,32 @@ class CompleteTest extends Component {
 
         let component = this;
 
-        console.log("T");
-        console.log(question);
         if (question.answers) {
 
             let output = [];
 
             //ladnie, answers[0][N] zamiast answers[N]
-            if(
-                question.answers.length &&
-                question.answers[0].length > 1
-            ){
-                question.answers = question.answers[0];
+            // if(
+            //     question.answers.length &&
+            //     question.answers[0].length > 1
+            // ){
+            //     question.answers = question.answers[0];
+            // }
+            if(question.answers) {
+                question.answers.map(function (answer, index) {
+                    let id = question.no + "_" + index;
+                    //alert(index);
+                    output.push(<Form.Check
+                        custom
+                        id={id}
+                        data-no={question.no}
+                        data-index={index}
+                        type={'checkbox'}
+                        label={answer}
+                        onChange={component.handleOptionChange}
+                    />);
+                });
             }
-
-            question.answers.map(function(answer, index){
-                let id = question.no + "_" + index;
-                //alert(index);
-                output.push( <Form.Check
-                    custom
-                    id={id}
-                    data-no={question.no}
-                    data-index={index}
-                    type={'checkbox'}
-                    label={answer}
-                    onChange={component.handleOptionChange}
-                /> );
-            });
             return output;
 
             /*
@@ -206,8 +202,6 @@ class CompleteTest extends Component {
 
         };
 
-        console.log(this.state);
-        console.log(formInstance);
 
         $.ajax({
             type: "POST",

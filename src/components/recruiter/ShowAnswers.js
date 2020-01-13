@@ -25,7 +25,6 @@ class ShowAnswers extends Component{
                 },
             })
             .then((res) => {
-                console.log(res.data);
                 this.setState({
                     testId: id,
                     testName: res.data.testName,
@@ -65,15 +64,14 @@ class ShowAnswers extends Component{
             rowData += '<ul>' + answers + '</ul>';
         }
         rowData += "</div><br/><br/>";
-        table.push(<div dangerouslySetInnerHTML={{__html: rowData}}></div>)
+        table.push(<div dangerouslySetInnerHTML={{__html: rowData}} key={{__html: rowData}}/>)
 
         return table
     }
 
     render() {
-        console.log(this.state);
         return (
-            <section class="section auth">
+            <section className="section auth">
                 <Form>
                     <h2>Answers for test {this.state.testName}, filled by {this.state.userName}:</h2><br/><br/>
                     <ul>

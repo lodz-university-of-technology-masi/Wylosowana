@@ -163,8 +163,6 @@ class CreateTest extends Component {
             "candidate_logins": globalCandidates
         }
 
-        console.log(validateTest)
-
         $.ajax({
             type: "POST",
             dataType: "json",

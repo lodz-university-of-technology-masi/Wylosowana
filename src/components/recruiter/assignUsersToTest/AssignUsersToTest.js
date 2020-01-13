@@ -57,7 +57,6 @@ class AssignUsersToTest extends Component {
             }
             return data;
         });
-        console.log(this.state.tests);
     };
 
 

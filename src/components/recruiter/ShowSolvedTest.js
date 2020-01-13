@@ -24,7 +24,6 @@ class ShowSolvedTest extends Component{
                 },
             })
             .then((res) => {
-                console.log(res.data);
                 this.setState({
                     testId: id,
                     instances: res.data.Items.map(item => ({

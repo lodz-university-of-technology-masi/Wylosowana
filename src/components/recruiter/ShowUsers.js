@@ -31,8 +31,6 @@ class ShowUsers extends Component{
                 }
             })
             .then((res) => {
-                console.log(res);
-                console.log(res);
                 this.setState({
                     tests: res.data.Items.map(item => ({
                         candidate_logins: item.candidate_logins,
@@ -89,7 +87,6 @@ class ShowUsers extends Component{
         }*/
 
         //{userName: "user1", selected: false, id: "e4de41df-1e48-4692-b354-45427b95d6f2"}
-        console.log(this.state.tests);
 
         let content = [];
 
@@ -100,7 +97,6 @@ class ShowUsers extends Component{
 
                     for (let t = 0; t < this.state.tests.length; t++) {
                         let test = this.state.tests[t];
-                        console.log(test.instances)
                        /*if(test.candidate_logins){
                             for(let c=0; c<test.candidate_logins.length; c++){
                                 if(test.candidate_logins[c] == row.userName){
