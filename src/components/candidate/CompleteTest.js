@@ -130,14 +130,7 @@ class CompleteTest extends Component {
 
             let output = [];
 
-            //ladnie, answers[0][N] zamiast answers[N]
-            if(
-                question.answers.length &&
-                question.answers[0].length > 1
-            ){
-                question.answers = question.answers[0];
-            }
-
+            if(question.answers)
             question.answers.map(function(answer, index){
                 let id = question.no + "_" + index;
                 //alert(index);
