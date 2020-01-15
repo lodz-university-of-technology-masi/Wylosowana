@@ -7,7 +7,6 @@ import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
-import Constants from "../../Constants";
 import {cognitoidentityserviceprovider} from "../../auth/CognitoUsers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -113,7 +112,7 @@ class AssignUsersToTest extends Component {
                 }
                 return user
             })
-        })
+        });
         this.createListSelectedUsers();
     };
 

@@ -53,7 +53,7 @@ class Export extends Component {
                 'candidate_logins'
             ];
             return tests.map(item => (
-                <tr>
+                <tr key={item.id}>
                     <th>
                         {item.testName}
                     </th>
