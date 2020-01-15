@@ -1,4 +1,4 @@
-package wylosowana.lambda.tests;
+package wylosowana.OwnLambda.Tests;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -7,20 +7,21 @@ import wylosowana.mappers.TablesMapperTest;
 import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-public class ReadMyTests implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+public class ReadTest  implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+
+        // getTest
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-        Map<String,String> pathParameters =  (Map<String,String>)input.get("pathParameters");
 
         try {
-            List<Test> tests = new TablesMapperTest().getUserTest(pathParameters.get("login"));
-            return ApiResponseHandler.createResponse(tests, 200);
-        } catch (IOException e) {
+            Map<String,String> pathParameters =  (Map<String,String>)input.get("pathParameters");
+            Test test = new TablesMapperTest().getTest(pathParameters.get("id"));
+            return ApiResponseHandler.createResponse(test, 200);
+        } catch (Exception  e) {
             return ApiResponseHandler.createResponse("cannot connect to database.", 401);
         }
     }
+
 }

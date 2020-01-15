@@ -1,30 +1,35 @@
-package wylosowana.lambda.answers;
+package wylosowana.OwnLambda.Answers;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
-import wylosowana.creators.TestAnswerCreator;
 import wylosowana.mappers.TablesMapperAnswers;
 import wylosowana.model.TestAnswers.TestAnswer;
 import wylosowana.responses.ApiResponseHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
-public class CreateAnswerResults implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+public class CreateAnswer implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+
+    //postAnswers
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+        TablesMapperAnswers tablesMapperAnswers = new TablesMapperAnswers();
+        ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-            TablesMapperAnswers tablesMapperAnswers = new TablesMapperAnswers();
-            JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
-            TestAnswer answer = tablesMapperAnswers.getUserTestAnswers(body.get("userId").asText(), body.get("testId").asText());
-            tablesMapperAnswers.updateTestAnswer(TestAnswerCreator.addRecruiterResult(answer, new ObjectMapper().convertValue( body.get("results"), ArrayList.class)));
+            JsonNode body = objectMapper.convertValue(input, JsonNode.class);
+            TestAnswer testAnswer = objectMapper.treeToValue(body, TestAnswer.class);
+
+            tablesMapperAnswers.saveTestAnswer(testAnswer);
+
             return ApiResponseHandler.createResponse("sucess.", 200);
         } catch (IOException e) {
             return ApiResponseHandler.createResponse("cannot connect to database.", 401);
         }
     }
+
 }

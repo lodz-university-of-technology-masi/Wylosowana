@@ -1,33 +1,37 @@
-package wylosowana.lambda.tests;
+package wylosowana.OwnLambda.Tests;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
-import wylosowana.creators.TestCreator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import wylosowana.mappers.TablesMapperTest;
 import wylosowana.model.Test.Test;
 import wylosowana.responses.ApiResponseHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class CreateTest implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
-    private ObjectMapper mapper = new ObjectMapper();
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
+        // postTest
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         TablesMapperTest tablesMapperTest = new TablesMapperTest();
+        ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-            JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
-            Test test = TestCreator.createTestJSON(body,
-                    mapper.convertValue(body.get("langs"), ArrayList.class),
-                    mapper.convertValue(body.get("candidate_logins"), ArrayList.class));
+            JsonNode body = objectMapper.convertValue(input, JsonNode.class);
+            Test test = objectMapper.treeToValue(body, Test.class);
+
             tablesMapperTest.saveTest(test);
             return ApiResponseHandler.createResponse("sucess.", 200);
+
         } catch (IOException e) {
+            logger.error("Error in getting Answers: " + e);
             return ApiResponseHandler.createResponse("cannot connect to database.", 401);
         }
     }

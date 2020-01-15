@@ -1,48 +1,43 @@
 package wylosowana.model.TestAnswers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
+import java.util.List;
+
+@DynamoDBDocument
 public class Answers {
 
-    private Optional<String> answer;
-    private Optional<List<String>> answers;
-    private int no;
+    private String answer;
+    private List<String> answers;
+    private Integer no;
 
     public Answers() {};
 
-    public Answers(String answer, int no) {
-        this.answer = Optional.ofNullable(answer);
-        this.no = no;
-    }
-
-    public Answers(List<String> answers, int no) {
-        this.answers = Optional.ofNullable(answers);
-        this.no = no;
-    }
-
+    @DynamoDBAttribute(attributeName = "answer")
     public String getAnswer() {
-        return answer.orElseGet(String::new);
+        return answer;
     }
 
     public void setAnswer(String answer) {
-        this.answer = Optional.ofNullable(answer);
+        this.answer = answer;
     }
 
+    @DynamoDBAttribute(attributeName = "answers")
     public List<String> getAnswers() {
-        return answers.orElseGet(ArrayList::new);
+        return answers;
     }
 
     public void setAnswers(List<String> answers) {
-        this.answers = Optional.ofNullable(answers);
+        this.answers = answers;
     }
 
-    public int getNo() {
+    @DynamoDBAttribute(attributeName = "no")
+    public Integer getNo() {
         return no;
     }
 
-    public void setNo(int no) {
+    public void setNo(Integer no) {
         this.no = no;
     }
 }

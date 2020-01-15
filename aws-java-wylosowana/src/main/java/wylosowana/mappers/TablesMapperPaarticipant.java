@@ -10,7 +10,7 @@ import com.serverless.DynamoDBAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wylosowana.model.Participant;
-import wylosowana.model.TestAnswer;
+import wylosowana.model.TestAnswers.TestAnswer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class TablesMapperPaarticipant {
         List<TestAnswer> answers = new TablesMapperAnswers().getObjectsWithTestId(testId);
         List<Participant> answer = new ArrayList<Participant>();
         for(TestAnswer ans : answers){
-                answer.add(this.getAllParticipant(ans.getUserId()));
+          //      answer.add(this.getAllParticipant(ans.getUserId()));
         }
         return answer;
     }

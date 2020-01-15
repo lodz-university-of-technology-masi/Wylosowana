@@ -1,49 +1,56 @@
 package wylosowana.model.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 
+import java.util.List;
+
+@DynamoDBDocument
 public class Questions {
 
-    private Optional<List<String>> answers;
-    private Optional<List<String>> correct;
-    private int no;
+    private List<String> answers;
+    private List<String> correct;
+    private Integer  no;
     private String question;
 
-    public Questions(List<String> answers, List<String> correct, int no, String question) {
-        this.answers = Optional.ofNullable(answers);
-        this.correct = Optional.ofNullable(correct);
-        this.no = no;
-        this.question = question;
-    }
+//    public Questions(List<String> answers, List<String> correct, int no, String question) {
+//        this.answers = Optional.ofNullable(answers);
+//        this.correct = Optional.ofNullable(correct);
+//        this.no = no;
+//        this.question = question;
+//    }
 
     public Questions() { }
 
+    @DynamoDBAttribute(attributeName = "answers")
     public List<String> getAnswers() {
-        return answers.orElseGet(ArrayList::new);
+        return answers;
     }
 
     public void setAnswers(List<String> answers) {
-        this.answers = Optional.ofNullable(answers);
+        this.answers = answers;
     }
 
+    @DynamoDBAttribute(attributeName = "correct")
     public List<String> getCorrect() {
-        return correct.orElseGet(ArrayList::new);
+        return correct;
     }
 
     public void setCorrect(List<String> correct) {
-        this.correct = Optional.ofNullable(correct);
+        this.correct = correct;
     }
 
-    public int getNo() {
+    @DynamoDBAttribute(attributeName = "no")
+    public Integer getNo() {
         return no;
     }
 
-    public void setNo(int no) {
+    public void setNo(Integer no) {
         this.no = no;
     }
 
+
+    @DynamoDBAttribute(attributeName = "question")
     public String getQuestion() {
         return question;
     }

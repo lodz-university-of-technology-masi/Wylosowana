@@ -5,11 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
-import wylosowana.creators.TestAnswerCreator;
 import wylosowana.mappers.TablesMapperAnswers;
-import wylosowana.mappers.TablesMapperPaarticipant;
-import wylosowana.mappers.TablesMapperTest;
-import wylosowana.model.TestAnswer;
 import wylosowana.responses.ApiResponseHandler;
 import wylosowana.validator.AnswerValidator;
 

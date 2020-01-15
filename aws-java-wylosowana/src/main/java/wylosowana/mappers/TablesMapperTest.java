@@ -10,7 +10,6 @@ import com.serverless.DynamoDBAdapter;
 import wylosowana.model.Test.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,11 +60,13 @@ public class TablesMapperTest {
         return this.mapper.query(Test.class, query).get(0);
     }
 
-
     public List<Test> getUserTest(String userId) throws IOException {
-        List<Test> ans = new TablesMapperAnswers().getUserTests(userId);
-        List<Test> answer = new ArrayList<>();
-        // TODO sprawdzanie czy dany test nie jest juz napisany!
-        return ans;
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        eav.put(":candidate_login", new AttributeValue().withS(userId));
+        DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
+                .withProjectionExpression("id, testName, langs")
+                .withFilterExpression("contains (candidateLogins, :candidate_login)")
+                .withExpressionAttributeValues(eav);
+        return this.mapper.scan(Test.class, scanRequest);
     }
 }

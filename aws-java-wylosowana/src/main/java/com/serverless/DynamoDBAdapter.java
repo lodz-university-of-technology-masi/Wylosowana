@@ -12,7 +12,7 @@ public class DynamoDBAdapter {
     private final AmazonDynamoDB client;
     private DynamoDBMapper mapper;
 
-    private DynamoDBAdapter() {
+    public DynamoDBAdapter() {
         // create the client
         this.client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion(Regions.US_EAST_1)
@@ -36,6 +36,9 @@ public class DynamoDBAdapter {
             mapper = new DynamoDBMapper(this.client, mapperConfig);
 
         return this.mapper;
+    }
+    public DynamoDBMapper getMapper() {
+        return mapper;
     }
 
 }

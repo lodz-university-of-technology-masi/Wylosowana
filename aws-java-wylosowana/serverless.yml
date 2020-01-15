@@ -103,7 +103,7 @@ functions:
   # tests lambdas
 # TODO i DO HERE
   createTest:
-    handler: wylosowana.lambda.tests.CreateTest
+    handler: wylosowana.OwnLambda.Tests.CreateTest
     Policies: AmazonDynamoDBFullAccess
     events:
       - http:
@@ -112,7 +112,7 @@ functions:
           cors: true
 
   readTests:
-    handler: wylosowana.lambda.tests.ReadTests
+    handler: wylosowana.OwnLambda.Tests.ReadTests
     Policies: AmazonDynamoDBFullAccess
     events:
       - http:
@@ -131,7 +131,7 @@ functions:
 
 
   readMyTests:
-    handler: wylosowana.lambda.tests.ReadMyTests
+    handler: wylosowana.OwnLambda.Tests.ReadMyTests
     Policies: AmazonDynamoDBFullAccess
     events:
       - http:
@@ -161,7 +161,7 @@ functions:
 #
 #  # answers lambdas
 #  creatAnswer:
-#    handler: wylosowana.lambda.answers.CreateAnswer
+#    handler: wylosowana.OwnLambda.Answers.CreateAnswer
 #    Policies: AmazonDynamoDBFullAccess
 #    events:
 #      - http:
@@ -226,7 +226,7 @@ functions:
 #          cors: true
 #
 #  readAnswers:
-#    handler: wylosowana.lambda.answers.ReadAnswers
+#    handler: wylosowana.OwnLambda.Answers.ReadAllAnswers
 #    Policies: AmazonDynamoDBFullAccess
 #    events:
 #      - http:
@@ -235,7 +235,7 @@ functions:
 #          cors: true
 #
 #  readUserAnswers:
-#    handler: wylosowana.lambda.answers.ReadUserAnswers
+#    handler: wylosowana.OwnLambda.Answers.ReadUserAnswersTest
 #    Policies: AmazonDynamoDBFullAccess
 #    events:
 #      - http:

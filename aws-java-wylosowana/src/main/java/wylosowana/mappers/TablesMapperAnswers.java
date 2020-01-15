@@ -8,9 +8,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.DynamoDBAdapter;
 import wylosowana.creators.TestAnswerCreator;
-import wylosowana.model.Participant;
 import wylosowana.model.Test.Test;
-import wylosowana.model.TestAnswer;
+import wylosowana.model.TestAnswers.TestAnswer;
 import wylosowana.model.TestResult;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class TablesMapperAnswers {
 
     public TablesMapperAnswers(){
         DynamoDBMapperConfig mapperConfig = DynamoDBMapperConfig.builder()
-                .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride("answer_table"))
+                .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride("Answers"))
                 .build();
         this.db_adapter = DynamoDBAdapter.getInstance();
         this.client = this.db_adapter.getDbClient();
@@ -66,28 +65,23 @@ public class TablesMapperAnswers {
     }
 
 
-    public List<Participant> getTestUsers(String testId) throws IOException{
+    public List<TestAnswer> getTestUsers(String login) throws IOException{
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":val1", new AttributeValue().withS(testId));
+        eav.put(":val1", new AttributeValue().withS(login));
         DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
-                .withFilterExpression("testId = :val1")
+                .withFilterExpression("login = :val1")
                 .withExpressionAttributeValues(eav);
-        List<TestAnswer> all = this.mapper.scan(TestAnswer.class, scanRequest);
-        List<Participant> answer = new ArrayList<Participant>();
-        for(TestAnswer ans : all){
-            if(ans.getAnswers() != null && ans.getResult() == null)
-                answer.add(new TablesMapperPaarticipant().getAllParticipant(ans.getUserId()));
-        }
-        return answer;
+
+        return this.mapper.scan(TestAnswer.class, scanRequest);
     }
 
     public List<TestResult> getResultUser(String userId) throws IOException{
         List<TestAnswer> all = this.getUserTestsUSLS(userId);
         List<TestResult> answer = new ArrayList<TestResult>();
         for(TestAnswer ans : all){
-            if(ans.getResult() != null)
+         //   if(ans.getResult() != null)
 
-                answer.add(new TestResult(new TablesMapperTest().getTest(ans.getTestId()).getTitle()  , ans.getResult()));
+       //         answer.add(new TestResult(new TablesMapperTest().getTest(ans.getTestId()).getTitle()  , ans.getResult()));
         }
 
         return answer;
@@ -128,7 +122,7 @@ public class TablesMapperAnswers {
         eav.put(":candidate_login", new AttributeValue().withS(userId));
         DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
                 .withProjectionExpression("id, testName, langs")
-                .withFilterExpression("contains (candidate_logins, :candidate_login)")
+                .withFilterExpression("contains(candidate_logins, :candidate_login)")
                 .withExpressionAttributeValues(eav);
         return this.mapper.scan(Test.class, scanRequest);
     }
