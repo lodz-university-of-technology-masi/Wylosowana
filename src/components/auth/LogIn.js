@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
-import {Auth} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import config from "../../config";
 import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
 import Form from "react-bootstrap/Form";
@@ -10,7 +10,7 @@ class LogIn extends Component {
   state = {
     username: "",
     password: "",
-    newPassword: "",
+    newPasswordCandidate: "",
     errors: {
       cognito: null,
       blankfield: false
@@ -39,23 +39,23 @@ class LogIn extends Component {
     }
 
     // AWS Cognito integration here
-    const { username, newPassword, password } = this.state;
+    const { username, newPasswordCandidate, password } = this.state;
     try {
       const authenticationData = {
-        Username : username,
-        Password : password,
+        Username: username,
+        Password: password,
       };
       const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
 
       const poolData = {
-        UserPoolId : config.cognito.USER_POOL_ID,
-        ClientId : config.cognito.APP_CLIENT_ID
+        UserPoolId: config.cognito.USER_POOL_ID,
+        ClientId: config.cognito.APP_CLIENT_ID
       };
       const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
       const userData = {
-        Username : username,
-        Pool : userPool
+        Username: username,
+        Pool: userPool
       };
       const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
@@ -63,23 +63,30 @@ class LogIn extends Component {
         onSuccess: function (result) {
           console.log('authenticateUser: ' + JSON.stringify(result));
         },
-        onFailure: function(err) {
+        onFailure: function (err) {
           console.log('onFailure: ' + JSON.stringify(err));
         },
-        mfaRequired: function(codeDeliveryDetails) {
+        mfaRequired: function (codeDeliveryDetails) {
           console.log('mfaRequired: ' + codeDeliveryDetails);
         },
-        newPasswordRequired: function(userAttributes, requiredAttributes) {
+        newPasswordRequired: function (userAttributes, requiredAttributes) {
           console.log('newPasswordRequired: ' + userAttributes + ' ' + requiredAttributes);
-          cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+          cognitoUser.completeNewPasswordChallenge(newPasswordCandidate, userAttributes, this);
         }
       });
 
-      const user = await Auth.signIn(this.state.username, this.state.password);
+      const user = await Auth.signIn(username, password);
       console.log(user);
-      this.props.auth.setAuthStatus(true);
-      this.props.auth.setUser(user);
-      this.props.history.push("/");
+      if (user.getSignInUserSession()) {
+        this.props.auth.setAuthStatus(true);
+        this.props.auth.setUser(user);
+        this.props.history.push("/");
+      } else {
+        const error = { blankfield: true };
+        this.setState({
+          errors: { ...this.state.errors, ...error }
+        });
+      }
     } catch (error) {
       let err = null;
       !error.message ? err = { "message": error } : err = error;
@@ -139,12 +146,12 @@ class LogIn extends Component {
             <div className="field">
               <p className="control has-icons-left">
                 <input
-                    className="input"
-                    type="password"
-                    id="password"
-                    placeholder="New password"
-                    value={this.state.newPassword}
-                    onChange={this.onInputChange}
+                  className="input"
+                  type="password"
+                  id="newPasswordCandidate"
+                  placeholder="New password"
+                  value={this.state.newPasswordCandidate}
+                  onChange={this.onInputChange}
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-lock"></i>
