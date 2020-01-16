@@ -11,6 +11,6 @@ export const params = {
 export const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: config.cognito.REGION,
-    credentials: new AWS.Credentials('','','') /// !!! klucze od Seby
+    credentials: new AWS.Credentials('','', '') /// !!! klucze od Seby
 });
 
