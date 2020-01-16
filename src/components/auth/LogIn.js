@@ -26,6 +26,51 @@ class LogIn extends Component {
     });
   };
 
+  async checkUser() {
+    const { username, newPasswordCandidate, password } = this.state;
+    const authenticationData = {
+      Username: username,
+      Password: password,
+    };
+    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+    const poolData = {
+      UserPoolId: config.cognito.USER_POOL_ID,
+      ClientId: config.cognito.APP_CLIENT_ID
+    };
+    const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    const userData = {
+      Username: username,
+      Pool: userPool
+    };
+    const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+    return new Promise(function (resolve, reject) {
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function (result) {
+          console.log('authenticateUser: ' + JSON.stringify(result));
+          return resolve({ login: true, changePassword: false });
+        },
+        onFailure: function (err) {
+          console.log('onFailure: ' + JSON.stringify(err));
+        },
+        mfaRequired: function (codeDeliveryDetails) {
+          console.log('mfaRequired: ' + codeDeliveryDetails);
+        },
+        newPasswordRequired: function (userAttributes, requiredAttributes) {
+          console.log('newPasswordRequired: ' + userAttributes + ' ' + requiredAttributes);
+          if (newPasswordCandidate === "") {
+            return resolve({ login: false, changePassword: false });
+          } else {
+            cognitoUser.completeNewPasswordChallenge(newPasswordCandidate, userAttributes, this);
+            return resolve({ login: true, changePassword: true });
+          }
+        }
+      });
+    });
+  }
+
   handleSubmit = async event => {
     event.preventDefault();
 
@@ -39,45 +84,24 @@ class LogIn extends Component {
     }
 
     // AWS Cognito integration here
-    const { username, newPasswordCandidate, password } = this.state;
     try {
-      const authenticationData = {
-        Username: username,
-        Password: password,
-      };
-      const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+      let login = false;
+      let password = this.state.password;
+      const { username, newPasswordCandidate } = this.state;
 
-      const poolData = {
-        UserPoolId: config.cognito.USER_POOL_ID,
-        ClientId: config.cognito.APP_CLIENT_ID
-      };
-      const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-      const userData = {
-        Username: username,
-        Pool: userPool
-      };
-      const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-      cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
-          console.log('authenticateUser: ' + JSON.stringify(result));
-        },
-        onFailure: function (err) {
-          console.log('onFailure: ' + JSON.stringify(err));
-        },
-        mfaRequired: function (codeDeliveryDetails) {
-          console.log('mfaRequired: ' + codeDeliveryDetails);
-        },
-        newPasswordRequired: function (userAttributes, requiredAttributes) {
-          console.log('newPasswordRequired: ' + userAttributes + ' ' + requiredAttributes);
-          cognitoUser.completeNewPasswordChallenge(newPasswordCandidate, userAttributes, this);
+      await this.checkUser().then(
+        function (value) {
+          login = value.login;
+          if (value.changePassword) {
+            password = newPasswordCandidate;
+          }
         }
-      });
+      );
 
       const user = await Auth.signIn(username, password);
       console.log(user);
-      if (user.getSignInUserSession()) {
+
+      if (login) {
         this.props.auth.setAuthStatus(true);
         this.props.auth.setUser(user);
         this.props.history.push("/");
