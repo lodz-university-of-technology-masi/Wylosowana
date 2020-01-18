@@ -4,10 +4,12 @@ const Constants = {
 };
 export default Constants
 
+const COGNITO_BASE_URL = 'https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev';
+
 export const URL = {
     cognito: {
-        listCandidates: 'https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/candidates',
-        deleteUser: 'https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/deleteuser/',
-        createUser: 'https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/createUser',
+        listCandidates: COGNITO_BASE_URL + '/candidates',
+        deleteUser: COGNITO_BASE_URL + '/deleteuser/',
+        createUser: COGNITO_BASE_URL + '/createUser',
     }
 };
