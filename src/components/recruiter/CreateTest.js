@@ -146,6 +146,17 @@ class CreateTest extends Component {
                     return {"no": ind, "question": val}
             })
 
+        try {
+            if (!questions.length)
+                throw "Test have to at least one question";
+             else if (this.state.name === "")
+                throw "Test name is reuqired !";
+             else if (this.state.lang === "")
+                throw "Lang is reuqired !";
+        }catch (e) {
+            console.log("error: " + e)
+            return ;
+        }
 
         const validateTest = {
             "testName": this.state.name,
@@ -175,6 +186,7 @@ class CreateTest extends Component {
                 console.log(data);
             }
         });
+        globalAnswers = globalQuestionAnswers = globalQuestions = globalClosedQuestions = globalCandidates = []
 
         // this.props.history.push('/');
     }
