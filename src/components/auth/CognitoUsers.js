@@ -3,7 +3,7 @@ import {Auth} from "aws-amplify";
 import {URL} from "../Constants"
 
 export async function listCandidates() {
-   return  axios
+    return axios
         .get(URL.cognito.listCandidates, {
             headers: {
                 'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ export async function listCandidates() {
 }
 
 export async function deleteUser(username) {
-    return  axios
+    return axios
         .delete(URL.cognito.deleteUser + username, {
             headers: {
                 'Content-Type': 'application/json',
@@ -23,18 +23,19 @@ export async function deleteUser(username) {
 }
 
 export async function createUser(username, forceAliasCreation, temporaryPassword, email, profile) {
-    return  axios
+    return axios
         .post(URL.cognito.createUser, {
+            "username": username,
+            "forceAliasCreation": forceAliasCreation,
+            "temporaryPassword": temporaryPassword,
+            "email": email,
+            "profile": profile,
+            "name": profile,
+        }, {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
-            },
-                "username": username,
-                "forceAliasCreation": forceAliasCreation,
-                "temporaryPassword": temporaryPassword,
-                "email": email,
-                "profile": profile,
-                "name": profile,
+            }
         });
 }
 
