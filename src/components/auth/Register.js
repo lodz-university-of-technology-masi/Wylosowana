@@ -37,32 +37,33 @@ class Register extends Component {
       this.setState({
         errors: { ...this.state.errors, ...error }
       });
-    }
+    } else {
 
-    // AWS Cognito integration here
-    const { username, email, password, profile } = this.state;
-    try {
-      const signUpResponse = await Auth.signUp({
-        username,
-        password,
-        attributes: {
-          email: email,
-          profile: profile,
-          name: profile
-        }
-      });
-      console.log(signUpResponse);
-      this.props.history.push("/welcome");
-    } catch (error) {
-      let err = null;
-      !error.message ? err = { "message": error } : err = error;
-      this.setState({
-        errors:
-        {
-          ...this.state.errors,
-          cognito: error
-        }
-      })
+      // AWS Cognito integration here
+      const { username, email, password, profile } = this.state;
+      try {
+        const signUpResponse = await Auth.signUp({
+          username,
+          password,
+          attributes: {
+            email: email,
+            profile: profile,
+            name: profile
+          }
+        });
+        console.log(signUpResponse);
+        this.props.history.push("/welcome");
+      } catch (error) {
+        let err = null;
+        !error.message ? err = { "message": error } : err = error;
+        this.setState({
+          errors:
+          {
+            ...this.state.errors,
+            cognito: error
+          }
+        })
+      }
     }
   };
 

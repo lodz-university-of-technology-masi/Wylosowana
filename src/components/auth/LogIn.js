@@ -46,7 +46,7 @@ class LogIn extends Component {
     };
     const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
           console.log('authenticateUser: ' + JSON.stringify(result));
