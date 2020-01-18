@@ -26,3 +26,13 @@ export async function listCandidates() {
         });
 }
 
+export async function deleteUser(username) {
+    return  axios
+        .post('https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/deleteuser/' + username, {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
+        });
+}
+

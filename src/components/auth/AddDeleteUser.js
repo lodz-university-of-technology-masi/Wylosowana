@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
-import {cognitoidentityserviceprovider, listCandidates} from "./CognitoUsers";
+import {cognitoidentityserviceprovider, listCandidates, deleteUser} from "./CognitoUsers";
 import config from "../../config";
 import uuid from 'uuid';
 import Button from "react-bootstrap/Button";
@@ -107,7 +107,8 @@ class AddDeleteUser extends Component {
     };
 
     deleteUser = (username) => {
-        const params = {
+        deleteUser(username).then(() => this.getUsers());
+/*        const params = {
             UserPoolId: config.cognito.USER_POOL_ID,
             Username: username
         };
@@ -117,7 +118,7 @@ class AddDeleteUser extends Component {
                 console.log(data);
                 this.getUsers();
             }
-        });
+        });*/
     };
 
     usersList = () => {
