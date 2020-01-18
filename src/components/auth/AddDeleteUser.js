@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
-import {cognitoidentityserviceprovider} from "./CognitoUsers";
+import {cognitoidentityserviceprovider, listCandidates} from "./CognitoUsers";
 import config from "../../config";
 import uuid from 'uuid';
 import Button from "react-bootstrap/Button";
@@ -33,15 +33,10 @@ class AddDeleteUser extends Component {
     }
 
     getUsers = () => {
-        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
-            if (err) {
-                console.log(err, err.stack);
-            } else {
-                console.log(data);
-                this.setState({
-                    users: data.Users
-                });
-            }
+        listCandidates().then((res) => {
+            this.setState({
+                users: res.data
+            });
         });
     };
 
@@ -130,10 +125,10 @@ class AddDeleteUser extends Component {
             const users = this.state.users;
             return users.map(item => (
                 <ListGroup.Item action key={uuid.v4()}>
-                    {item.Username}
+                    {item.username}
                     <Button className={"float-right"} id={uuid.v4()}
                             onClick={() => {
-                                this.deleteUser(item.Username)
+                                this.deleteUser(item.username)
                             }}
                             name="deleteUser"
                             variant={"danger"}
