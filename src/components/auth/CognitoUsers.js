@@ -28,11 +28,28 @@ export async function listCandidates() {
 
 export async function deleteUser(username) {
     return  axios
-        .post('https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/deleteuser/' + username, {
+        .delete('https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/deleteuser/' + username, {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
             },
+        });
+}
+
+export async function createUser(username, forceAliasCreation, temporaryPassword, email, profile) {
+    return  axios
+        .post('https://dkue6ysvr4.execute-api.us-east-1.amazonaws.com/dev/createUser', {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
+                "username": username,
+                "forceAliasCreation": forceAliasCreation,
+                "temporaryPassword": temporaryPassword,
+                "email": email,
+                "profile": profile,
+                "name": profile,
+
         });
 }
 

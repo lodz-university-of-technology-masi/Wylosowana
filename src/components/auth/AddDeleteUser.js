@@ -5,11 +5,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
-import {cognitoidentityserviceprovider, listCandidates, deleteUser} from "./CognitoUsers";
-import config from "../../config";
+import {listCandidates, deleteUser, createUser} from "./CognitoUsers";
 import uuid from 'uuid';
 import Button from "react-bootstrap/Button";
-import {params} from "../auth/CognitoUsers";
 
 class AddDeleteUser extends Component {
     constructor(props) {
@@ -51,30 +49,8 @@ class AddDeleteUser extends Component {
 
     async createUser() {
         const {username, email, password, profile} = this.state;
-        const params = {
-            UserPoolId: config.cognito.USER_POOL_ID,
-            Username: username,
-            DesiredDeliveryMediums: [
-                'EMAIL'
-            ],
-            ForceAliasCreation: false,
-            TemporaryPassword: password,
-            UserAttributes: [
-                {
-                    Name: 'email',
-                    Value: email
-                },
-                {
-                    Name: 'profile',
-                    Value: profile
-                },
-                {
-                    Name: 'name',
-                    Value: profile
-                }
-            ]
-        };
-        await cognitoidentityserviceprovider.adminCreateUser(params).promise();
+        createUser(username,false,password,email,profile)
+            .then(() => this.getUsers());
     };
 
     handleSubmit = async event => {
@@ -108,17 +84,6 @@ class AddDeleteUser extends Component {
 
     deleteUser = (username) => {
         deleteUser(username).then(() => this.getUsers());
-/*        const params = {
-            UserPoolId: config.cognito.USER_POOL_ID,
-            Username: username
-        };
-        cognitoidentityserviceprovider.adminDeleteUser(params, (err, data) => {
-            if (err) console.log(err, err.stack);
-            else {
-                console.log(data);
-                this.getUsers();
-            }
-        });*/
     };
 
     usersList = () => {

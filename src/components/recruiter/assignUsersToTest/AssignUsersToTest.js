@@ -53,7 +53,6 @@ class AssignUsersToTest extends Component {
         });
     };
 
-
     constructor(props) {
         super(props)
     }
