@@ -6,7 +6,7 @@ import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
 import Constants from "../Constants";
-import {cognitoidentityserviceprovider} from "../auth/CognitoUsers";
+import {listCandidates} from "../auth/CognitoUsers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Test from "./ShowAndTranslateTests/Test";
@@ -44,21 +44,15 @@ class ShowUsers extends Component{
                 });
             });
 
-        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                this.setState({
-                    users: data.Users.map(item => ({
-                        userName: item.Username,
-                        selected: false,
-                        id: uuid.v4()
-                    }))
-                });
-            }
-            return data;
+        listCandidates().then((res) => {
+            this.setState({
+                users: res.data.map(item => ({
+                    userName: item.username,
+                    selected: false,
+                    id: uuid.v4()
+                }))
+            });
         });
-
     }
 
     createTable = () => {
