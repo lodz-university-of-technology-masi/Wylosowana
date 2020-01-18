@@ -89,6 +89,32 @@ functions:
           method: get
           path: /tests/candidate/{login}
           cors: true
+  getAnswerById:
+    handler: com.wylosowana.handlers.answers.GetAnswerById
+    events:
+      - http:
+          method: get
+          path: /answers/{id}
+          cors: true
+  updateCandidateLogins:
+    handler: com.wylosowana.handlers.tests.UpdateCandidateLogins
+    events:
+      - http:
+          method: put
+          path: /tests/{id}
+          cors: true
+  addTestTranslation:
+    handler: com.wylosowana.handlers.test.AddTestTranslation
+    events:
+      - http:
+          method: put
+          path: /tests/translation/{id}
+  deleteTestById:
+    handler: com.wylosowana.handlers.test.DeleteTest
+    events:
+      - http:
+          method: delete
+          path: /tests/{id}
   mirrorHandler:
     handler: com.wylosowana.handlers.MirrorHandler
     events:
