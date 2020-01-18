@@ -11,6 +11,7 @@ import lombok.extern.apachecommons.CommonsLog;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CommonsLog
 public class DynamoDBTestDao implements TestDao {
@@ -46,7 +47,7 @@ public class DynamoDBTestDao implements TestDao {
 
     @Override
     public void delete(Test test) throws ElementNotExist {
-        if(test != null){
+        if (test != null) {
             findById(test.getId()).orElseThrow(ElementNotExist::new);
             dbMapper.delete(test);
         }
@@ -57,5 +58,10 @@ public class DynamoDBTestDao implements TestDao {
     public Optional<Test> save(Test test) {
         dbMapper.save(test);
         return findById(test.getId());
+    }
+
+    @Override
+    public List<Test> findByCandidateLogin(String login) {
+        return findAll().stream().filter(test -> test.getCandidateLogins().contains(login)).distinct().collect(Collectors.toList());
     }
 }

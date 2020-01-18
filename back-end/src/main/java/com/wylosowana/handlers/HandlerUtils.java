@@ -15,8 +15,9 @@ public class HandlerUtils {
     private static final String BODY_KEY = "body";
     private static final String PATH_PARAMETERS_KEY = "pathParameters";
     private static final String QUERY_PARAMETERS_KEY = "queryStringParameters";
-    private static final String IDENTITY_KEY = "indentity";
-    private static final String USER_KEY = "user";
+    private static final String REQUEST_CONTEXT_KEY = "requestContext";
+    private static final String AUTHORIZER_KEY = "authorizer";
+    private static final String USERNAME_KEY = "cognito:username";
 
     public static ApiGatewayResponse.Builder buildResponse() {
         return ApiGatewayResponse.builder().setHeaders(getCorsHeader());
@@ -35,8 +36,9 @@ public class HandlerUtils {
     }
 
     public static String getUser(Map<String, Object> requestInput) {
-        Map<String, Object> identity = (Map<String, Object>) requestInput.get(IDENTITY_KEY);
-        return (String) identity.get(USER_KEY);
+        Map<String, Object> identity = (Map<String, Object>) requestInput.get(REQUEST_CONTEXT_KEY);
+        Map<String, Object> authorizer = (Map<String, Object>) identity.get(AUTHORIZER_KEY);
+        return (String) authorizer.get(USERNAME_KEY);
     }
 
     public static ApiGatewayResponse.Builder buildError() {

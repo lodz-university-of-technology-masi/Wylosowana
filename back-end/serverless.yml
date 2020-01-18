@@ -82,6 +82,13 @@ functions:
           method: get
           path: /tests/answers/{testId}/{login}
           cors: true
+  getTestsForCandidate:
+    handler: com.wylosowana.handlers.tests.GetTestsForCandidate
+    events:
+      - htpp:
+          method: get
+          path: /tests/candidate/{login}
+          cors: true
   mirrorHandler:
     handler: com.wylosowana.handlers.MirrorHandler
     events:
