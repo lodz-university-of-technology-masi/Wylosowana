@@ -13,9 +13,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GetTestsForCandidate extends TestHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+    private static final String LOGIN_KEY = "login";
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-        String login = HandlerUtils.getUser(input);
+        String login = HandlerUtils.getPathParams(input).get(LOGIN_KEY);
+        System.out.println(login);
         List<ResponsePOJO> tests = testDao.findByCandidateLogin(login).stream().map(ResponsePOJO::fromTest).collect(Collectors.toList());
 
         return HandlerUtils.buildResponse().setStatusCode(HttpStatus.SC_OK).setObjectBody(tests).build();
