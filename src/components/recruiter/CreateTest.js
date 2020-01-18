@@ -3,10 +3,10 @@ import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import $ from 'jquery';
 import {ButtonGroup} from "react-bootstrap";
-import {cognitoidentityserviceprovider} from "../auth/CognitoUsers";
-import {params} from "../auth/CognitoUsers";
+import {listCandidates} from "../auth/CognitoUsers";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import {Auth} from "aws-amplify";
+import uuid from "uuid";
 
 let globalAnswers = []
 let globalQuestionAnswers = []
@@ -40,16 +40,11 @@ class CreateTest extends Component {
     }
 
     componentDidMount = () => {
-        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
-            if (err)
-                console.log(err, err.stack);
-            else {
-                this.setState({
-                    candidateList: data.Users.map(cand => cand.Username)
-                });
-            }
+        listCandidates().then((res) => {
+            this.setState({
+                candidateList: res.data.map(cand => cand.username)
+            });
         });
-
     };
 
     handleNameChange = (event) => {
@@ -160,7 +155,7 @@ class CreateTest extends Component {
                     "questions": questions
                 }
             ],
-            "candidate_logins": globalCandidates
+            "candidateLogins": globalCandidates
         }
 
         console.log(validateTest)
@@ -168,7 +163,7 @@ class CreateTest extends Component {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

@@ -27,7 +27,7 @@ exports.handler = async(event, context) => {
         let solvedTestsWithNamesAndLogins = solvedTestsIds.map( testId => {
             let name = testsData.Items.filter( test => test.id == testId)[0].testName;
             let logins = answersData.Items.filter(answer => answer.testId == testId).map(answer => answer.login);
-            return {"id": testId, "name": name, "candidate_logins": logins};
+            return {"id": testId, "name": name, "candidateLogins": logins};
         });
         
         

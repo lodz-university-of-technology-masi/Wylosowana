@@ -105,7 +105,7 @@ class TranslateTestObject extends React.Component {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/translate/${this.props.choosenTest.id}`,
+            url: `https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/translation/${this.props.choosenTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

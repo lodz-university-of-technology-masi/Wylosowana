@@ -6,7 +6,7 @@ import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
 import Constants from "../Constants";
-import {cognitoidentityserviceprovider} from "../auth/CognitoUsers";
+import {listCandidates} from "../auth/CognitoUsers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Test from "./ShowAndTranslateTests/Test";
@@ -35,7 +35,7 @@ class ShowUsers extends Component{
                 console.log(res);
                 this.setState({
                     tests: res.data.Items.map(item => ({
-                        candidate_logins: item.candidate_logins,
+                        candidateLogins: item.candidateLogins,
                         id: item.id,
                         langs: item.langs,
                         instances: item.answers,
@@ -44,21 +44,15 @@ class ShowUsers extends Component{
                 });
             });
 
-        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                this.setState({
-                    users: data.Users.map(item => ({
-                        userName: item.Username,
-                        selected: false,
-                        id: uuid.v4()
-                    }))
-                });
-            }
-            return data;
+        listCandidates().then((res) => {
+            this.setState({
+                users: res.data.map(item => ({
+                    userName: item.username,
+                    selected: false,
+                    id: uuid.v4()
+                }))
+            });
         });
-
     }
 
     createTable = () => {
@@ -101,9 +95,9 @@ class ShowUsers extends Component{
                     for (let t = 0; t < this.state.tests.length; t++) {
                         let test = this.state.tests[t];
                         console.log(test.instances)
-                       /*if(test.candidate_logins){
-                            for(let c=0; c<test.candidate_logins.length; c++){
-                                if(test.candidate_logins[c] == row.userName){
+                       /*if(test.candidateLogins){
+                            for(let c=0; c<test.candidateLogins.length; c++){
+                                if(test.candidateLogins[c] == row.userName){
                                    rowData += '<li><a href=\"/?#/showsolvedtest/'+test.id+'\" >' + test.testName + '</a></li>';
                                     //rowData+= '<li><a href=\"/?#/showsolvedtest/'+test.instances+'\" >' + test.testName + '</a></li>';
                                 }

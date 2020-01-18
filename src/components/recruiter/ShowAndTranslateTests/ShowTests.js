@@ -52,7 +52,7 @@ class ShowTests extends Component{
 
     async componentDidMount() {
         axios
-            .get( 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+            .get( 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests', {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -60,8 +60,8 @@ class ShowTests extends Component{
             })
             .then((res) => {
                 this.setState({
-                    tests: res.data.Items.map(item => ({
-                        candidate_logins: item.candidate_logins,
+                    tests: res.data.map(item => ({
+                        candidateLogins: item.candidateLogins,
                         id: item.id,
                         langs: item.langs,
                         testName: item.testName

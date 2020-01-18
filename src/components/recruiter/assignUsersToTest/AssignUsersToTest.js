@@ -7,9 +7,9 @@ import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
-import {cognitoidentityserviceprovider} from "../../auth/CognitoUsers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import {listCandidates} from "../../auth/CognitoUsers";
 
 class AssignUsersToTest extends Component {
 
@@ -24,7 +24,7 @@ class AssignUsersToTest extends Component {
 
     async componentDidMount() {
         axios
-            .get( 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+            .get( 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests', {
                     headers: {
                         'Content-Type': 'application/json',
                         'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -33,8 +33,8 @@ class AssignUsersToTest extends Component {
             )
             .then((res) => {
                 this.setState({
-                    tests: res.data.Items.map(item => ({
-                        candidate_logins: item.candidate_logins,
+                    tests: res.data.map(item => ({
+                        candidateLogins: item.candidateLogins,
                         id: item.id,
                         langs: item.langs,
                         testName: item.testName
@@ -42,23 +42,16 @@ class AssignUsersToTest extends Component {
                 });
             });
 
-        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                this.setState({
-                    users: data.Users.map(item => ({
-                        userName: item.Username,
-                        selected: false,
-                        id: uuid.v4()
-                    }))
-                });
-            }
-            return data;
+        listCandidates().then((res) => {
+            this.setState({
+                users: res.data.map(item => ({
+                    userName: item.username,
+                    selected: false,
+                    id: uuid.v4()
+                }))
+            });
         });
-        console.log(this.state.tests);
     };
-
 
     constructor(props) {
         super(props)
@@ -66,10 +59,10 @@ class AssignUsersToTest extends Component {
 
     //Select Test
     selectTest = (id) => {
-        let toRemove =[...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidate_logins})[0];
+        let toRemove =[...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidateLogins})[0];
                 this.setState({
                     modifiedTest: {
-                        candidate_logins: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidate_logins})[0],
+                        candidateLogins: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidateLogins})[0],
                         id: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.id})[0],
                         langs: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.langs})[0],
                         testName: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.testName})[0]
@@ -90,7 +83,7 @@ class AssignUsersToTest extends Component {
 
         this.setState({
             modifiedTest: {
-                candidate_logins: [...this.state.modifiedTest.candidate_logins,...this.state.selectedUsers],
+                candidateLogins: [...this.state.modifiedTest.candidateLogins,...this.state.selectedUsers],
                 id: this.state.modifiedTest.id,
                 langs: this.state.modifiedTest.langs,
                 testName: this.state.modifiedTest.testName
@@ -119,13 +112,13 @@ class AssignUsersToTest extends Component {
     handleSubmit = async () => {
 
         const validateTest = {
-            "candidate_logins": this.state.modifiedTest.candidate_logins,
+            "candidateLogins": this.state.modifiedTest.candidateLogins,
         };
 
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
+            url: `https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/${this.state.modifiedTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

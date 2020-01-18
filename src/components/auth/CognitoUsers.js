@@ -1,16 +1,41 @@
-import config from "../../config";
+import axios from "axios";
+import {Auth} from "aws-amplify";
+import {URL} from "../Constants"
 
-const  AWS = require('aws-sdk');
+export async function listCandidates() {
+    return axios
+        .get(URL.cognito.listCandidates, {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            }
+        });
+}
 
-export const params = {
-    UserPoolId: config.cognito.USER_POOL_ID,
-    AttributesToGet: ["name"], // if null return all
-    Filter: 'name ^= \"Candidate\"',
-};
+export async function deleteUser(username) {
+    return axios
+        .delete(URL.cognito.deleteUser + username, {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            },
+        });
+}
 
-export const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({
-    apiVersion: '2016-04-18',
-    region: config.cognito.REGION,
-    credentials: new AWS.Credentials('','', '') /// !!! klucze od Seby
-});
+export async function createUser(username, forceAliasCreation, temporaryPassword, email, profile) {
+    return axios
+        .post(URL.cognito.createUser, {
+            "username": username,
+            "forceAliasCreation": forceAliasCreation,
+            "temporaryPassword": temporaryPassword,
+            "email": email,
+            "profile": profile,
+            "name": profile,
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            }
+        });
+}
 
