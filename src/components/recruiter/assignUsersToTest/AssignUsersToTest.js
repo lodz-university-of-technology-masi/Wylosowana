@@ -3,13 +3,14 @@ import axios from 'axios';
 import ChoiceTest from "./ChoiceTest";
 import uuid from 'uuid'
 import ChoiceUsers from "./ChoiceUsers";
-import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {listCandidates} from "../../auth/CognitoUsers";
+import Modal from "react-bootstrap/Modal";
+
 
 class AssignUsersToTest extends Component {
 
@@ -20,11 +21,13 @@ class AssignUsersToTest extends Component {
         visibility: true,
         users: [],
         selectedUsers: [],
+        showSuccess: false,
+        showError: false
     };
 
     async componentDidMount() {
         axios
-            .get( 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+            .get( 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests', {
                     headers: {
                         'Content-Type': 'application/json',
                         'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -33,8 +36,8 @@ class AssignUsersToTest extends Component {
             )
             .then((res) => {
                 this.setState({
-                    tests: res.data.Items.map(item => ({
-                        candidate_logins: item.candidate_logins,
+                    tests: res.data.map(item => ({
+                        candidateLogins: item.candidateLogins,
                         id: item.id,
                         langs: item.langs,
                         testName: item.testName
@@ -53,22 +56,16 @@ class AssignUsersToTest extends Component {
         });
     };
 
-    constructor(props) {
-        super(props)
-    }
-
-    //Select Test
     selectTest = (id) => {
-        let toRemove =[...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidate_logins})[0];
+        let toRemove =[...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidateLogins})[0];
                 this.setState({
                     modifiedTest: {
-                        candidate_logins: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidate_logins})[0],
+                        candidateLogins: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidateLogins})[0],
                         id: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.id})[0],
                         langs: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.langs})[0],
                         testName: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.testName})[0]
                     }
                 });
-        console.log(this.state.modifiedTest);
         this.setState({visibility: false});
         if(toRemove!==undefined) {
             this.setState({
@@ -80,10 +77,9 @@ class AssignUsersToTest extends Component {
     };
 
     modifyTest = () => {
-
         this.setState({
             modifiedTest: {
-                candidate_logins: [...this.state.modifiedTest.candidate_logins,...this.state.selectedUsers],
+                candidateLogins: [...this.state.modifiedTest.candidateLogins,...this.state.selectedUsers],
                 id: this.state.modifiedTest.id,
                 langs: this.state.modifiedTest.langs,
                 testName: this.state.modifiedTest.testName
@@ -110,28 +106,38 @@ class AssignUsersToTest extends Component {
     };
 
     handleSubmit = async () => {
-
         const validateTest = {
-            "candidate_logins": this.state.modifiedTest.candidate_logins,
+            "candidateLogins": this.state.modifiedTest.candidateLogins,
         };
 
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${this.state.modifiedTest.id}`,
+            url: `https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/${this.state.modifiedTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
             },
             data: JSON.stringify(validateTest),
-            success: function (data, err) {
-                if (err)
-                    console.log(err);
-                console.log(data);
-            }
+            success: function () {
+                this.setState({
+                    showSuccess: true,
+                });
+            }.bind(this),
+            error: function () {
+                this.setState({
+                    showError: true,
+                });
+            }.bind(this),
         });
+    };
 
-        this.props.history.push('/');
+    handleCloseSuccess = () => {
+        window.location.reload();
+    };
+
+    handleCloseError = () => {
+        window.location.reload();
     };
 
     render() {
@@ -153,15 +159,33 @@ class AssignUsersToTest extends Component {
                             </span>
                         </OverlayTrigger>
                     </div>}
+
+                <Modal show={this.state.showSuccess} onHide={this.handleCloseSuccess} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Users assign successfully</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Users can solve this test.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={this.handleCloseSuccess}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.showError} onHide={this.handleCloseError} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Assign failed!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Please try again.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={this.handleCloseError}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </section>
         )
     }
 }
-
-const params = {
-    UserPoolId: config.cognito.USER_POOL_ID,
-    AttributesToGet: [],
-    Filter: 'name ^= \"Candidate\"',
-};
 
 export default AssignUsersToTest;

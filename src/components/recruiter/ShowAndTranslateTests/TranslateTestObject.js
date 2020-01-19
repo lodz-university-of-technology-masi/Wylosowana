@@ -32,15 +32,10 @@ class TranslateTestObject extends React.Component {
 
     renderAnswerIfPresent() {
         this.getQuestions().forEach((x) => {
-            for (let prop in x) {
-                if (prop === "answers") {
+            if(x.answers !== null)
                     renederQuestion.push({question: x.question, answers: x.answers});
-                    break;
-                } else {
+                 else
                     renederQuestion.push({question: x.question, answers: []});
-                    break;
-                }
-            }
         })
         return;
     };
@@ -98,14 +93,12 @@ class TranslateTestObject extends React.Component {
 
         this.props.choosenTest.langs.push({lang: this.props.choosenTest.choosen === 'EN' ? 'PL' : 'EN', questions: validateTestQuestions});
 
-        const validateTest = {
-            "translation": {lang: this.props.choosenTest.choosen === 'EN' ? 'PL' : 'EN', questions: validateTestQuestions}
-        };
+        const validateTest = {lang: this.props.choosenTest.choosen === 'EN' ? 'PL' : 'EN', questions: validateTestQuestions};
 
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: `https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/translate/${this.props.choosenTest.id}`,
+            url: `https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/translation/${this.props.choosenTest.id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

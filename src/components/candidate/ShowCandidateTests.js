@@ -6,12 +6,14 @@ class ShowCandidateTests extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: JSON
+            tests: []
         };
     }
 
     async componentDidMount() {
-        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/candidates/${this.props.auth.user.username}`,
+
+
+        fetch(`https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/candidates/${this.props.auth.user.username}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,7 +26,12 @@ class ShowCandidateTests extends Component {
                 // jsonData is parsed json object received from url
                 console.log(jsonData);
                 this.setState({
-                    response: jsonData
+                    tests: jsonData.map(item => ({
+                        candidateLogins: item.candidateLogins,
+                        id: item.id,
+                        langs: item.langs,
+                        testName: item.testName
+                    }))
                 })
             })
             .catch((error) => {
@@ -34,10 +41,10 @@ class ShowCandidateTests extends Component {
     }
 
     testsList = () => {
-        if (this.state.response.Items) {
-            const tests = this.state.response.Items;
-            return tests.map(item => (
-                <ListGroup.Item action key={item.id} href={`#completetest/${item.id}`} state={item.id}>{item.testName}</ListGroup.Item>
+        if (this.state.tests) {
+            const tests = this.state.tests;
+            return tests.map(test => (
+                <ListGroup.Item action key={test.id} href={`#completetest/${test.id}`} state={test.id}>{test.testName}</ListGroup.Item>
             ));
         }
     };

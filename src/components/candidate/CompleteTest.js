@@ -17,7 +17,7 @@ class CompleteTest extends Component {
 
     async componentDidMount() {
         const {id} = this.props.match.params;
-        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${id}`,{
+        fetch(`https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/${id}`,{
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -25,15 +25,10 @@ class CompleteTest extends Component {
         })
             .then(response => response.json())
             .then((jsonData) => {
-                // jsonData is parsed json object received from url
-                console.log(jsonData.Items[0]);
-
-                var langs = jsonData.Items[0].langs;
-                //console.log(this.state.response);
+                var lang = jsonData.langs[0];
                 var theAnswers = [];
-                if (langs) {
-                    langs.map(function(item){
-                        item.questions.map(function(question) {
+                if (lang) {
+                        lang.questions.map(function(question) {
                             if (question.answers){
                                 theAnswers.push({
                                     "no": question.no,
@@ -48,19 +43,15 @@ class CompleteTest extends Component {
                                 console.log(question);
                             }
                         });
-                    });
                 }
 
-
-
                 this.setState({
-                    response: jsonData.Items[0],
+                    response: jsonData,
                     userAnswers: theAnswers,
-                    testId: jsonData.Items[0].id,
-                    language: jsonData.Items[0].langs[0].lang
+                    testId: jsonData.id,
+                    language: jsonData.langs[0].lang
                 });
 
-                console.log(this.state);
             })
             .catch((error) => {
                 // handle your errors here
@@ -84,22 +75,13 @@ class CompleteTest extends Component {
                     a.answers.push(answerIndex);
                 }
             }
-        });
+        })
 
         this.setState({
             userAnswers: userAnswers
-        }) ;
+        });
         console.log(this.state);
     };
-
-    /*handleLanguage = (e) => {
-        var language = e.target.getAttribute('data-lang');
-        return language;
-
-    };*/
-
-
-
 
 
     handleOpenChange = (e) => {
@@ -114,6 +96,7 @@ class CompleteTest extends Component {
             }
         });
 
+
         this.setState({
             userAnswers: userAnswers
         })
@@ -124,16 +107,11 @@ class CompleteTest extends Component {
 
         let component = this;
 
-        console.log("T");
-        console.log(question);
         if (question.answers) {
-
             let output = [];
-
             if(question.answers)
             question.answers.map(function(answer, index){
                 let id = question.no + "_" + index;
-                //alert(index);
                 output.push( <Form.Check
                     custom
                     id={id}
@@ -142,19 +120,10 @@ class CompleteTest extends Component {
                     type={'checkbox'}
                     label={answer}
                     onChange={component.handleOptionChange}
+                    key = {index}
                 /> );
             });
             return output;
-
-            /*
-                        return question.answers.map((answers) => (
-                            <Form.Check
-                                custom
-                                id={question.no}
-                                type={'checkbox'}
-                                label={answers}
-                                onChange={component.handleOptionChange}
-                            />))*/
         } else {
             return <Form.Control id={question.no} as="textarea" data-lang={lang} rows="3" onChange={component.handleOpenChange} />
         }
@@ -162,50 +131,41 @@ class CompleteTest extends Component {
 
     questionsList = () => {
         if (this.state.response.langs) {
-            return this.state.response.langs.map((item) => (
-                <Form.Group controlId="candidateQuestion">{item.questions.map((question) => (
+            return this.state.response.langs[0].questions.map((item,index) => (
+                <Form.Group key={index}>
                     <div className="formQuestions">
-                        <h5>Question {question.no}</h5>
-                        <Form.Label>{question.question}</Form.Label>
-                        {this.answerQuestion(question, item.lang)}
-                    </div>))}</Form.Group>
+                        <h5>Question {item.no}</h5>
+                        <Form.Label>{item.question}</Form.Label>
+                        {this.answerQuestion(item, this.state.response.langs[0].lang)}
+                    </div></Form.Group>
             ))
         }
     };
 
-    handleSubmit(event) {
-        alert('Test zostal wyslany 2');
+    goBack() {
+        this.props.history.push("/");
     };
 
     handleSubmit2 = async () => {
+
+        const these = this;
+        this.state.userAnswers.forEach(a => {
+            if(a.hasOwnProperty("answers"))
+                 a.answers = a.answers.map(String)
+        });
 
         let formInstance = {
             'testId': this.state.testId,
             'login': this.props.auth.user.username,
             'lang': this.state.language,
             'answers': this.state.userAnswers
-            /*[
-                {
-                    'no': this.state.userAnswers,
-                    'answer': this.state.answers
-                },
-                {
-                    'no': this.state.userAnswers,
-                    'lang': 'EN',
-                    'answer': this.state.answer
-                }
-                ]
-            */
-
         };
 
-        console.log(this.state);
-        console.log(formInstance);
 
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/answers/',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/answers/',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -214,8 +174,8 @@ class CompleteTest extends Component {
             success: function (data, err) {
                 if (err)
                     console.log(err);
-                console.log(data);
                 alert('Test zostal wyslany');
+                these.goBack();
             }
         });
     };
@@ -236,7 +196,7 @@ class CompleteTest extends Component {
                         <Button onClick={this.handleSubmit2} id="saveTestButton" type="submit" variant="success" className="mt-3"
                         > Save
                             Test </Button>
-                        <div className="buttons-space"></div>
+                        <div className="buttons-space"/>
                         <Button id="saveTestButton" type="submit" variant="danger" className="mt-3"
                                 href="#showcandidatetests"> Back </Button>
                     </Form.Row>

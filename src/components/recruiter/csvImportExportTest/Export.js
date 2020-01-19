@@ -7,12 +7,12 @@ class Export extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: JSON
+            tests: []
         };
     }
 
     async componentDidMount() {
-        fetch('https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests', {
+        fetch('https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests', {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -20,10 +20,14 @@ class Export extends Component {
         })
             .then(response => response.json())
             .then((jsonData) => {
-                // jsonData is parsed json object received from url
                 console.log(jsonData);
                 this.setState({
-                    response: jsonData
+                    tests: jsonData.map(item => ({
+                        candidateLogins: item.candidateLogins,
+                        id: item.id,
+                        langs: item.langs,
+                        testName: item.testName
+                    }))
                 })
             })
             .catch((error) => {
@@ -33,13 +37,13 @@ class Export extends Component {
     }
 
     testsList = () => {
-        if (this.state.response.Items) {
-            const tests = this.state.response.Items;
+        if (this.state.tests) {
+            const tests = this.state.tests;
             const {Parser} = require('json2csv');
-            const fields = ['langs.lang', 'langs.questions.no', 'langs.questions.question', 'langs.questions.answers', 'langs.questions.correct', 'testName', 'id', 'candidate_logins'];
+            const fields = ['langs.lang', 'langs.questions.no', 'langs.questions.question', 'langs.questions.answers', 'langs.questions.correct', 'testName', 'id', 'candidateLogins'];
             const json2csvParser = new Parser({
                 fields,
-                unwind: ['langs', 'langs.questions', 'langs.questions.answers', 'langs.questions.correct', 'candidate_logins'],
+                unwind: ['langs', 'langs.questions', 'langs.questions.answers', 'langs.questions.correct', 'candidateLogins'],
                 header: false
             });
             const headers = [
@@ -50,7 +54,7 @@ class Export extends Component {
                 'correct',
                 'testName',
                 'id',
-                'candidate_logins'
+                'candidateLogins'
             ];
             return tests.map(item => (
                 <tr key={item.id}>

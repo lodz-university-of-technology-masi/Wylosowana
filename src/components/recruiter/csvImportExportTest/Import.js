@@ -80,10 +80,10 @@ class Import extends Component {
         newQuestion.question = this.state.data[this.state.data.length - 1].question;
         newQuestion.question = this.state.data[this.state.data.length - 1].question;
         listNewQuestion.push(newQuestion);
-        let candidate_logins = [];
+        let candidateLogins = [];
         for (let e of this.state.data) {
-            if (candidate_logins.indexOf(e.candidate_logins) === -1 && e.candidate_logins !== "") {
-                candidate_logins.push(e.candidate_logins)
+            if (candidateLogins.indexOf(e.candidateLogins) === -1 && e.candidateLogins !== "") {
+                candidateLogins.push(e.candidateLogins)
             }
             let newArray = {
                 langs: [
@@ -93,7 +93,7 @@ class Import extends Component {
                     }
                 ],
                 testName: this.state.data[0].testName,
-                candidate_logins: candidate_logins
+                candidateLogins: candidateLogins
             };
 
             this.setState({newTest: newArray})
@@ -104,7 +104,7 @@ class Import extends Component {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

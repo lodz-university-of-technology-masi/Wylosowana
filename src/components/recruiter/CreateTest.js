@@ -89,6 +89,10 @@ class CreateTest extends Component {
         })
     };
 
+    goToMainPage() {
+        this.props.history.push("/");
+    }
+
 
     saveClosedQuestion = (event) => {
         globalClosedQuestions.push(this.state.tempClosedQuestion)
@@ -107,31 +111,32 @@ class CreateTest extends Component {
             this.saveQuestionAnswer()
         }
         globalQuestionAnswers = []
-    }
+    };
 
     saveQuestionAnswer = () => {
         globalQuestionAnswers.push(this.state.correct);
         this.setState({
             correct: 'default'
         });
-    }
+    };
 
     saveOpenQuestion = (event) => {
         globalQuestions.push(this.state.tempQuestion);
         this.setState({
             tempQuestion: ' '
         });
-    }
+    };
 
     saveCandidate = (event) => {
         globalCandidates.push(this.state.candidate);
         this.setState({
             candidate: ' '
         });
-    }
+    };
 
 
     async handleSubmit(event) {
+
         const questions = globalClosedQuestions.concat(globalQuestions)
             .map((val, ind) => {
                 let sizeCloseQuest = globalClosedQuestions.length;
@@ -146,6 +151,17 @@ class CreateTest extends Component {
                     return {"no": ind, "question": val}
             })
 
+        try {
+            if (!questions.length)
+                throw "Test have to at least one question";
+             else if (this.state.name === "")
+                throw "Test name is reuqired !";
+             else if (this.state.lang === "")
+                throw "Lang is reuqired !";
+        }catch (e) {
+            console.log("error: " + e)
+            return ;
+        }
 
         const validateTest = {
             "testName": this.state.name,
@@ -155,15 +171,21 @@ class CreateTest extends Component {
                     "questions": questions
                 }
             ],
-            "candidate_logins": globalCandidates
-        }
+            "candidateLogins": globalCandidates
+        };
 
-        console.log(validateTest)
+        const these = this;
+         globalAnswers = []
+         globalQuestionAnswers = []
+         globalQuestions = []
+         globalClosedQuestions = []
+         globalTrueSelect = []
+         globalCandidates = []
 
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -173,10 +195,10 @@ class CreateTest extends Component {
                 if (err)
                     console.log(err);
                 console.log(data);
+                these.goToMainPage();
             }
         });
 
-        // this.props.history.push('/');
     }
 
 
@@ -239,10 +261,10 @@ class CreateTest extends Component {
                                 <Form.Control as="select" onChange={this.handleCorrectChange.bind(this)}
                                               value={this.state.correct}>
                                     <option value="default" hidden>Select a correct</option>
-                                    <option value="1">First</option>
-                                    <option value="2">Second</option>
-                                    <option value="3">Third</option>
-                                    <option value="4">Fourth</option>
+                                    <option value="0">First</option>
+                                    <option value="1">Second</option>
+                                    <option value="2">Third</option>
+                                    <option value="3">Fourth</option>
                                 </Form.Control>
                             </Form.Group>
                             <div className="float-right">

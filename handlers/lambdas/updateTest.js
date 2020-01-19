@@ -8,15 +8,15 @@ exports.handler = async(event, context) => {
     let statusCode = 0;
     
     const id  = event.id;
-    const candidate_logins = event.candidate_logins;
+    const candidateLogins = event.candidateLogins;
     const params = {
         TableName: "Tests",
         Key: {
             'id': parseInt(id),
         },
-        UpdateExpression: "set candidate_logins = :logins",
+        UpdateExpression: "set candidateLogins = :logins",
         ExpressionAttributeValues: {
-            ":logins": candidate_logins
+            ":logins": candidateLogins
         },
         ReturnValues: "UPDATED_NEW"
     };
