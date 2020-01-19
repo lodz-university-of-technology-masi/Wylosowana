@@ -11,7 +11,9 @@ class ShowCandidateTests extends Component {
     }
 
     async componentDidMount() {
-        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/candidates/${this.props.auth.user.username}`,
+
+
+        fetch(`https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/candidates/${this.props.auth.user.username}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,8 +36,8 @@ class ShowCandidateTests extends Component {
     }
 
     testsList = () => {
-        if (this.state.response.Items) {
-            const tests = this.state.response.Items;
+        if (this.state.response) {
+            const tests = this.state.response;
             return tests.map(item => (
                 <ListGroup.Item action key={item.id} href={`#completetest/${item.id}`} state={item.id}>{item.testName}</ListGroup.Item>
             ));
