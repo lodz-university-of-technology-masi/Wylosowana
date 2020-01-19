@@ -6,7 +6,6 @@ import {ButtonGroup} from "react-bootstrap";
 import {listCandidates} from "../auth/CognitoUsers";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import {Auth} from "aws-amplify";
-import uuid from "uuid";
 
 let globalAnswers = []
 let globalQuestionAnswers = []
@@ -111,28 +110,28 @@ class CreateTest extends Component {
             this.saveQuestionAnswer()
         }
         globalQuestionAnswers = []
-    }
+    };
 
     saveQuestionAnswer = () => {
         globalQuestionAnswers.push(this.state.correct);
         this.setState({
             correct: 'default'
         });
-    }
+    };
 
     saveOpenQuestion = (event) => {
         globalQuestions.push(this.state.tempQuestion);
         this.setState({
             tempQuestion: ' '
         });
-    }
+    };
 
     saveCandidate = (event) => {
         globalCandidates.push(this.state.candidate);
         this.setState({
             candidate: ' '
         });
-    }
+    };
 
 
     async handleSubmit(event) {
@@ -172,7 +171,7 @@ class CreateTest extends Component {
                 }
             ],
             "candidateLogins": globalCandidates
-        }
+        };
 
         const these = this;
          globalAnswers = []
@@ -261,10 +260,10 @@ class CreateTest extends Component {
                                 <Form.Control as="select" onChange={this.handleCorrectChange.bind(this)}
                                               value={this.state.correct}>
                                     <option value="default" hidden>Select a correct</option>
-                                    <option value="1">First</option>
-                                    <option value="2">Second</option>
-                                    <option value="3">Third</option>
-                                    <option value="4">Fourth</option>
+                                    <option value="0">First</option>
+                                    <option value="1">Second</option>
+                                    <option value="2">Third</option>
+                                    <option value="3">Fourth</option>
                                 </Form.Control>
                             </Form.Group>
                             <div className="float-right">
