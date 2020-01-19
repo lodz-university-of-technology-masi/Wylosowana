@@ -11,10 +11,6 @@ class ShowUsers extends Component {
         tabel: []
     };
 
-    constructor(props) {
-        super(props)
-    }
-
     async componentDidMount() {
         axios
             .get('https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/answers', {
@@ -24,7 +20,6 @@ class ShowUsers extends Component {
                 }
             })
             .then((res) => {
-                console.log(res);
                 this.setState({
                     usersTests: res.data.map(item => ({
                         testId: item.testId,
@@ -44,8 +39,6 @@ class ShowUsers extends Component {
                 usersLogin.push(item.candidateLogin);
             }
         });
-
-        console.log(usersLogin);
 
         let content = [];
 

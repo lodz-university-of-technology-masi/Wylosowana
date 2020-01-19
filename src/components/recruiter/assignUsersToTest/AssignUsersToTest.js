@@ -3,7 +3,6 @@ import axios from 'axios';
 import ChoiceTest from "./ChoiceTest";
 import uuid from 'uuid'
 import ChoiceUsers from "./ChoiceUsers";
-import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
@@ -56,7 +55,6 @@ class AssignUsersToTest extends Component {
         });
     };
 
-    //Select Test
     selectTest = (id) => {
         let toRemove =[...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.candidateLogins})[0];
                 this.setState({
@@ -67,7 +65,6 @@ class AssignUsersToTest extends Component {
                         testName: [...this.state.tests.filter(user => {return (user.id===id)})].map(user => {return user.testName})[0]
                     }
                 });
-        console.log(this.state.modifiedTest);
         this.setState({visibility: false});
         if(toRemove!==undefined) {
             this.setState({
@@ -79,7 +76,6 @@ class AssignUsersToTest extends Component {
     };
 
     modifyTest = () => {
-
         this.setState({
             modifiedTest: {
                 candidateLogins: [...this.state.modifiedTest.candidateLogins,...this.state.selectedUsers],
@@ -109,7 +105,6 @@ class AssignUsersToTest extends Component {
     };
 
     handleSubmit = async () => {
-
         const validateTest = {
             "candidateLogins": this.state.modifiedTest.candidateLogins,
         };
@@ -134,17 +129,13 @@ class AssignUsersToTest extends Component {
                 });
             }.bind(this),
         });
-
-
     };
 
     handleCloseSuccess = () => {
-     //   this.setState({showSuccess: false});
         window.location.reload();
     };
 
     handleCloseError = () => {
-       // this.setState({showError: false});
         window.location.reload();
     };
 

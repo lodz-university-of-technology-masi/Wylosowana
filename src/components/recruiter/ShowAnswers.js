@@ -18,7 +18,6 @@ class ShowAnswers extends Component {
                 },
             })
             .then((res) => {
-                console.log(res);
                 this.setState({
                     questionAnswers: res.data.map(item => ({
                         question: item.question,
