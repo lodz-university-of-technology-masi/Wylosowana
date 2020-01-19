@@ -10,6 +10,7 @@ import {Auth} from "aws-amplify";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import {listCandidates} from "../../auth/CognitoUsers";
+import Modal from "react-bootstrap/Modal";
 
 class AssignUsersToTest extends Component {
 
@@ -20,6 +21,8 @@ class AssignUsersToTest extends Component {
         visibility: true,
         users: [],
         selectedUsers: [],
+        showSuccess: false,
+        showError: false
     };
 
     async componentDidMount() {
@@ -52,10 +55,6 @@ class AssignUsersToTest extends Component {
             });
         });
     };
-
-    constructor(props) {
-        super(props)
-    }
 
     //Select Test
     selectTest = (id) => {
@@ -124,14 +123,29 @@ class AssignUsersToTest extends Component {
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
             },
             data: JSON.stringify(validateTest),
-            success: function (data, err) {
-                if (err)
-                    console.log(err);
-                console.log(data);
-            }
+            success: function () {
+                this.setState({
+                    showSuccess: true,
+                });
+            }.bind(this),
+            error: function () {
+                this.setState({
+                    showError: true,
+                });
+            }.bind(this),
         });
 
-        this.props.history.push('/');
+
+    };
+
+    handleCloseSuccess = () => {
+     //   this.setState({showSuccess: false});
+        window.location.reload();
+    };
+
+    handleCloseError = () => {
+       // this.setState({showError: false});
+        window.location.reload();
     };
 
     render() {
@@ -153,15 +167,33 @@ class AssignUsersToTest extends Component {
                             </span>
                         </OverlayTrigger>
                     </div>}
+
+                <Modal show={this.state.showSuccess} onHide={this.handleCloseSuccess} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Users assign successfully</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Users can solve this test.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={this.handleCloseSuccess}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.showError} onHide={this.handleCloseError} animation={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Assign failed!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Please try again.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="danger" onClick={this.handleCloseError}>
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </section>
         )
     }
 }
-
-const params = {
-    UserPoolId: config.cognito.USER_POOL_ID,
-    AttributesToGet: [],
-    Filter: 'name ^= \"Candidate\"',
-};
 
 export default AssignUsersToTest;
