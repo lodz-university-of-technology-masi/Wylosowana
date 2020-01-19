@@ -1,30 +1,31 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types'
 import User from "./User";
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
+import Table from "react-bootstrap/Table";
 
 class SelectedUsers extends Component {
 
     render() {
         return (
-            <Card>
-                <Card.Header><h3>Selected users</h3></Card.Header>
-                <ListGroup variant="flush">
+                <React.Fragment>
+                    <h3>Selected users</h3>
+                <Table size="sm">
+                    <tbody>
                     {this.props.users.filter(function (x) {
                         return x.selected;
                     }).map((user) => (
-                        <ListGroup.Item>
-                            <div className="selected-user-display"><User selectUsers={this.props.selectUsers} key={user.id} user={user}/></div>
-                        </ListGroup.Item>
+                        <tr key={user.id}>
+                                <User selectUsers={this.props.selectUsers} key={user.id} user={user}/>
+                        </tr>
                     ))}
-                </ListGroup>
-            </Card>
+                    </tbody>
+                </Table>
+                </React.Fragment>
         );
     }
 }
 
-User.propTypes = {
+SelectedUsers.propTypes = {
     selectUsers: PropTypes.func.isRequired,
     users: PropTypes.array.isRequired
 };

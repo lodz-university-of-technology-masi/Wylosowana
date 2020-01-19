@@ -30,7 +30,9 @@ class ShowAnswers extends Component{
                     testId: id,
                     testName: res.data.testName,
                     userName: res.data.login,
-                    answers: res.data.answers,/*,
+                    answers: res.data.answers,
+                    questionss: res.data.langs
+                    /*,
                     instances: res.data.Items.map(item => ({
                         candidate_login: item.login,
                         id: item.id,
@@ -39,6 +41,7 @@ class ShowAnswers extends Component{
                     }))*/
                 });
             });
+
     }
 
     createTable = () => {
@@ -49,20 +52,28 @@ class ShowAnswers extends Component{
         let rowData = "<div>";
         if (row.answers) {
             let answers = "";
+            let questions = "";
             for (let l = 0; l < row.answers.length; l++) {
                 let answer = row.answers[l];
-                answers += "<li>Pytanie #" + answer.no + ": ";//
+                //console.log(answer)
+                let question = row.questionss[0].questions[l];
+              //  console.log(question)
+               // answers += "<li>Pytanie #" + answer.no + ": ";//
                 if(answer.answer){
-                    answers += answer.answer;
-                }else if(answer.answers){
+                    questions += "Pytanie:     " + question.question + " " ;
+                   // console.log(question)
+                    answers += "\n Odpowiedź:  " + answer.answer;
+                }/*else if(answer.answers){
                     for(let a=0; a < answer.answers.length; a++){
+                        questions += question.question;
                         answers += answer.answers[a] + ", ";
                     }
-                }
+                }*/
+                questions += "</li>";
                 answers += "</li>";
                 // </li>";
             }
-            rowData += '<ul>' + answers + '</ul>';
+            rowData += '<ul>'+ questions + "\n" + answers + '</ul>';
         }
         rowData += "</div><br/><br/>";
         table.push(<div dangerouslySetInnerHTML={{__html: rowData}}></div>)
@@ -71,7 +82,10 @@ class ShowAnswers extends Component{
     }
 
     render() {
-        console.log(this.state);
+        //console.log(this.state);
+        //alert(this.state)
+       console.log(this.state.questionss)
+        console.log(this.state.answers)
         return (
             <section class="section auth">
                 <Form>

@@ -7,10 +7,9 @@ import config from "../../../config";
 import $ from "jquery";
 import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
-import Constants from "../../Constants";
-import {cognitoidentityserviceprovider} from "../../auth/CognitoUsers";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import {listCandidates} from "../../auth/CognitoUsers";
 
 class AssignUsersToTest extends Component {
 
@@ -43,23 +42,16 @@ class AssignUsersToTest extends Component {
                 });
             });
 
-        cognitoidentityserviceprovider.listUsers(params, (err, data) => {
-            if (err) {
-                console.log(err);
-            } else {
-                this.setState({
-                    users: data.Users.map(item => ({
-                        userName: item.Username,
-                        selected: false,
-                        id: uuid.v4()
-                    }))
-                });
-            }
-            return data;
+        listCandidates().then((res) => {
+            this.setState({
+                users: res.data.map(item => ({
+                    userName: item.username,
+                    selected: false,
+                    id: uuid.v4()
+                }))
+            });
         });
-        console.log(this.state.tests);
     };
-
 
     constructor(props) {
         super(props)
@@ -113,7 +105,7 @@ class AssignUsersToTest extends Component {
                 }
                 return user
             })
-        })
+        });
         this.createListSelectedUsers();
     };
 

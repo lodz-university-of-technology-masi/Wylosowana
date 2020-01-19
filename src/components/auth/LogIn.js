@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
 import { Auth } from 'aws-amplify';
+import config from "../../config";
+import * as AmazonCognitoIdentity from "amazon-cognito-identity-js";
+import Form from "react-bootstrap/Form";
 
 class LogIn extends Component {
   state = {
     username: "",
     password: "",
+    newPasswordCandidate: "",
     errors: {
       cognito: null,
       blankfield: false
@@ -22,6 +26,51 @@ class LogIn extends Component {
     });
   };
 
+  async checkUser() {
+    const { username, newPasswordCandidate, password } = this.state;
+    const authenticationData = {
+      Username: username,
+      Password: password,
+    };
+    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+    const poolData = {
+      UserPoolId: config.cognito.USER_POOL_ID,
+      ClientId: config.cognito.APP_CLIENT_ID
+    };
+    const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    const userData = {
+      Username: username,
+      Pool: userPool
+    };
+    const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+    return new Promise(function (resolve) {
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function (result) {
+          console.log('authenticateUser: ' + JSON.stringify(result));
+          return resolve({ login: true, changePassword: false });
+        },
+        onFailure: function (err) {
+          console.log('onFailure: ' + JSON.stringify(err));
+        },
+        mfaRequired: function (codeDeliveryDetails) {
+          console.log('mfaRequired: ' + codeDeliveryDetails);
+        },
+        newPasswordRequired: function (userAttributes, requiredAttributes) {
+          console.log('newPasswordRequired: ' + userAttributes + ' ' + requiredAttributes);
+          if (newPasswordCandidate === "") {
+            return resolve({ login: false, changePassword: false });
+          } else {
+            cognitoUser.completeNewPasswordChallenge(newPasswordCandidate, userAttributes, this);
+            return resolve({ login: true, changePassword: true });
+          }
+        }
+      });
+    });
+  }
+
   handleSubmit = async event => {
     event.preventDefault();
 
@@ -35,13 +84,33 @@ class LogIn extends Component {
     }
 
     // AWS Cognito integration here
-    const { username, email, password } = this.state;
     try {
-      const user = await Auth.signIn(this.state.username, this.state.password);
+      let login = false;
+      let password = this.state.password;
+      const { username, newPasswordCandidate } = this.state;
+
+      await this.checkUser().then(
+        function (value) {
+          login = value.login;
+          if (value.changePassword) {
+            password = newPasswordCandidate;
+          }
+        }
+      );
+
+      const user = await Auth.signIn(username, password);
       console.log(user);
-      this.props.auth.setAuthStatus(true);
-      this.props.auth.setUser(user);
-      this.props.history.push("/");
+
+      if (login) {
+        this.props.auth.setAuthStatus(true);
+        this.props.auth.setUser(user);
+        this.props.history.push("/");
+      } else {
+        const error = { blankfield: true };
+        this.setState({
+          errors: { ...this.state.errors, ...error }
+        });
+      }
     } catch (error) {
       let err = null;
       !error.message ? err = { "message": error } : err = error;
@@ -97,6 +166,24 @@ class LogIn extends Component {
                   <i className="fas fa-lock"></i>
                 </span>
               </p>
+            </div>
+            <div className="field">
+              <p className="control has-icons-left">
+                <input
+                  className="input"
+                  type="password"
+                  id="newPasswordCandidate"
+                  placeholder="New password"
+                  value={this.state.newPasswordCandidate}
+                  onChange={this.onInputChange}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-lock"></i>
+                </span>
+              </p>
+              <Form.Text className="text-muted">
+                Required with first candidate login otherwise leave empty.
+              </Form.Text>
             </div>
             <div className="field">
               <p className="control">

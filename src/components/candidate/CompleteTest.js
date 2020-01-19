@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import $ from "jquery";
-
+import Constants from "../Constants";
 import {Auth} from "aws-amplify";
 
 class CompleteTest extends Component {
@@ -26,7 +26,7 @@ class CompleteTest extends Component {
             .then(response => response.json())
             .then((jsonData) => {
                 // jsonData is parsed json object received from url
-         //       console.log(jsonData.Items[0]);
+                console.log(jsonData.Items[0]);
 
                 var langs = jsonData.Items[0].langs;
                 //console.log(this.state.response);
@@ -39,13 +39,13 @@ class CompleteTest extends Component {
                                     "no": question.no,
                                     "answers": []
                                 });
-                           //     console.log(question);
+                                console.log(question);
                             }else{
                                 theAnswers.push({
                                     "no": question.no,
                                     "answer": null
                                 });
-                          //      console.log(question);
+                                console.log(question);
                             }
                         });
                     });
@@ -130,15 +130,7 @@ class CompleteTest extends Component {
 
             let output = [];
 
-            //ladnie, answers[0][N] zamiast answers[N]
-            // if(
-            //     question.answers.length &&
-            //     question.answers[0].length > 1
-            // ){
-            //     question.answers = question.answers[0];
-            // }
-
-            if(question.answers){
+            if(question.answers)
             question.answers.map(function(answer, index){
                 let id = question.no + "_" + index;
                 //alert(index);
@@ -151,7 +143,7 @@ class CompleteTest extends Component {
                     label={answer}
                     onChange={component.handleOptionChange}
                 /> );
-            });}
+            });
             return output;
 
             /*
@@ -241,7 +233,8 @@ class CompleteTest extends Component {
                     <h1>{this.state.response.testName}</h1>
                     {this.questionsList()}
                     <Form.Row>
-                        <Button onClick={this.handleSubmit2} id="saveTestButton" type="submit" variant="success" className="mt-3"> Save
+                        <Button onClick={this.handleSubmit2} id="saveTestButton" type="submit" variant="success" className="mt-3"
+                        > Save
                             Test </Button>
                         <div className="buttons-space"></div>
                         <Button id="saveTestButton" type="submit" variant="danger" className="mt-3"

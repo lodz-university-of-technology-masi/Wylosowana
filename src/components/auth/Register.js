@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FormErrors from "../FormErrors";
 import Validate from "../utility/FormValidation";
-import Form from 'react-bootstrap/Form';
 import { Auth } from 'aws-amplify';
 
 class Register extends Component {
@@ -10,13 +9,13 @@ class Register extends Component {
     email: "",
     password: "",
     confirmpassword: "",
-    profile: "",
+    profile: "Recruiter",
     errors: {
       cognito: null,
       blankfield: false,
       passwordmatch: false
     }
-  }
+  };
 
   clearErrorState = () => {
     this.setState({
@@ -26,7 +25,7 @@ class Register extends Component {
         passwordmatch: false
       }
     });
-  }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -38,32 +37,33 @@ class Register extends Component {
       this.setState({
         errors: { ...this.state.errors, ...error }
       });
-    }
+    } else {
 
-    // AWS Cognito integration here
-    const { username, email, password, profile } = this.state;
-    try {
-      const signUpResponse = await Auth.signUp({
-        username,
-        password,
-        attributes: {
-          email: email,
-          profile: profile,
-          name: profile
-        }
-      });
-      console.log(signUpResponse);
-      this.props.history.push("/welcome");
-    } catch (error) {
-      let err = null;
-      !error.message ? err = { "message": error } : err = error;
-      this.setState({
-        errors:
-        {
-          ...this.state.errors,
-          cognito: error
-        }
-      })
+      // AWS Cognito integration here
+      const { username, email, password, profile } = this.state;
+      try {
+        const signUpResponse = await Auth.signUp({
+          username,
+          password,
+          attributes: {
+            email: email,
+            profile: profile,
+            name: profile
+          }
+        });
+        console.log(signUpResponse);
+        this.props.history.push("/welcome");
+      } catch (error) {
+        let err = null;
+        !error.message ? err = { "message": error } : err = error;
+        this.setState({
+          errors:
+          {
+            ...this.state.errors,
+            cognito: error
+          }
+        })
+      }
     }
   };
 
@@ -73,13 +73,6 @@ class Register extends Component {
     });
     document.getElementById(event.target.id).classList.remove("is-danger");
   };
-
-
-  handleChange(e){
-    this.setState({
-      profile: e.target.value
-    })
-  }
 
 
   render() {
@@ -149,13 +142,6 @@ class Register extends Component {
                 </span>
               </p>
             </div>
-            <Form.Group controlId="controlSelectProfile">
-              <Form.Control as="select" onChange={this.handleChange.bind(this)} value={this.state.profile}>
-                <option value="default" hidden>Select a profile</option>
-                <option value="Candidate">Candidate</option>
-                <option value="Recruiter">Recruiter</option>
-              </Form.Control>
-            </Form.Group>
             <div className="field">
               <p className="control">
                 <button className="button is-success">

@@ -14,7 +14,7 @@ export default class Navbars extends Component {
         } catch (error) {
             console.log(error.message);
         }
-    }
+    };
 
     render() {
         return (
@@ -25,37 +25,43 @@ export default class Navbars extends Component {
                     {this.props.auth.isAuthenticated && this.props.auth.user && (
                         <p className="hello-username">Hello {this.props.auth.user.username}</p>
                     )}
-                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Recruiter' : this.props.auth.user.challengeParam.userAttributes.profile === 'Recruiter') && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/createtest">Add Test</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
                     )}
-                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Recruiter' : this.props.auth.user.challengeParam.userAttributes.profile === 'Recruiter') && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/csvImportExport">Import/Export Test</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
                     )}
-                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Recruiter' : this.props.auth.user.challengeParam.userAttributes.profile === 'Recruiter') && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/showtests">Show Tests</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
                     )}
-                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Recruiter' : this.props.auth.user.challengeParam.userAttributes.profile === 'Recruiter') && (
+                        <ButtonToolbar>
+                            <Button variant="outline-info" href="#/adddeleteuser">Add/Delete User</Button>
+                            <div className="buttons-space"></div>
+                        </ButtonToolbar>
+                    )}
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Recruiter' : this.props.auth.user.challengeParam.userAttributes.profile === 'Recruiter') && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/showusers">Show Users</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
                     )}
-                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Recruiter' && (
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Recruiter' : this.props.auth.user.challengeParam.userAttributes.profile === 'Recruiter') && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/assigncandidatetotest">Assign users to test</Button>
                             <div className="buttons-space"></div>
                         </ButtonToolbar>
                     )}
-                    {this.props.auth.isAuthenticated && this.props.auth.user && this.props.auth.user.attributes.profile === 'Candidate' && (
+                    {this.props.auth.isAuthenticated && this.props.auth.user && (this.props.auth.user.hasOwnProperty('attributes') ? this.props.auth.user.attributes.profile === 'Candidate' : this.props.auth.user.challengeParam.userAttributes.profile === 'Candidate') && (
                         <ButtonToolbar>
                             <Button variant="outline-info" href="#/showcandidatetests">Show Tests</Button>
                             <div className="buttons-space"></div>

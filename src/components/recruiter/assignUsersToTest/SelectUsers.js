@@ -30,8 +30,10 @@ class SelectUsers extends Component {
                 </Form.Group>
                 <Table size="sm">
                     <tbody>
-                    {this.props.users.filter(searchingFor(this.state.textToSearch)).filter((x) => {return !x.selected}) .map((user) => (
-                        <tr>    <User selectUsers={this.props.selectUsers} key={user.id} user={user}/> </tr>
+                    {this.props.users.filter(searchingFor(this.state.textToSearch)).filter((x) => {return !x.selected}).map((user) => (
+                        <tr key={user.id}>
+                            <User selectUsers={this.props.selectUsers} key={user.id} user={user}/>
+                        </tr>
                     ))}
                     </tbody>
                 </Table>
