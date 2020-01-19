@@ -1,24 +1,14 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import uuid from 'uuid'
-import config from "../../config";
-import $ from "jquery";
-import Button from "react-bootstrap/Button";
 import {Auth} from "aws-amplify";
-import Constants from "../Constants";
-import {listCandidates} from "../auth/CognitoUsers";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-import Test from "./ShowAndTranslateTests/Test";
 import Table from "react-bootstrap/Table";
-import {forEach} from "react-bootstrap/cjs/utils/ElementChildren";
 
 class ShowUsers extends Component {
 
     state = {
         tests: [],
         usersTests: [],
-        tabel: "Prosze czekać"
+        tabel: "Wait please"
     };
 
     constructor(props) {
