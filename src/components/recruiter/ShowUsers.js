@@ -8,7 +8,7 @@ class ShowUsers extends Component {
     state = {
         tests: [],
         usersTests: [],
-        tabel: "Wait please"
+        tabel: []
     };
 
     constructor(props) {
@@ -39,7 +39,7 @@ class ShowUsers extends Component {
         let usersLogin = [];
         let usersTests = this.state.usersTests;
 
-        usersTests.map(item => {
+        usersTests.forEach(item => {
             if (usersLogin.indexOf(item.candidateLogin) < 0) {
                 usersLogin.push(item.candidateLogin);
             }
@@ -50,44 +50,55 @@ class ShowUsers extends Component {
         let content = [];
 
         for (let temp of usersLogin) {
-            let rowData = "<div><ul>";
+            let listSolvedTests = [];
 
-            usersTests.map(item => {
+            usersTests.forEach(item => {
                 if (item.candidateLogin === temp) {
-                    rowData += '<li><a href=\"/?#/showAnswers/' + item.testId + '\" >' + item.testName + '</a></li>';
+                    let solvedTest = {};
+                    solvedTest.testId = item.testId;
+                    solvedTest.testName = item.testName;
+                    listSolvedTests.push(solvedTest)
                 }
             });
 
-            rowData += "</ul></div>";
+            let row = {
+                candidateLogin: temp,
+                listSolvedTests: listSolvedTests
 
-            content.push(<tr>
-                <td><strong>{temp}</strong></td>
-                <td>
-                    <ul dangerouslySetInnerHTML={{__html: rowData}}/>
-                </td>
-            </tr>)
+            };
+        {/*  <li><a href=\"/?#/showAnswers/' + item.testId + '\" >' + item.testName + '</a></li>;*/}
+
+
+            content.push(row);
         }
 
-        this.setState( {
-            tabel: (<Table striped bordered size="sm">
-                <thead>
-                <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Tests</th>
-                </tr>
-                </thead>
-                <tbody>
-                {content}
-                </tbody>
-            </Table>)
-        }) ;
+        this.setState({
+            tabel: content
+        });
     };
 
     render() {
         return (
             <section class="section">
                 <ul>
-                    {this.state.tabel}
+                    <Table striped bordered size="sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Tests</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.tabel.forEach(item => (
+                            <tr>
+                                <td><strong>{item.candidateLogin}</strong></td>
+                                <td>
+                                 {/*   {<li><a href=\"/?#/showAnswers/' + item.testId + '\" >' + item.testName + '</a></li>};*/}
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
                 </ul>
             </section>
         )
