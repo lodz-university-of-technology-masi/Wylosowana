@@ -66,8 +66,6 @@ class ShowUsers extends Component {
                 listSolvedTests: listSolvedTests
 
             };
-        {/*  <li><a href=\"/?#/showAnswers/' + item.testId + '\" >' + item.testName + '</a></li>;*/}
-
 
             content.push(row);
         }
@@ -89,11 +87,13 @@ class ShowUsers extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.state.tabel.forEach(item => (
+                        {this.state.tabel.map(item => (
                             <tr>
                                 <td><strong>{item.candidateLogin}</strong></td>
                                 <td>
-                                 {/*   {<li><a href=\"/?#/showAnswers/' + item.testId + '\" >' + item.testName + '</a></li>};*/}
+                                    {item.listSolvedTests.map(item => (
+                                        <li><a href={"/?#/showAnswers/" + item.testId}> {item.testName} </a></li>
+                                    ))}
                                 </td>
                             </tr>
                         ))}

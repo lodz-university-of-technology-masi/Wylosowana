@@ -35,7 +35,7 @@ class ShowAnswers extends Component {
                     <h2>Answers for test: </h2><br/><br/>
                     {this.state.questionAnswers.map(item => (
                         <ul>
-                            <li>Question:  {item.question}</li>
+                            <li><b>Question:  {item.question}</b></li>
                             <li>Answer:    {item.answer}</li>
                         </ul>
                     ))}
