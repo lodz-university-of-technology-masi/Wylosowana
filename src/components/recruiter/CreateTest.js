@@ -6,6 +6,7 @@ import {ButtonGroup} from "react-bootstrap";
 import {listCandidates} from "../auth/CognitoUsers";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import {Auth} from "aws-amplify";
+import uuid from "uuid";
 
 let globalAnswers = []
 let globalQuestionAnswers = []
