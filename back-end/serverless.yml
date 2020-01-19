@@ -114,7 +114,7 @@ functions:
           path: /tests/translation/{id}
           cors: true
   deleteTestById:
-    handler: com.wylosowana.handlers.test.DeleteTest
+    handler: com.wylosowana.handlers.test.DeleteTestById
     events:
       - http:
           method: delete

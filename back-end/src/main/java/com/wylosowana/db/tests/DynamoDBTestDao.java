@@ -64,6 +64,9 @@ public class DynamoDBTestDao implements TestDao {
 
     @Override
     public Optional<Test> save(Test test) {
+        if (test == null) {
+            throw new IllegalArgumentException("You cannot save null!");
+        }
         dbMapper.save(test);
         return findById(test.getId());
     }

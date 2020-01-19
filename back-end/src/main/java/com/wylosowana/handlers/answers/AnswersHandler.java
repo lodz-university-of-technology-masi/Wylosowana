@@ -35,17 +35,17 @@ public abstract class AnswersHandler {
     }
 
     public boolean isValid(Answer answer) {
-        boolean isValid = testExists(answer.getTestId());
-        TestDao testDao = new DynamoDBTestDao();
-        Test test = testDao.findById(answer.getTestId()).get();
-        isValid &= canCandidateSolveTheTest(answer.getLogin(), test.getCandidateLogins());
+        Optional<Test> testOptional = getTestIfExists(answer.getTestId());
         try {
+            boolean isValid = testOptional.isPresent();
+            Test test = testOptional.get();
+            isValid &= canCandidateSolveTheTest(answer.getLogin(), test.getCandidateLogins());
             Optional<Lang> testLang = langMatches(test.getLangs(), answer.getLang());
             isValid &= testLang.isPresent();
             Lang existingTestLang = testLang.get();
 
             isValid &= numberOfQuestionsMatches(existingTestLang, answer);
-            isValid &= closedAndOpenQuestionsMatches(existingTestLang, answer);
+            isValid &= closedAndOpenQuestionsMatch(existingTestLang, answer);
 
             return isValid;
         } catch (Exception e) {
@@ -53,16 +53,21 @@ public abstract class AnswersHandler {
         }
     }
 
+    private Optional<Test> getTestIfExists(String testId) {
+        TestDao testDao = new DynamoDBTestDao();
+        return testDao.findById(testId);
+    }
+
     private boolean canCandidateSolveTheTest(String login, List<String> candidateLogins) {
         return candidateLogins.contains(login);
     }
 
-    private boolean closedAndOpenQuestionsMatches(Lang existingTestLang, Answer answer) {
+    private boolean closedAndOpenQuestionsMatch(Lang existingTestLang, Answer answer) {
         List<Question> questions = existingTestLang.getQuestions();
         List<Solution> solutions = answer.getAnswers();
 
         try {
-            checkAnswersIndexes(answer.getAnswers().stream().map(Solution::getNo));
+            checkAnswersIndices(answer.getAnswers().stream().map(Solution::getNo));
             checkAnswersTypes(solutions, questions);
         } catch (Exception e) {
             return false;
@@ -86,11 +91,11 @@ public abstract class AnswersHandler {
 
     }
 
-    private void checkAnswersIndexes(Stream<Integer> numbersStream) {
+    private void checkAnswersIndices(Stream<Integer> numbersStream) {
         List<Integer> sortedNo = numbersStream.sorted().collect(Collectors.toList());
 
         for (int i = 0; i < sortedNo.size() - 1; i++) {
-            if (sortedNo.get(i) == i) {
+            if (sortedNo.get(i) != i) {
                 throw new IllegalArgumentException("Answers indexes are nor valid!");
             }
         }
@@ -102,9 +107,5 @@ public abstract class AnswersHandler {
 
     private Optional<Lang> langMatches(List<Lang> langs, String lang) {
         return langs.stream().filter(l -> Objects.equals(l.getLang(), lang)).findFirst();
-    }
-
-    private boolean testExists(String testId) {
-        return answerDao.existsById(testId);
     }
 }

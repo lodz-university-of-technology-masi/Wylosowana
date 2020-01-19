@@ -47,6 +47,9 @@ public class DynamoDBAnswerDao implements AnswerDao {
 
     @Override
     public Optional<Answer> save(Answer answer) {
+        if (answer == null) {
+            throw new IllegalArgumentException("You cannot save null!");
+        }
         dbMapper.save(answer);
         return findById(answer.getId());
     }
