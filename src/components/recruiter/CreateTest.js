@@ -89,6 +89,10 @@ class CreateTest extends Component {
         })
     };
 
+    goToMainPage() {
+        this.props.history.push("/");
+    }
+
 
     saveClosedQuestion = (event) => {
         globalClosedQuestions.push(this.state.tempClosedQuestion)
@@ -132,6 +136,7 @@ class CreateTest extends Component {
 
 
     async handleSubmit(event) {
+
         const questions = globalClosedQuestions.concat(globalQuestions)
             .map((val, ind) => {
                 let sizeCloseQuest = globalClosedQuestions.length;
@@ -169,7 +174,13 @@ class CreateTest extends Component {
             "candidateLogins": globalCandidates
         }
 
-        console.log(validateTest)
+        const these = this;
+         globalAnswers = []
+         globalQuestionAnswers = []
+         globalQuestions = []
+         globalClosedQuestions = []
+         globalTrueSelect = []
+         globalCandidates = []
 
         $.ajax({
             type: "POST",
@@ -184,11 +195,10 @@ class CreateTest extends Component {
                 if (err)
                     console.log(err);
                 console.log(data);
+                these.goToMainPage();
             }
         });
-        globalAnswers = globalQuestionAnswers = globalQuestions = globalClosedQuestions = globalCandidates = []
 
-        // this.props.history.push('/');
     }
 
 
