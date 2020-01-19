@@ -22,6 +22,7 @@ import {PrivateRoute} from "./components/PrivateRoute";
 import ShowSolvedTest from './components/recruiter/ShowSolvedTest';
 import ShowAnswers from './components/recruiter/ShowAnswers';
 import ShowUsers from './components/recruiter/ShowUsers';
+import AddDeleteUser from './components/auth/AddDeleteUser';
 
 library.add(faEdit);
 
@@ -96,6 +97,10 @@ class App extends Component {
                                           auth={authProps}/>
                             <PrivateRoute exact path="/showtests"
                                           component={ShowTests}
+                                          profile={recruiter}
+                                          auth={authProps}/>
+                            <PrivateRoute exact path="/adddeleteuser"
+                                          component={AddDeleteUser}
                                           profile={recruiter}
                                           auth={authProps}/>
                             <PrivateRoute exact path="/showusers"

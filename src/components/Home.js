@@ -7,10 +7,10 @@ export default function Home() {
         <Jumbotron>
             <h1>Hello, world!</h1>
             <p>
-                This is our recruiting react-bootstrap app.
+                This is Wylosowana recruiting app.
             </p>
             <p>
-                <Button variant="primary" href="https://react-bootstrap.github.io/getting-started/introduction/">Learn
+                <Button variant="primary" href="https://ftims.edu.p.lodz.pl/login/index.php">Learn
                     more</Button>
             </p>
         </Jumbotron>
