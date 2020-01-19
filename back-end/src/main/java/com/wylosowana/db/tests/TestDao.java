@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface TestDao extends Dao<Test, String> {
     List<Test> findByCandidateLogin(String login);
+
+    List<Test> findByRecruiterLogin(String login);
+
 }

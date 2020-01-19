@@ -4,12 +4,15 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.wylosowana.db.DynamoDBAdapter;
 import com.wylosowana.db.exceptions.ElementNotExist;
 import com.wylosowana.domain.tests.Test;
 import lombok.extern.apachecommons.CommonsLog;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -55,6 +58,11 @@ public class DynamoDBTestDao implements TestDao {
     }
 
     @Override
+    public boolean existsById(String id) {
+        return findById(id).isPresent();
+    }
+
+    @Override
     public Optional<Test> save(Test test) {
         dbMapper.save(test);
         return findById(test.getId());
@@ -63,5 +71,16 @@ public class DynamoDBTestDao implements TestDao {
     @Override
     public List<Test> findByCandidateLogin(String login) {
         return findAll().stream().filter(test -> test.getCandidateLogins().contains(login)).distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Test> findByRecruiterLogin(String login) {
+        Map<String, AttributeValue> eav = new HashMap();
+        eav.put(":login", new AttributeValue().withS(login));
+        DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
+                .withFilterExpression("recruiterLogin = :login")
+                .withExpressionAttributeValues(eav);
+
+        return dbMapper.scan(Test.class, scanRequest);
     }
 }

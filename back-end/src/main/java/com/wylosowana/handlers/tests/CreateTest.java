@@ -19,11 +19,13 @@ public class CreateTest extends TestHandler implements RequestHandler<Map<String
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            Optional<Test> test = getTest(input).filter(this::isValid).map(testDao::save).map(Optional::get);
+            Test test = getTest(input).orElseThrow(IllegalArgumentException::new);
+            test.setRecruiterLogin(HandlerUtils.getUser(input));
+            Optional<Test> saved = Optional.of(test).filter(super::isValid).map(testDao::save).get();
 
             return HandlerUtils.buildResponse()
-                    .setStatusCode(test.isPresent() ? HttpStatus.SC_CREATED : HttpStatus.SC_BAD_REQUEST)
-                    .setObjectBody(test.orElse(null))
+                    .setStatusCode(saved.isPresent() ? HttpStatus.SC_CREATED : HttpStatus.SC_BAD_REQUEST)
+                    .setObjectBody(saved.orElse(null))
                     .build();
 
         } catch (Exception e) {

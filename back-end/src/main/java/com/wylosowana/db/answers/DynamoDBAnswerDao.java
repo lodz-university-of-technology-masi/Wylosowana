@@ -62,7 +62,12 @@ public class DynamoDBAnswerDao implements AnswerDao {
     }
 
     @Override
-    public Optional<Answer> getByTestIdAndLogin(String testId, String login) {
+    public boolean existsById(String id) {
+        return findById(id).isPresent();
+    }
+
+    @Override
+    public Optional<Answer> findByTestIdAndLogin(String testId, String login) {
         Map<String, AttributeValue> queryParams = new HashMap<>();
         queryParams.put(":login", new AttributeValue().withS(login));
         queryParams.put(":testId", new AttributeValue().withS(testId));

@@ -13,4 +13,6 @@ public interface Dao<T, I> {
     Optional<T> save(T item);
 
     void delete(T item) throws ElementNotExist;
+
+    boolean existsById(I id);
 }

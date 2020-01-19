@@ -12,6 +12,14 @@ public class Question {
     private List<String> answers;
     private List<String> correct;
 
+    public boolean isOpen() {
+        return answers.isEmpty() && correct.isEmpty();
+    }
+
+    public boolean isClosed() {
+        return !isOpen();
+    }
+
     @DynamoDBAttribute(attributeName = "no")
     public int getNo() {
         return no;

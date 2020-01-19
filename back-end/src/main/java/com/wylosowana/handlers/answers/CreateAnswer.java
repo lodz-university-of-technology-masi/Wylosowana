@@ -20,7 +20,8 @@ public class CreateAnswer extends AnswersHandler implements RequestHandler<Map<S
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            Optional<Answer> answer = getAnswer(input).filter(this::isValid).map(answerDao::save).map(Optional::get);
+            Optional<Answer> answer = getAnswer(input);
+            answer.filter(this::isValid).map(answerDao::save).map(Optional::get);
 
             TestDao testDao = new DynamoDBTestDao();
             Test solvedTest = answer.map(Answer::getTestId).map(testDao::findById).get().orElseThrow(() -> new ResourceNotFoundException("Such test does not exist!"));

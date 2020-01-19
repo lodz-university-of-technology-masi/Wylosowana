@@ -9,14 +9,16 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.apache.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 
 @CommonsLog
-public class GetTests extends TestHandler implements RequestHandler<Void, ApiGatewayResponse> {
+public class GetTests extends TestHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
     @Override
-    public ApiGatewayResponse handleRequest(Void aVoid, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            List<Test> tests = testDao.findAll();
+            String username = HandlerUtils.getUser(input);
+            List<Test> tests = testDao.findByRecruiterLogin(username);
 
             return HandlerUtils.buildResponse()
                     .setStatusCode(HttpStatus.SC_OK)
@@ -24,7 +26,7 @@ public class GetTests extends TestHandler implements RequestHandler<Void, ApiGat
                     .build();
         } catch (Exception e) {
             log.error("Exception thrown in TestHandler::handleRequest! " + e.getMessage());
-            return HandlerUtils.buildError().build();
+            return HandlerUtils.buildError().setObjectBody(e.getMessage()).build();
         }
     }
 }

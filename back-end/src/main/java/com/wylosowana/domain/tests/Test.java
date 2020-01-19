@@ -2,15 +2,11 @@ package com.wylosowana.domain.tests;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.wylosowana.db.tests.converters.ListOfLangConverter;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
 
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @DynamoDBTable(tableName = "SHOULD_BE_OVERRIDDEN")
 public class Test implements Serializable {
@@ -68,5 +64,16 @@ public class Test implements Serializable {
 
     public void setRecruiterLogin(String recruiterLogin) {
         this.recruiterLogin = recruiterLogin;
+    }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "id='" + id + '\'' +
+                ", testName='" + testName + '\'' +
+                ", recruiterLogin='" + recruiterLogin + '\'' +
+                ", langs=" + langs +
+                ", candidateLogins=" + candidateLogins +
+                '}';
     }
 }

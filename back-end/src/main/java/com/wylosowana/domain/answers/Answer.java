@@ -52,12 +52,12 @@ public class Answer implements Serializable {
         return answers;
     }
 
-    @DynamoDBAttribute(attributeName = "answers")
+    @DynamoDBAttribute(attributeName = "points")
     public int getPoints() {
         return points;
     }
 
-    @DynamoDBAttribute(attributeName = "answers")
+    @DynamoDBAttribute(attributeName = "maxPoints")
     public int getMaxPoints() {
         return maxPoints;
     }

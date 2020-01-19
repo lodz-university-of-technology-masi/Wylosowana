@@ -42,6 +42,7 @@ functions:
           cors: true
   getTests:
     handler: com.wylosowana.handlers.tests.GetTests
+    timeout: 25
     events:
       - http:
           method: get
@@ -87,7 +88,7 @@ functions:
     events:
       - http:
           method: get
-          path: /tests/candidate/{login}
+          path: /tests/candidates/{login}
           cors: true
   getAnswerById:
     handler: com.wylosowana.handlers.answers.GetAnswerById
@@ -109,14 +110,17 @@ functions:
       - http:
           method: put
           path: /tests/translation/{id}
+          cors: true
   deleteTestById:
     handler: com.wylosowana.handlers.test.DeleteTest
     events:
       - http:
           method: delete
           path: /tests/{id}
+          cors: true
   mirrorHandler:
     handler: com.wylosowana.handlers.MirrorHandler
+    timeout: 25
     events:
       - http:
           method: post

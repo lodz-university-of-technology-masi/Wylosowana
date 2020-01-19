@@ -28,14 +28,38 @@ public class GetTestsForCandidate extends TestHandler implements RequestHandler<
         private String testName;
         private List<Lang> langs;
 
+        public static ResponsePOJO fromTest(Test test) {
+            return new ResponsePOJO(test.getId(), test.getTestName(), test.getLangs());
+        }
+
         public ResponsePOJO(String id, String testName, List<Lang> langs) {
             this.id = id;
             this.testName = testName;
             this.langs = langs;
         }
 
-        public static ResponsePOJO fromTest(Test test) {
-            return new ResponsePOJO(test.getId(), test.getTestName(), test.getLangs());
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getTestName() {
+            return testName;
+        }
+
+        public void setTestName(String testName) {
+            this.testName = testName;
+        }
+
+        public List<Lang> getLangs() {
+            return langs;
+        }
+
+        public void setLangs(List<Lang> langs) {
+            this.langs = langs;
         }
     }
 }

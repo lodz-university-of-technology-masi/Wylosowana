@@ -17,6 +17,7 @@ public class HandlerUtils {
     private static final String QUERY_PARAMETERS_KEY = "queryStringParameters";
     private static final String REQUEST_CONTEXT_KEY = "requestContext";
     private static final String AUTHORIZER_KEY = "authorizer";
+    private static final String CLAIMS_KEY = "claims";
     private static final String USERNAME_KEY = "cognito:username";
 
     public static ApiGatewayResponse.Builder buildResponse() {
@@ -38,7 +39,8 @@ public class HandlerUtils {
     public static String getUser(Map<String, Object> requestInput) {
         Map<String, Object> identity = (Map<String, Object>) requestInput.get(REQUEST_CONTEXT_KEY);
         Map<String, Object> authorizer = (Map<String, Object>) identity.get(AUTHORIZER_KEY);
-        return (String) authorizer.get(USERNAME_KEY);
+        Map<String, Object> claims = (Map<String, Object>) authorizer.get(CLAIMS_KEY);
+        return (String) claims.get(USERNAME_KEY);
     }
 
     public static ApiGatewayResponse.Builder buildError() {

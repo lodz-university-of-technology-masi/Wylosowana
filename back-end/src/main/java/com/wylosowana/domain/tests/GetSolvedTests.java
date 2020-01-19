@@ -50,5 +50,32 @@ public class GetSolvedTests extends TestHandler implements RequestHandler<Map<St
             this.name = name;
             this.logins = logins;
         }
+
+        public ResponsePOJO() {
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<String> getLogins() {
+            return logins;
+        }
+
+        public void setLogins(List<String> logins) {
+            this.logins = logins;
+        }
     }
 }

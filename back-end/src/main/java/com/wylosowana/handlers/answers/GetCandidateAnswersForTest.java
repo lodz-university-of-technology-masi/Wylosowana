@@ -25,11 +25,10 @@ public class GetCandidateAnswersForTest extends AnswersHandler implements Reques
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            //TODO SUMOWANIE POUNKTÓW Z PYTAŃ ZAMKNIĘTYCH
             Map<String, String> pathParams = HandlerUtils.getPathParams(input);
             String login = pathParams.get(LOGIN_KEY);
             String id = pathParams.get(ID_KEY);
-            Answer answer = answerDao.getByTestIdAndLogin(id, login).orElseThrow(() -> new ResourceNotFoundException("Such answer doesn't exist"));
+            Answer answer = answerDao.findByTestIdAndLogin(id, login).orElseThrow(() -> new ResourceNotFoundException("Such answer doesn't exist"));
 
             TestDao testDao = new DynamoDBTestDao();
             List<Lang> langs = testDao.findById(answer.getTestId()).map(Test::getLangs).orElseThrow(() -> new ResourceNotFoundException("Such test doesn't exist"));
@@ -43,8 +42,6 @@ public class GetCandidateAnswersForTest extends AnswersHandler implements Reques
         } catch (ResourceNotFoundException e) {
             return HandlerUtils.buildResponse().setStatusCode(HttpStatus.SC_NOT_FOUND).build();
         }
-
-
     }
 
     private ResponsePOJO getResponsePOJO(Question question, Answer answer) {
@@ -59,8 +56,27 @@ public class GetCandidateAnswersForTest extends AnswersHandler implements Reques
         String question;
         String answer;
 
+        public ResponsePOJO() {
+        }
+
         public ResponsePOJO(String question, String answer) {
             this.question = question;
+            this.answer = answer;
+        }
+
+        public String getQuestion() {
+            return question;
+        }
+
+        public void setQuestion(String question) {
+            this.question = question;
+        }
+
+        public String getAnswer() {
+            return answer;
+        }
+
+        public void setAnswer(String answer) {
             this.answer = answer;
         }
     }

@@ -4,13 +4,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wylosowana.db.answers.AnswerDao;
 import com.wylosowana.db.answers.DynamoDBAnswerDao;
+import com.wylosowana.db.tests.DynamoDBTestDao;
+import com.wylosowana.db.tests.TestDao;
 import com.wylosowana.domain.answers.Answer;
+import com.wylosowana.domain.answers.Solution;
+import com.wylosowana.domain.tests.Lang;
+import com.wylosowana.domain.tests.Question;
+import com.wylosowana.domain.tests.Test;
 import com.wylosowana.handlers.HandlerUtils;
 import lombok.extern.apachecommons.CommonsLog;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CommonsLog
 public abstract class AnswersHandler {
@@ -20,7 +27,6 @@ public abstract class AnswersHandler {
     public final Optional<Answer> getAnswer(Map<String, Object> requestInput) {
         try {
             JsonNode node = HandlerUtils.getBody(requestInput);
-            log.debug("Node in AnswersHandler::getAnswer" + node);
             return Optional.ofNullable(objectMapper.treeToValue(node, Answer.class));
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,6 +35,73 @@ public abstract class AnswersHandler {
     }
 
     public boolean isValid(Answer answer) {
+        boolean isValid = true;
+        isValid &= testExists(answer.getTestId());
+        TestDao testDao = new DynamoDBTestDao();
+        Test test = testDao.findById(answer.getTestId()).get();
+
+        try {
+            Optional<Lang> testLang = langMatches(test.getLangs(), answer.getLang());
+            isValid &= testLang.isPresent();
+            Lang existingTestLang = testLang.get();
+
+            isValid &= numberOfQuestionsMatches(existingTestLang, answer);
+            isValid &= closedAndOpenQuestionsMatches(existingTestLang, answer);
+
+            return isValid;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean closedAndOpenQuestionsMatches(Lang existingTestLang, Answer answer) {
+        List<Question> questions = existingTestLang.getQuestions();
+        List<Solution> solutions = answer.getAnswers();
+
+        try {
+            checkAnswersIndexes(answer.getAnswers().stream().map(Solution::getNo));
+            checkAnswersTypes(solutions, questions);
+        } catch (Exception e) {
+            return false;
+        }
+
         return true;
+    }
+
+    private void checkAnswersTypes(List<Solution> answers, List<Question> questions) {
+        Iterator<Solution> solutionIterator = answers.iterator();
+        Iterator<Question> questionIterator = questions.iterator();
+
+        while (solutionIterator.hasNext() && questionIterator.hasNext()) {
+            Solution solution = solutionIterator.next();
+            Question question = questionIterator.next();
+
+            if (solution.isOpen() && question.isClosed()) {
+                throw new IllegalArgumentException("Answer type does not match question type!");
+            }
+        }
+
+    }
+
+    private void checkAnswersIndexes(Stream<Integer> numbersStream) {
+        List<Integer> sortedNo = numbersStream.sorted().collect(Collectors.toList());
+
+        for (int i = 0; i < sortedNo.size() - 1; i++) {
+            if (sortedNo.get(i) == i) {
+                throw new IllegalArgumentException("Answers indexes are nor valid!");
+            }
+        }
+    }
+
+    private boolean numberOfQuestionsMatches(Lang lang, Answer answer) {
+        return lang.getQuestions().size() == answer.getAnswers().size();
+    }
+
+    private Optional<Lang> langMatches(List<Lang> langs, String lang) {
+        return langs.stream().filter(l -> Objects.equals(l.getLang(), lang)).findFirst();
+    }
+
+    private boolean testExists(String testId) {
+        return answerDao.existsById(testId);
     }
 }
