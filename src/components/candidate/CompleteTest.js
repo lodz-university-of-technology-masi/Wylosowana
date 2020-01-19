@@ -26,14 +26,12 @@ class CompleteTest extends Component {
             .then(response => response.json())
             .then((jsonData) => {
                 // jsonData is parsed json object received from url
-                console.log(jsonData.Items[0]);
+                console.log(jsonData);
 
-                var langs = jsonData.Items[0].langs;
-                //console.log(this.state.response);
+                var lang = jsonData.langs[0];
                 var theAnswers = [];
-                if (langs) {
-                    langs.map(function(item){
-                        item.questions.map(function(question) {
+                if (lang) {
+                        lang.questions.map(function(question) {
                             if (question.answers){
                                 theAnswers.push({
                                     "no": question.no,
@@ -48,16 +46,15 @@ class CompleteTest extends Component {
                                 console.log(question);
                             }
                         });
-                    });
                 }
 
 
 
                 this.setState({
-                    response: jsonData.Items[0],
+                    response: jsonData,
                     userAnswers: theAnswers,
-                    testId: jsonData.Items[0].id,
-                    language: jsonData.Items[0].langs[0].lang
+                    testId: jsonData.id,
+                    language: jsonData.langs[0].lang
                 });
 
                 console.log(this.state);
@@ -84,7 +81,7 @@ class CompleteTest extends Component {
                     a.answers.push(answerIndex);
                 }
             }
-        });
+        })
 
         this.setState({
             userAnswers: userAnswers
@@ -114,6 +111,7 @@ class CompleteTest extends Component {
             }
         });
 
+
         this.setState({
             userAnswers: userAnswers
         })
@@ -142,6 +140,7 @@ class CompleteTest extends Component {
                     type={'checkbox'}
                     label={answer}
                     onChange={component.handleOptionChange}
+                    key = {index}
                 /> );
             });
             return output;
@@ -162,13 +161,13 @@ class CompleteTest extends Component {
 
     questionsList = () => {
         if (this.state.response.langs) {
-            return this.state.response.langs.map((item) => (
-                <Form.Group controlId="candidateQuestion">{item.questions.map((question) => (
+            return this.state.response.langs[0].questions.map((item,index) => (
+                <Form.Group key={index}>
                     <div className="formQuestions">
-                        <h5>Question {question.no}</h5>
-                        <Form.Label>{question.question}</Form.Label>
-                        {this.answerQuestion(question, item.lang)}
-                    </div>))}</Form.Group>
+                        <h5>Question {item.no}</h5>
+                        <Form.Label>{item.question}</Form.Label>
+                        {this.answerQuestion(item, this.state.response.langs[0].lang)}
+                    </div></Form.Group>
             ))
         }
     };
@@ -179,24 +178,16 @@ class CompleteTest extends Component {
 
     handleSubmit2 = async () => {
 
+        this.state.userAnswers.forEach(a => {
+            if(a.hasOwnProperty("answers"))
+                 a.answers = a.answers.map(String)
+        });
+
         let formInstance = {
             'testId': this.state.testId,
             'login': this.props.auth.user.username,
             'lang': this.state.language,
             'answers': this.state.userAnswers
-            /*[
-                {
-                    'no': this.state.userAnswers,
-                    'answer': this.state.answers
-                },
-                {
-                    'no': this.state.userAnswers,
-                    'lang': 'EN',
-                    'answer': this.state.answer
-                }
-                ]
-            */
-
         };
 
         console.log(this.state);
@@ -205,7 +196,7 @@ class CompleteTest extends Component {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/answers/',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/answers/',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,

@@ -27,15 +27,10 @@ class TestObject extends React.Component {
     renderAnswerIfPresent = () => {
         if (!renederQuestion.length)
             this.getQuestions().forEach((x) => {
-                for (let prop in x) {
-                    if (prop === "answers") {
-                        renederQuestion.push({question: x.question, answers: x.answers});
-                        break;
-                    } else {
-                        renederQuestion.push({question: x.question, answers: []})
-                        break;
-                    }
-                }
+                if(x.answers !== null)
+                    renederQuestion.push({question: x.question, answers: x.answers});
+                else
+                    renederQuestion.push({question: x.question, answers: []});
             })
     };
 
