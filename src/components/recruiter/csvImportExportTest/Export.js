@@ -7,7 +7,7 @@ class Export extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: JSON
+            tests: []
         };
     }
 
@@ -20,9 +20,14 @@ class Export extends Component {
         })
             .then(response => response.json())
             .then((jsonData) => {
-                console.log(jsonData)
+                console.log(jsonData);
                 this.setState({
-                    response: jsonData
+                    tests: jsonData.map(item => ({
+                        candidateLogins: item.candidateLogins,
+                        id: item.id,
+                        langs: item.langs,
+                        testName: item.testName
+                    }))
                 })
             })
             .catch((error) => {
@@ -32,8 +37,8 @@ class Export extends Component {
     }
 
     testsList = () => {
-        if (this.state.response.Items) {
-            const tests = this.state.response.Items;
+        if (this.state.tests) {
+            const tests = this.state.tests;
             const {Parser} = require('json2csv');
             const fields = ['langs.lang', 'langs.questions.no', 'langs.questions.question', 'langs.questions.answers', 'langs.questions.correct', 'testName', 'id', 'candidateLogins'];
             const json2csvParser = new Parser({

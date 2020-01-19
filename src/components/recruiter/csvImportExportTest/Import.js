@@ -104,7 +104,7 @@ class Import extends Component {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
