@@ -20,7 +20,7 @@ public class CreateTest extends TestHandler implements RequestHandler<Map<String
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
             Test test = getTest(input).orElseThrow(IllegalArgumentException::new);
-            test.setRecruiterLogin(HandlerUtils.getUser(input));
+            test.setRecruiterLogin(HandlerUtils.getUsername(input));
             Optional<Test> saved = Optional.of(test).filter(super::isValid).map(testDao::save).get();
 
             return HandlerUtils.buildResponse()

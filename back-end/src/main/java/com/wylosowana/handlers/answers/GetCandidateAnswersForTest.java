@@ -14,12 +14,13 @@ import com.wylosowana.domain.tests.Test;
 import com.wylosowana.handlers.HandlerUtils;
 import org.apache.http.HttpStatus;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GetCandidateAnswersForTest extends AnswersHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
-    public static final String ID_KEY = "id";
+    public static final String ID_KEY = "testId";
     public static final String LOGIN_KEY = "login";
 
     @Override
@@ -28,20 +29,53 @@ public class GetCandidateAnswersForTest extends AnswersHandler implements Reques
             Map<String, String> pathParams = HandlerUtils.getPathParams(input);
             String login = pathParams.get(LOGIN_KEY);
             String id = pathParams.get(ID_KEY);
+            System.out.println("LOGIN: " + login);
+            System.out.println("ID: " + id);
             Answer answer = answerDao.findByTestIdAndLogin(id, login).orElseThrow(() -> new ResourceNotFoundException("Such answer doesn't exist"));
 
             TestDao testDao = new DynamoDBTestDao();
             List<Lang> langs = testDao.findById(answer.getTestId()).map(Test::getLangs).orElseThrow(() -> new ResourceNotFoundException("Such test doesn't exist"));
             Lang solvedLang = langs.stream().filter(lang -> lang.getLang().equals(answer.getLang())).findFirst().orElseThrow(() -> new ResourceNotFoundException("Such answer doesn't exist!"));
 
-            List<Question> openQuestions = solvedLang.getQuestions().stream().filter(question -> question.getAnswers().isEmpty()).collect(Collectors.toList());
+            List<Question> openQuestions = solvedLang.getQuestions().stream().filter(Question::isOpen).collect(Collectors.toList());
+            List<Question> closedQuestions = solvedLang.getQuestions().stream().filter(Question::isClosed).collect(Collectors.toList());
+
+            int points = checkAnswers(closedQuestions, answer);
+            int maxPoints = solvedLang.getQuestions().size() + 1;
+
+            answer.setPoints(points);
+            answer.setMaxPoints(maxPoints);
+            answerDao.save(answer);
+
             List<ResponsePOJO> responseBody = openQuestions.stream().map(question -> getResponsePOJO(question, answer)).collect(Collectors.toList());
-
             return HandlerUtils.buildResponse().setStatusCode(HttpStatus.SC_OK).setObjectBody(responseBody).build();
-
         } catch (ResourceNotFoundException e) {
             return HandlerUtils.buildResponse().setStatusCode(HttpStatus.SC_NOT_FOUND).build();
         }
+    }
+
+    private int checkAnswers(List<Question> closedQuestions, Answer answer) {
+        List<Solution> solutionsOfClosedQuestions = answer.getAnswers().stream().filter(Solution::isClosed).collect(Collectors.toList());
+
+        if (closedQuestions.size() != solutionsOfClosedQuestions.size()) {
+            throw new IllegalArgumentException("Different number of closed questions and answers!");
+        }
+
+        Iterator<Question> questionIterator = closedQuestions.iterator();
+        Iterator<Solution> solutionIterator = solutionsOfClosedQuestions.iterator();
+
+        int points = 0;
+
+        while (solutionIterator.hasNext() && questionIterator.hasNext()) {
+            Question question = questionIterator.next();
+            Solution solution = solutionIterator.next();
+
+            if (question.getAnswers().containsAll(solution.getAnswers()) && solution.getAnswers().containsAll(question.getAnswers())) {
+                points++;
+            }
+        }
+
+        return points;
     }
 
     private ResponsePOJO getResponsePOJO(Question question, Answer answer) {

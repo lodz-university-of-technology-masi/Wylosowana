@@ -75,11 +75,11 @@ public class DynamoDBTestDao implements TestDao {
 
     @Override
     public List<Test> findByRecruiterLogin(String login) {
-        Map<String, AttributeValue> eav = new HashMap();
-        eav.put(":login", new AttributeValue().withS(login));
+        Map<String, AttributeValue> attributeValues = new HashMap();
+        attributeValues.put(":login", new AttributeValue().withS(login));
         DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
                 .withFilterExpression("recruiterLogin = :login")
-                .withExpressionAttributeValues(eav);
+                .withExpressionAttributeValues(attributeValues);
 
         return dbMapper.scan(Test.class, scanRequest);
     }

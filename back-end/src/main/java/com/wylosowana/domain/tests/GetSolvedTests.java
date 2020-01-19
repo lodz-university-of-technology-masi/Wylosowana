@@ -23,7 +23,7 @@ public class GetSolvedTests extends TestHandler implements RequestHandler<Map<St
         List<Answer> answers = answersDao.findAll();
         List<Test> tests = testDao.findAll();
 
-        String recruiterLogin = HandlerUtils.getUser(input);
+        String recruiterLogin = HandlerUtils.getUsername(input);
         List<Test> recruiterTests = tests.stream().filter(test -> test.getRecruiterLogin().equals(recruiterLogin)).collect(Collectors.toList());
         List<String> recruiterTestIds = recruiterTests.stream().map(Test::getId).collect(Collectors.toList());
         List<String> uniqueSolvedTestIds = answers.stream().filter(test -> recruiterTestIds.contains(test.getId())).map(Answer::getId).collect(Collectors.toList());

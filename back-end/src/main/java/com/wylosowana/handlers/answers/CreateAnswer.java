@@ -25,17 +25,16 @@ public class CreateAnswer extends AnswersHandler implements RequestHandler<Map<S
 
             TestDao testDao = new DynamoDBTestDao();
             Test solvedTest = answer.map(Answer::getTestId).map(testDao::findById).get().orElseThrow(() -> new ResourceNotFoundException("Such test does not exist!"));
-            solvedTest.getCandidateLogins().remove(HandlerUtils.getUser(input));
+            solvedTest.getCandidateLogins().remove(HandlerUtils.getUsername(input));
             testDao.save(solvedTest);
 
             return HandlerUtils.buildResponse()
-                    .setStatusCode(answer.isPresent() ? HttpStatus.SC_CREATED : HttpStatus.SC_BAD_REQUEST)
-                    .setObjectBody(answer.orElse(null))
+                    .setStatusCode(HttpStatus.SC_CREATED)
+                    .setObjectBody(answer.get())
                     .build();
 
         } catch (Exception e) {
             log.error("Exception thrown in CreateAnswer::handleRequest!\n" + e.getMessage());
-
             return HandlerUtils.buildResponse().setObjectBody(e.getMessage()).setStatusCode(HttpStatus.SC_BAD_REQUEST).build();
         }
     }

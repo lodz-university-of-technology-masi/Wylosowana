@@ -2,6 +2,8 @@ package com.wylosowana.domain.tests;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+import com.amazonaws.util.CollectionUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
@@ -12,10 +14,12 @@ public class Question {
     private List<String> answers;
     private List<String> correct;
 
+    @JsonIgnore
     public boolean isOpen() {
-        return answers.isEmpty() && correct.isEmpty();
+        return CollectionUtils.isNullOrEmpty(answers) && CollectionUtils.isNullOrEmpty(correct);
     }
 
+    @JsonIgnore
     public boolean isClosed() {
         return !isOpen();
     }

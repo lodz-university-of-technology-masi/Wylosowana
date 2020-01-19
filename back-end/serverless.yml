@@ -71,6 +71,8 @@ functions:
           cors: true
   getAnswers:
     handler: com.wylosowana.handlers.answers.GetAnswers
+    memorySize: 1024
+    timeout: 10
     events:
       - http:
           method: get

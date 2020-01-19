@@ -35,11 +35,10 @@ public abstract class AnswersHandler {
     }
 
     public boolean isValid(Answer answer) {
-        boolean isValid = true;
-        isValid &= testExists(answer.getTestId());
+        boolean isValid = testExists(answer.getTestId());
         TestDao testDao = new DynamoDBTestDao();
         Test test = testDao.findById(answer.getTestId()).get();
-
+        isValid &= canCandidateSolveTheTest(answer.getLogin(), test.getCandidateLogins());
         try {
             Optional<Lang> testLang = langMatches(test.getLangs(), answer.getLang());
             isValid &= testLang.isPresent();
@@ -52,6 +51,10 @@ public abstract class AnswersHandler {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private boolean canCandidateSolveTheTest(String login, List<String> candidateLogins) {
+        return candidateLogins.contains(login);
     }
 
     private boolean closedAndOpenQuestionsMatches(Lang existingTestLang, Answer answer) {

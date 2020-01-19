@@ -3,7 +3,6 @@ package com.wylosowana.db.answers;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.wylosowana.db.DynamoDBAdapter;
@@ -68,12 +67,24 @@ public class DynamoDBAnswerDao implements AnswerDao {
 
     @Override
     public Optional<Answer> findByTestIdAndLogin(String testId, String login) {
-        Map<String, AttributeValue> queryParams = new HashMap<>();
-        queryParams.put(":login", new AttributeValue().withS(login));
-        queryParams.put(":testId", new AttributeValue().withS(testId));
-        DynamoDBQueryExpression<Answer> query = new DynamoDBQueryExpression<Answer>()
-                .withKeyConditionExpression("login = :login and testId = :testId")
-                .withExpressionAttributeValues(queryParams);
-        return dbMapper.query(Answer.class, query).stream().findFirst();
+        Map<String, AttributeValue> attributeValues = new HashMap();
+        attributeValues.put(":testId", new AttributeValue().withS(testId));
+        DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
+                .withFilterExpression("login = :login")
+                .withFilterExpression("testId = :testId")
+                .withExpressionAttributeValues(attributeValues);
+
+        return dbMapper.scan(Answer.class, scanRequest).stream().findFirst();
+    }
+
+    @Override
+    public List<Answer> findByTestId(String testId) {
+        Map<String, AttributeValue> attributeValues = new HashMap();
+        attributeValues.put(":testId", new AttributeValue().withS(testId));
+        DynamoDBScanExpression scanRequest = new DynamoDBScanExpression()
+                .withFilterExpression("testId = :testId")
+                .withExpressionAttributeValues(attributeValues);
+
+        return dbMapper.scan(Answer.class, scanRequest);
     }
 }

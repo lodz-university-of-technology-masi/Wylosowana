@@ -17,7 +17,7 @@ public class GetTests extends TestHandler implements RequestHandler<Map<String, 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            String username = HandlerUtils.getUser(input);
+            String username = HandlerUtils.getUsername(input);
             List<Test> tests = testDao.findByRecruiterLogin(username);
 
             return HandlerUtils.buildResponse()

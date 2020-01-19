@@ -36,7 +36,7 @@ public class HandlerUtils {
         return (Map<String, String>) requestInput.get(QUERY_PARAMETERS_KEY);
     }
 
-    public static String getUser(Map<String, Object> requestInput) {
+    public static String getUsername(Map<String, Object> requestInput) {
         Map<String, Object> identity = (Map<String, Object>) requestInput.get(REQUEST_CONTEXT_KEY);
         Map<String, Object> authorizer = (Map<String, Object>) identity.get(AUTHORIZER_KEY);
         Map<String, Object> claims = (Map<String, Object>) authorizer.get(CLAIMS_KEY);
