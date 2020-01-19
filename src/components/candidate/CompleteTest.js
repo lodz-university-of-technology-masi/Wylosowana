@@ -17,7 +17,7 @@ class CompleteTest extends Component {
 
     async componentDidMount() {
         const {id} = this.props.match.params;
-        fetch(`https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/${id}`,{
+        fetch(`https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/${id}`,{
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
@@ -205,7 +205,7 @@ class CompleteTest extends Component {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: 'https://jqt7k6tt7i.execute-api.us-east-1.amazonaws.com/demo/tests/answers/',
+            url: 'https://nvdj7sjxsi.execute-api.us-east-1.amazonaws.com/dev/tests/answers/',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': `${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
